@@ -1,4 +1,5 @@
 <?php
+//Teste
 
 include '../Config/config.php';
 
