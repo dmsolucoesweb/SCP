@@ -1,0 +1,23 @@
+body {font-family: Arial, sans-serif;font-size: 6.5pt;}
+table tr td.noborder {border: none !important;}
+table tr td.consideracoes {font-size: 6pt; text-align: justify; border: none !important;}
+table.proposta {width: 100%;border: 1px solid black;border-collapse: collapse;}
+table.proposta tr td {border: 1px solid black;padding-left: 4px;font-size:6.5pt;}
+table.proposta tr td.intro {text-align: justify;font-size: 8pt;}
+table.proposta tr td.cpp {text-align:center;}
+tr.borda {border: 1px solid black;}
+.espaco {padding: 1px;}
+.negrito {font-weight: bold;}
+.center {text-align: center;}
+.assinatura {height: 40px;vertical-align: bottom;padding-bottom: 0px; font-weight: bold;}
+.cargoassinatura {padding-top: 0px;padding-bottom: 10px;}
+.direita {text-align: right;}
+.esquerda {text-align: left;}
+.secao {background: #B0AEAE; color: black; font-weight: bold; font-size: 10pt;}
+.titulo {background: #EDEDED;font-weight: bold;}
+.nopad_top {padding-top: 0px !important;padding-bottom: 0px !important;}
+table.header {width: 100%;}
+table.header tr td.logo {width: 100px;}
+table.header img {width: 100px; height: 50px;}
+table.header tr td {padding: 2px; font-size: 7pt;}
+table.header tr td.titulo_relatorio {font-size: 11pt; height: 15px;font-weight: bold;}

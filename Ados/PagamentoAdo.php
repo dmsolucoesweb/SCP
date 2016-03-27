@@ -1,0 +1,329 @@
+<?php
+
+require_once 'ADO.php';
+require_once '../Models/PagamentoModel.php';
+
+class PagamentoAdo extends ADO {
+    /* Função: consultaProdutoPeloApartamento
+     * Utitlizado: Ele é utilizado para cadastrar um pagamento automaticamente junto ao cadastro do Produto
+     */
+
+    public function consultaProdutoPeloApartamento($produtoApartamento) {
+        $query = "select produtoId from Produtos where produtoApartamento = '{$produtoApartamento}'";
+
+        $resultado = parent::executaQuery($query);
+
+        if ($resultado) {
+            //consulta Ok. Continua.
+        } else {
+            parent::setMensagem("Erro no select de consultaProdutoPeloApartamento: " . parent::getBdError());
+            return false;
+        }
+
+        $produto = parent::leTabelaBD();
+
+        return $produto['produtoId'];
+    }
+
+    /* Função: consultaIdPeloProduto
+     * Utilidade: Buscar o id do produto para cadastrar um historico_indice automaticamente junto ao cadastro do indice
+     */
+
+    public function consultaIdPeloProduto($produtoId) {
+        $query = "select pagamentoId from Pagamentos where produtoId = '{$produtoId}'";
+
+        $resultado = parent::executaQuery($query);
+
+        if ($resultado) {
+            //consulta Ok. Continua.
+        } else {
+            parent::setMensagem("Erro no select de consultaIdPeloProduto: " . parent::getBdError());
+            return false;
+        }
+
+        $produto = parent::leTabelaBD();
+
+        return $produto['pagamentoId'];
+    }
+
+    /* Função: consultaGeralHistorico
+     * Utilidade: Utilizada para criar um tabela com o sql "UNION" para o relatorio de pagamentos
+     */
+
+    public function consultaGeralHistorico($pagamentoId) {
+        $query = "select historicoPagamentoId as 'Id', pagamentoData as 'Data', pagamentoValorParcela as 'pagamentoValorParcela/INCC', pagamentoValorParcelaUnitario as 'pagamentoValorParcelaUnitario/IGPM' from Historicos_Pagamentos where pagamentoId = '{$pagamentoId}' UNION ALL SELECT historicoIndiceId, indiceData, indiceInccValor, indiceIgpmValor from Historicos_Indices order by Data";
+
+        $resultado = parent::executaQuery($query);
+        if ($resultado) {
+            //consulta Ok. Continua.
+        } else {
+            parent::setMensagem("Erro no select de consultaGeralHistorico: " . parent::getBdError());
+            return false;
+        }
+
+        $pagamentosModel = null;
+
+        while ($pagamento = parent::leTabelaBD()) {
+            $pagamentoModel = array($pagamento['Id'], $pagamento['Data'], $pagamento['pagamentoValorParcela/INCC'], $pagamento['pagamentoValorParcelaUnitario/IGPM']);
+            $pagamentosModel[] = $pagamentoModel;
+        }
+
+        return $pagamentosModel;
+    }
+
+    public function consultaObjetoPeloId($id) {
+        $query = "select * from Pagamentos where pagamentoId = '{$id}' ";
+
+        $resultado = parent::executaQuery($query);
+
+        if ($resultado) {
+            //consulta Ok. Continua.
+        } else {
+            parent::setMensagem("Erro no select de consultaObjetoPeloId: " . parent::getBdError());
+            return false;
+        }
+        $DatasEHoras = new DatasEHoras();
+
+        $pagamento = parent::leTabelaBD();
+        $pagamentoData = $DatasEHoras->getDataEHorasDesinvertidaComBarras($pagamento['pagamentoData']);
+        return new PagamentoModel($pagamento['pagamentoId'], $pagamento['clienteId'], $pagamento['produtoId'], $pagamento['pagamentoStatusProduto'], $pagamento['pagamentoValorTotal'], $pagamento['pagamentoParcela'], $pagamento['pagamentoValorParcela'], $pagamento['pagamentoValorParcelaUnitario'], $pagamentoData, $pagamento['pagamentoValor']);
+    }
+
+    public function consultaHistoricoPagamentoPorData($historicoPagamentoId) {
+        $pagamentoModel = null;
+        $query = "select * from Historicos_Pagamentos where historicoPagamentoId = '{$historicoPagamentoId}' ORDER BY pagamentoData";
+
+        $resultado = parent::executaQuery($query);
+        if ($resultado) {
+            //consulta Ok. Continua.
+        } else {
+            parent::setMensagem("Erro no select de consultaHistoricoPagamentoPorData: " . parent::getBdError());
+            return false;
+        }
+
+        $pagamentosModel = null;
+        $DatasEHoras = new DatasEHoras();
+
+        while ($pagamento = parent::leTabelaBD()) {
+            $pagamentoData = $DatasEHoras->getDataEHorasDesinvertidaComBarras($pagamento['pagamentoData']);
+            $pagamentoModel = array($pagamento['historicoPagamentoId'], $pagamento['clienteId'], $pagamento['produtoId'], $pagamento['pagamentoStatusProduto'], $pagamento['pagamentoValorTotal'], $pagamento['pagamentoParcela'], $pagamento['pagamentoValorParcela'], $pagamento['pagamentoValorParcelaUnitario'], $pagamentoData, $pagamento['pagamentoValor']);
+            $pagamentosModel[] = $pagamentoModel;
+        }
+
+        return $pagamentosModel;
+    }
+
+    public function consultaArrayDeObjeto() {
+        $pagamentoModel = null;
+        $query = "select * from Pagamentos";
+
+        $resultado = parent::executaQuery($query);
+        if ($resultado) {
+            //consulta Ok. Continua.
+        } else {
+            parent::setMensagem("Erro no select de consultaArrayDeObjeto: " . parent::getBdError());
+            return false;
+        }
+
+        $pagamentosModel = null;
+        $DatasEHoras = new DatasEHoras();
+
+        while ($pagamento = parent::leTabelaBD()) {
+            $pagamentoData = $DatasEHoras->getDataEHorasDesinvertidaComBarras($pagamento['pagamentoData']);
+            $pagamentoModel = new PagamentoModel($pagamento['pagamentoId'], $pagamento['clienteId'], $pagamento['produtoId'], $pagamento['pagamentoStatusProduto'], $pagamento['pagamentoValorTotal'], $pagamento['pagamentoParcela'], $pagamento['pagamentoValorParcela'], $pagamento['pagamentoValorParcelaUnitario'], $pagamentoData, $pagamento['pagamentoValor']);
+            $pagamentosModel[] = $pagamentoModel;
+        }
+
+        return $pagamentosModel;
+    }
+
+    /*
+     * Nome do Método: inserePagamento
+     * Função: Cadastrar o Pagamento
+     * Utitlizado: Ele é utilizado para cadastrar o Pagamento automaticamente quando cadastra um Produto
+     */
+
+    public function inserePagamento($cliId, $prodId, $pagStatusProd, $prodValor, $prodParcelas, $prodValorParcelas, $prodValorTotalParcelas) {
+        $clienteId = $cliId;
+        $produtoId = $prodId;
+        $pagamentoStatusProduto = $pagStatusProd;
+        $produtoValor = $prodValor;
+        $produtoParcelas = $prodParcelas . ";1";
+        $produtoValorParcela = $prodValorTotalParcelas . ";0";
+        $produtoValorParcelaUnitario = $prodValorParcelas . ";0";
+
+        $query = "insert into Pagamentos (pagamentoId, clienteId, produtoId, pagamentoStatusProduto, pagamentoValorTotal, pagamentoParcela, pagamentoValorParcela, pagamentoValorParcelaUnitario, pagamentoData, pagamentoValor) values (null, '$clienteId', '$produtoId', '$pagamentoStatusProduto', '$produtoValor', '$produtoParcelas', '$produtoValorParcela', '$produtoValorParcelaUnitario', null, null)";
+
+        $resultado = parent::executaQuery($query);
+
+        if ($resultado) {
+            return true;
+        } else {
+            parent::setMensagem("Erro no insert de inserePagamento: " . parent::getBdError());
+            return false;
+        }
+    }
+
+    /*
+     * Nome do Método: insereHistoricoDePagamento
+     * Função: Cadastrar o Historico do Pagamento cada vez que o Pagamento é alterado
+     * Utitlizado: Ele é utilizado para cadastrar o Historico do Pagamento
+     */
+
+    public function insereHistoricoDePagamento($pagamentoModel) {
+        $clienteId = $pagamentoModel->getClienteId();
+        $produtoId = $pagamentoModel->getProdutoId();
+        $pagamentoStatusProduto = $pagamentoModel->getPagamentoStatusProduto();
+        $pagamentoValorTotal = $pagamentoModel->getPagamentoValorTotal();
+        $pagamentoParcela = $pagamentoModel->getPagamentoParcela();
+        $pagamentoValorParcela = $pagamentoModel->getPagamentoValorParcela();
+        $pagamentoValorParcelaUnitario = $pagamentoModel->getPagamentoValorParcelaUnitario();
+        $pagamentoData = $pagamentoModel->getPagamentoData();
+        $pagamentoValor = $pagamentoModel->getPagamentoValor();
+        $pagamentoId = $pagamentoModel->getPagamentoId();
+
+        $query = "insert into Historicos_Pagamentos (historicoPagamentoId, clienteId, produtoId, pagamentoStatusProduto, pagamentoValorTotal, pagamentoParcela, pagamentoValorParcela, pagamentoValorParcelaUnitario, pagamentoData, pagamentoValor, pagamentoId) values (null, '$clienteId', '$produtoId', '$pagamentoStatusProduto', '$pagamentoValorTotal', '$pagamentoParcela', '$pagamentoValorParcela', '$pagamentoValorParcelaUnitario', '$pagamentoData', '$pagamentoValor', '$pagamentoId')";
+
+        $resultado = parent::executaQuery($query);
+        if ($resultado) {
+            return true;
+        } else {
+            parent::setMensagem("Erro no insert de historico de insereHistoricoDePagamento: " . parent::getBdError());
+            return false;
+        }
+    }
+
+    public function alteraPagamento(Model $pagamentoModel, $pagamentoModelBanco) {
+        $pagamentoId = $pagamentoModel->getPagamentoId();
+        $clienteId = $pagamentoModel->getClienteId();
+        $produtoId = $pagamentoModel->getProdutoId();
+        $pagamentoParcela = $pagamentoModelBanco->getPagamentoParcela();
+        $pagamentoValorParcela = $pagamentoModelBanco->getPagamentoValorParcela();
+        $pagamentoValorParcelaUnitario = $pagamentoModelBanco->getPagamentoValorParcelaUnitario();
+        $pagamentoValor = $pagamentoModel->getPagamentoValor();
+        $CPF = new CPF();
+
+        if ($pagamentoId != '-1' && $pagamentoId != NULL) {
+            $arrayParcelas = explode(";", $pagamentoParcela);
+            $arrayValorParcelas = explode(";", $pagamentoValorParcela);
+            $arrayValorParcelasUnitario = explode(";", $pagamentoValorParcelaUnitario);
+            $ultimo = count($arrayParcelas);
+
+            for ($i = 0; $i < $ultimo;) {
+                $Parcelas = $arrayParcelas[$i];
+                $ValorParcelas = $arrayValorParcelas[$i];
+                $ValorParcelasUnitario = $arrayValorParcelasUnitario[$i];
+
+                $pagamentoParcela = $Parcelas;
+                $pagValorParcela = $ValorParcelas;
+                $pagamentoValorParcela = $CPF->retiraMascaraRenda($pagValorParcela);
+                $pagValorUnitario = $ValorParcelasUnitario;
+                $pagamentoValorParcelaUnitario = $CPF->retiraMascaraRenda($pagValorUnitario);
+
+                if ($ValorParcelas == 0) {
+                    $i++;
+                } else {
+                    $ValorParcelasTotal = $pagamentoValorParcela - $pagamentoValor;
+                    $ParcelasAux = $pagamentoValor / $pagamentoValorParcelaUnitario;
+                    $Parcela = $pagamentoParcela - $ParcelasAux;
+
+                    $ValorUnitario = number_format($pagamentoValorParcelaUnitario, 2, ",", ".");
+                    $ValorTotal = number_format($ValorParcelasTotal, 2, ",", ".");
+
+                    if ($ValorTotal == 0) {
+                        $ValorUnitario = 0;
+                    }
+
+                    for ($i++; $i <= $ultimo; $i++) {
+                        $Parcelas = $arrayParcelas[$i];
+                        $ValorParcelas = $arrayValorParcelas[$i];
+                        $ValorParcelasUnitario = $arrayValorParcelasUnitario[$i];
+
+                        if ($i == $ultimo) {
+                            $Parcela .= $Parcelas;
+                            $ValorTotal .= $ValorParcelas;
+                            $ValorUnitario .= $ValorParcelasUnitario;
+                        } else {
+                            $Parcela .= ";" . $Parcelas;
+                            $ValorTotal .= ";" . $ValorParcelas;
+                            $ValorUnitario .= ";" . $ValorParcelasUnitario;
+                        }
+                    }
+
+                    $query = "update Pagamentos set clienteId = '{$clienteId}',"
+                            . " produtoId = '{$produtoId}',"
+                            . " pagamentoParcela = '{$Parcela}',"
+                            . " pagamentoValorParcela = '{$ValorTotal}',"
+                            . " pagamentoValorParcelaUnitario = '{$ValorUnitario}',"
+                            . " pagamentoValor = null"
+                            . " where pagamentoId = '{$pagamentoId}'";
+
+                    $resultado = parent::executaQuery($query);
+                    if ($resultado) {
+                        return true;
+                    } else {
+                        parent::setMensagem("Erro no insert do alteraPagamento: " . parent::getBdError());
+                        return false;
+                    }
+
+                    break;
+                }
+            }
+        }
+    }
+
+    public function excluiPagamento($id) {
+
+        if ($id == null) {
+            return true;
+        }
+
+        $query = "delete from Pagamentos where produtoId = {$id}";
+
+        $resultado = parent::executaQuery($query);
+
+        if ($resultado) {
+            return true;
+        } else {
+            parent::setMensagem("Erro no delete de pagamento: " . parent::getBdError());
+            return false;
+        }
+    }
+
+    public function excluiHistorico($produtoId, $pagamentoId) {
+
+        if ($produtoId == null && $pagamentoId == null) {
+            return true;
+        }
+
+        $query = "delete from Historicos_Pagamentos "
+                . "where produtoId = {$produtoId}";
+
+        $query2 = "delete from Historicos_Indices "
+                . "where pagamentoId = {$pagamentoId}";
+
+        $resultado = parent::executaQuery($query);
+        $resultado2 = parent::executaQuery($query2);
+
+
+        if ($resultado && $resultado2) {
+            return true;
+        } else {
+            parent::setMensagem("Erro no delete de pagamento: " . parent::getBdError());
+            return false;
+        }
+    }
+
+    public function excluiObjeto(\Model $objetoModelo) {
+        
+    }
+
+    public function insereObjeto(\Model $objetoModelo) {
+        
+    }
+
+    public function alteraObjeto(\Model $objetoModelo) {
+        
+    }
+
+}
