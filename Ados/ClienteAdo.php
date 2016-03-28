@@ -52,54 +52,54 @@ class ClienteAdo extends ADO {
         return $clientesModel;
     }
 
-    public function insereObjeto(Model $clienteModel) {
-        $clienteNome = $clienteModel->getClienteNome();
-        $clienteNacionalidade = $clienteModel->getClienteNacionalidade();
-        $clienteDataNascimento = $clienteModel->getClienteDataNascimento();
-        $clienteCPF = $clienteModel->getClienteCPF();
-        $clienteRG = $clienteModel->getClienteRG();
-        $clienteOrgaoEmissor = $clienteModel->getClienteOrgaoEmissor();
-        $clienteEstadoOrgaoEmissor = $clienteModel->getClienteEstadoOrgaoEmissor();
-        $clienteSexo = $clienteModel->getClienteSexo();
-        $clienteEstadoCivil = $clienteModel->getClienteEstadoCivil();
-        $clienteRegimeComunhao = $clienteModel->getClienteRegimeComunhao();
-        $clienteFiliacao = $clienteModel->getClienteFiliacao();
-        $clienteFiliacao2 = $clienteModel->getClienteFiliacao2();
-        $clienteTelefone = $clienteModel->getClienteTelefone();
-        $clienteTelefone2 = $clienteModel->getClienteTelefone2();
-        $clienteEndereco = $clienteModel->getClienteEndereco();
-        $clienteCidade = $clienteModel->getClienteCidade();
-        $clienteEstado = $clienteModel->getClienteEstado();
-        $clienteCEP = $clienteModel->getClienteCEP();
-        $clienteEmail = $clienteModel->getClienteEmail();
-        $clienteProfissao = $clienteModel->getClienteProfissao();
-        $clienteRenda = $clienteModel->getClienteRenda();
-        $clienteEmpresa = $clienteModel->getClienteEmpresa();
-        $clienteCargo = $clienteModel->getClienteCargo();
-        $clienteCppStatus = $clienteModel->getClienteCppStatus();
-        $clienteCppNome = $clienteModel->getClienteCppNome();
-        $clienteCppNacionalidade = $clienteModel->getClienteCppNacionalidade();
-        $clienteCppDataNascimento = $clienteModel->getClienteCppDataNascimento();
-        $clienteCppCPF = $clienteModel->getClienteCppCPF();
-        $clienteCppRG = $clienteModel->getClienteCppRG();
-        $clienteCppOrgaoEmissor = $clienteModel->getClienteCppOrgaoEmissor();
-        $clienteCppEstadoOrgaoEmissor = $clienteModel->getClienteCppEstadoOrgaoEmissor();
-        $clienteCppSexo = $clienteModel->getClienteCppSexo();
-        $clienteCppEstadoCivil = $clienteModel->getClienteCppEstadoCivil();
-        $clienteCppRegimeComunhao = $clienteModel->getClienteCppRegimeComunhao();
-        $clienteCppFiliacao = $clienteModel->getClienteCppFiliacao();
-        $clienteCppFiliacao2 = $clienteModel->getClienteCppFiliacao2();
-        $clienteCppTelefone = $clienteModel->getClienteCppTelefone();
-        $clienteCppTelefone2 = $clienteModel->getClienteCppTelefone2();
-        $clienteCppEndereco = $clienteModel->getClienteCppEndereco();
-        $clienteCppCidade = $clienteModel->getClienteCppCidade();
-        $clienteCppEstado = $clienteModel->getClienteCppEstado();
-        $clienteCppCEP = $clienteModel->getClienteCppCEP();
-        $clienteCppEmail = $clienteModel->getClienteCppEmail();
-        $clienteCppProfissao = $clienteModel->getClienteCppProfissao();
-        $clienteCppRenda = $clienteModel->getClienteCppRenda();
-        $clienteCppEmpresa = $clienteModel->getClienteCppEmpresa();
-        $clienteCppCargo = $clienteModel->getClienteCppCargo();
+    public function insereObjeto(Model $ClienteModel) {
+        $clienteNome = $ClienteModel->getClienteNome();
+        $clienteNacionalidade = $ClienteModel->getClienteNacionalidade();
+        $clienteDataNascimento = $ClienteModel->getClienteDataNascimento();
+        $clienteCPF = $ClienteModel->getClienteCPF();
+        $clienteRG = $ClienteModel->getClienteRG();
+        $clienteOrgaoEmissor = $ClienteModel->getClienteOrgaoEmissor();
+        $clienteEstadoOrgaoEmissor = $ClienteModel->getClienteEstadoOrgaoEmissor();
+        $clienteSexo = $ClienteModel->getClienteSexo();
+        $clienteEstadoCivil = $ClienteModel->getClienteEstadoCivil();
+        $clienteRegimeComunhao = $ClienteModel->getClienteRegimeComunhao();
+        $clienteFiliacao = $ClienteModel->getClienteFiliacao();
+        $clienteFiliacao2 = $ClienteModel->getClienteFiliacao2();
+        $clienteTelefone = $ClienteModel->getClienteTelefone();
+        $clienteTelefone2 = $ClienteModel->getClienteTelefone2();
+        $clienteEndereco = $ClienteModel->getClienteEndereco();
+        $clienteCidade = $ClienteModel->getClienteCidade();
+        $clienteEstado = $ClienteModel->getClienteEstado();
+        $clienteCEP = $ClienteModel->getClienteCEP();
+        $clienteEmail = $ClienteModel->getClienteEmail();
+        $clienteProfissao = $ClienteModel->getClienteProfissao();
+        $clienteRenda = $ClienteModel->getClienteRenda();
+        $clienteEmpresa = $ClienteModel->getClienteEmpresa();
+        $clienteCargo = $ClienteModel->getClienteCargo();
+        $clienteCppStatus = $ClienteModel->getClienteCppStatus();
+        $clienteCppNome = $ClienteModel->getClienteCppNome();
+        $clienteCppNacionalidade = $ClienteModel->getClienteCppNacionalidade();
+        $clienteCppDataNascimento = $ClienteModel->getClienteCppDataNascimento();
+        $clienteCppCPF = $ClienteModel->getClienteCppCPF();
+        $clienteCppRG = $ClienteModel->getClienteCppRG();
+        $clienteCppOrgaoEmissor = $ClienteModel->getClienteCppOrgaoEmissor();
+        $clienteCppEstadoOrgaoEmissor = $ClienteModel->getClienteCppEstadoOrgaoEmissor();
+        $clienteCppSexo = $ClienteModel->getClienteCppSexo();
+        $clienteCppEstadoCivil = $ClienteModel->getClienteCppEstadoCivil();
+        $clienteCppRegimeComunhao = $ClienteModel->getClienteCppRegimeComunhao();
+        $clienteCppFiliacao = $ClienteModel->getClienteCppFiliacao();
+        $clienteCppFiliacao2 = $ClienteModel->getClienteCppFiliacao2();
+        $clienteCppTelefone = $ClienteModel->getClienteCppTelefone();
+        $clienteCppTelefone2 = $ClienteModel->getClienteCppTelefone2();
+        $clienteCppEndereco = $ClienteModel->getClienteCppEndereco();
+        $clienteCppCidade = $ClienteModel->getClienteCppCidade();
+        $clienteCppEstado = $ClienteModel->getClienteCppEstado();
+        $clienteCppCEP = $ClienteModel->getClienteCppCEP();
+        $clienteCppEmail = $ClienteModel->getClienteCppEmail();
+        $clienteCppProfissao = $ClienteModel->getClienteCppProfissao();
+        $clienteCppRenda = $ClienteModel->getClienteCppRenda();
+        $clienteCppEmpresa = $ClienteModel->getClienteCppEmpresa();
+        $clienteCppCargo = $ClienteModel->getClienteCppCargo();
 
         $query = "insert into Clientes (clienteId, clienteNome, clienteNacionalidade, clienteDataNascimento,"
                 . " clienteCPF, clienteRG, clienteOrgaoEmissor, clienteEstadoOrgaoEmissor,"
@@ -130,55 +130,55 @@ class ClienteAdo extends ADO {
         }
     }
 
-    public function alteraObjeto(Model $clienteModel) {
-        $clienteId = $clienteModel->getClienteId();
-        $clienteNome = $clienteModel->getClienteNome();
-        $clienteNacionalidade = $clienteModel->getClienteNacionalidade();
-        $clienteDataNascimento = $clienteModel->getClienteDataNascimento();
-        $clienteCPF = $clienteModel->getClienteCPF();
-        $clienteRG = $clienteModel->getClienteRG();
-        $clienteOrgaoEmissor = $clienteModel->getClienteOrgaoEmissor();
-        $clienteEstadoOrgaoEmissor = $clienteModel->getClienteEstadoOrgaoEmissor();
-        $clienteSexo = $clienteModel->getClienteSexo();
-        $clienteEstadoCivil = $clienteModel->getClienteEstadoCivil();
-        $clienteRegimeComunhao = $clienteModel->getClienteRegimeComunhao();
-        $clienteFiliacao = $clienteModel->getClienteFiliacao();
-        $clienteFiliacao2 = $clienteModel->getClienteFiliacao2();
-        $clienteTelefone = $clienteModel->getClienteTelefone();
-        $clienteTelefone2 = $clienteModel->getClienteTelefone2();
-        $clienteEndereco = $clienteModel->getClienteEndereco();
-        $clienteCidade = $clienteModel->getClienteCidade();
-        $clienteEstado = $clienteModel->getClienteEstado();
-        $clienteCEP = $clienteModel->getClienteCEP();
-        $clienteEmail = $clienteModel->getClienteEmail();
-        $clienteProfissao = $clienteModel->getClienteProfissao();
-        $clienteRenda = $clienteModel->getClienteRenda();
-        $clienteEmpresa = $clienteModel->getClienteEmpresa();
-        $clienteCargo = $clienteModel->getClienteCargo();
-        $clienteCppStatus = $clienteModel->getClienteCppStatus();
-        $clienteCppNome = $clienteModel->getClienteCppNome();
-        $clienteCppNacionalidade = $clienteModel->getClienteCppNacionalidade();
-        $clienteCppDataNascimento = $clienteModel->getClienteCppDataNascimento();
-        $clienteCppCPF = $clienteModel->getClienteCppCPF();
-        $clienteCppRG = $clienteModel->getClienteCppRG();
-        $clienteCppOrgaoEmissor = $clienteModel->getClienteCppOrgaoEmissor();
-        $clienteCppEstadoOrgaoEmissor = $clienteModel->getClienteCppEstadoOrgaoEmissor();
-        $clienteCppSexo = $clienteModel->getClienteCppSexo();
-        $clienteCppEstadoCivil = $clienteModel->getClienteCppEstadoCivil();
-        $clienteCppRegimeComunhao = $clienteModel->getClienteCppRegimeComunhao();
-        $clienteCppFiliacao = $clienteModel->getClienteCppFiliacao();
-        $clienteCppFiliacao2 = $clienteModel->getClienteCppFiliacao2();
-        $clienteCppTelefone = $clienteModel->getClienteCppTelefone();
-        $clienteCppTelefone2 = $clienteModel->getClienteCppTelefone2();
-        $clienteCppEndereco = $clienteModel->getClienteCppEndereco();
-        $clienteCppCidade = $clienteModel->getClienteCppCidade();
-        $clienteCppEstado = $clienteModel->getClienteCppEstado();
-        $clienteCppCEP = $clienteModel->getClienteCppCEP();
-        $clienteCppEmail = $clienteModel->getClienteCppEmail();
-        $clienteCppProfissao = $clienteModel->getClienteCppProfissao();
-        $clienteCppRenda = $clienteModel->getClienteCppRenda();
-        $clienteCppEmpresa = $clienteModel->getClienteCppEmpresa();
-        $clienteCppCargo = $clienteModel->getClienteCppCargo();
+    public function alteraObjeto(Model $ClienteModel) {
+        $clienteId = $ClienteModel->getClienteId();
+        $clienteNome = $ClienteModel->getClienteNome();
+        $clienteNacionalidade = $ClienteModel->getClienteNacionalidade();
+        $clienteDataNascimento = $ClienteModel->getClienteDataNascimento();
+        $clienteCPF = $ClienteModel->getClienteCPF();
+        $clienteRG = $ClienteModel->getClienteRG();
+        $clienteOrgaoEmissor = $ClienteModel->getClienteOrgaoEmissor();
+        $clienteEstadoOrgaoEmissor = $ClienteModel->getClienteEstadoOrgaoEmissor();
+        $clienteSexo = $ClienteModel->getClienteSexo();
+        $clienteEstadoCivil = $ClienteModel->getClienteEstadoCivil();
+        $clienteRegimeComunhao = $ClienteModel->getClienteRegimeComunhao();
+        $clienteFiliacao = $ClienteModel->getClienteFiliacao();
+        $clienteFiliacao2 = $ClienteModel->getClienteFiliacao2();
+        $clienteTelefone = $ClienteModel->getClienteTelefone();
+        $clienteTelefone2 = $ClienteModel->getClienteTelefone2();
+        $clienteEndereco = $ClienteModel->getClienteEndereco();
+        $clienteCidade = $ClienteModel->getClienteCidade();
+        $clienteEstado = $ClienteModel->getClienteEstado();
+        $clienteCEP = $ClienteModel->getClienteCEP();
+        $clienteEmail = $ClienteModel->getClienteEmail();
+        $clienteProfissao = $ClienteModel->getClienteProfissao();
+        $clienteRenda = $ClienteModel->getClienteRenda();
+        $clienteEmpresa = $ClienteModel->getClienteEmpresa();
+        $clienteCargo = $ClienteModel->getClienteCargo();
+        $clienteCppStatus = $ClienteModel->getClienteCppStatus();
+        $clienteCppNome = $ClienteModel->getClienteCppNome();
+        $clienteCppNacionalidade = $ClienteModel->getClienteCppNacionalidade();
+        $clienteCppDataNascimento = $ClienteModel->getClienteCppDataNascimento();
+        $clienteCppCPF = $ClienteModel->getClienteCppCPF();
+        $clienteCppRG = $ClienteModel->getClienteCppRG();
+        $clienteCppOrgaoEmissor = $ClienteModel->getClienteCppOrgaoEmissor();
+        $clienteCppEstadoOrgaoEmissor = $ClienteModel->getClienteCppEstadoOrgaoEmissor();
+        $clienteCppSexo = $ClienteModel->getClienteCppSexo();
+        $clienteCppEstadoCivil = $ClienteModel->getClienteCppEstadoCivil();
+        $clienteCppRegimeComunhao = $ClienteModel->getClienteCppRegimeComunhao();
+        $clienteCppFiliacao = $ClienteModel->getClienteCppFiliacao();
+        $clienteCppFiliacao2 = $ClienteModel->getClienteCppFiliacao2();
+        $clienteCppTelefone = $ClienteModel->getClienteCppTelefone();
+        $clienteCppTelefone2 = $ClienteModel->getClienteCppTelefone2();
+        $clienteCppEndereco = $ClienteModel->getClienteCppEndereco();
+        $clienteCppCidade = $ClienteModel->getClienteCppCidade();
+        $clienteCppEstado = $ClienteModel->getClienteCppEstado();
+        $clienteCppCEP = $ClienteModel->getClienteCppCEP();
+        $clienteCppEmail = $ClienteModel->getClienteCppEmail();
+        $clienteCppProfissao = $ClienteModel->getClienteCppProfissao();
+        $clienteCppRenda = $ClienteModel->getClienteCppRenda();
+        $clienteCppEmpresa = $ClienteModel->getClienteCppEmpresa();
+        $clienteCppCargo = $ClienteModel->getClienteCppCargo();
 
         $query = "update Clientes set clienteNome = '{$clienteNome}',"
                 . " clienteNacionalidade = '{$clienteNacionalidade}',"
@@ -238,8 +238,8 @@ class ClienteAdo extends ADO {
         }
     }
 
-    public function excluiObjeto(Model $clienteModel) {
-        $clienteId = $clienteModel->getClienteId();
+    public function excluiObjeto(Model $ClienteModel) {
+        $clienteId = $ClienteModel->getClienteId();
         $query = "delete from Clientes "
                 . "where clienteId = {$clienteId}";
 

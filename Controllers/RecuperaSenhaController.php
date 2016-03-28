@@ -14,8 +14,6 @@ class RecuperaSenhaController {
     private $novaSenha = null;
 
     public function __construct() {
-        //session_destroy(); //só por garantia
-
         $this->RecuperaSenhaView = new RecuperaSenhaView();
         $acao = $this->RecuperaSenhaView->getAcao();
 

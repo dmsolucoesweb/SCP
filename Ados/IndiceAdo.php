@@ -95,11 +95,11 @@ class IndiceAdo extends ADO {
         return $indicesModel;
     }
 
-    public function insereObjeto(\Model $indiceModel) {
-        $indiceInccValor = $indiceModel->getIndiceInccValor();
-        $indiceIgpmValor = $indiceModel->getIndiceIgpmValor();
-        $indiceData = $indiceModel->getIndiceData();
-        $usuarioId = $indiceModel->getUsuarioId();
+    public function insereObjeto(\Model $IndiceModel) {
+        $indiceInccValor = $IndiceModel->getIndiceInccValor();
+        $indiceIgpmValor = $IndiceModel->getIndiceIgpmValor();
+        $indiceData = $IndiceModel->getIndiceData();
+        $usuarioId = $IndiceModel->getUsuarioId();
         $incc = $indiceInccValor / 100;
         $igpm = ($indiceIgpmValor + 1) / 100;
 
@@ -129,7 +129,7 @@ class IndiceAdo extends ADO {
         $pagamentoAdo = new PagamentoAdo();
         $arrayDePagamentos = $pagamentoAdo->consultaArrayDeObjeto();
         $ValorParcelas = $ValorParcelasUnitarias = $parcelasIrreajustavel = $Irreajustavel = null;
-        $produtoAdo = new ProdutoAdo();
+        $ProdutoAdo = new ProdutoAdo();
         $CPF = new CPF();
 
         if (is_array($arrayDePagamentos)) {
@@ -140,7 +140,7 @@ class IndiceAdo extends ADO {
                 $pagamentoId = $pagamentoModel->getPagamentoId();
                 $produtoId = $pagamentoModel->getProdutoId();
                 $pagamentoStatusProduto = $pagamentoModel->getPagamentoStatusProduto();
-                $Produto = $produtoAdo->consultaObjetoPeloId($produtoId);
+                $Produto = $ProdutoAdo->consultaObjetoPeloId($produtoId);
                 $pagamentoAtualizacaoMonetaria = $Produto->getProdutoParcelasAtualizacaoMonetaria();
                 $pagamentoValorParcela = $pagamentoModel->getPagamentoValorParcela();
                 $pagamentoValorParcelaUnitario = $pagamentoModel->getPagamentoValorParcelaUnitario();
@@ -214,12 +214,12 @@ class IndiceAdo extends ADO {
         }
     }
 
-    public function alteraObjeto(\Model $indiceModel) {
+    public function alteraObjeto(\Model $IndiceModel) {
         
     }
 
-    public function excluiObjeto(\Model $indiceModel) {
-        $indiceId = $indiceModel->getIndiceId();
+    public function excluiObjeto(\Model $IndiceModel) {
+        $indiceId = $IndiceModel->getIndiceId();
         $query = "delete from Indices "
                 . "where indiceId = {$indiceId}";
 

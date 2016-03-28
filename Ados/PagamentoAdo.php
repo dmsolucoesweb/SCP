@@ -170,17 +170,17 @@ class PagamentoAdo extends ADO {
      * Utitlizado: Ele é utilizado para cadastrar o Historico do Pagamento
      */
 
-    public function insereHistoricoDePagamento($pagamentoModel) {
-        $clienteId = $pagamentoModel->getClienteId();
-        $produtoId = $pagamentoModel->getProdutoId();
-        $pagamentoStatusProduto = $pagamentoModel->getPagamentoStatusProduto();
-        $pagamentoValorTotal = $pagamentoModel->getPagamentoValorTotal();
-        $pagamentoParcela = $pagamentoModel->getPagamentoParcela();
-        $pagamentoValorParcela = $pagamentoModel->getPagamentoValorParcela();
-        $pagamentoValorParcelaUnitario = $pagamentoModel->getPagamentoValorParcelaUnitario();
-        $pagamentoData = $pagamentoModel->getPagamentoData();
-        $pagamentoValor = $pagamentoModel->getPagamentoValor();
-        $pagamentoId = $pagamentoModel->getPagamentoId();
+    public function insereHistoricoDePagamento($PagamentoModel) {
+        $clienteId = $PagamentoModel->getClienteId();
+        $produtoId = $PagamentoModel->getProdutoId();
+        $pagamentoStatusProduto = $PagamentoModel->getPagamentoStatusProduto();
+        $pagamentoValorTotal = $PagamentoModel->getPagamentoValorTotal();
+        $pagamentoParcela = $PagamentoModel->getPagamentoParcela();
+        $pagamentoValorParcela = $PagamentoModel->getPagamentoValorParcela();
+        $pagamentoValorParcelaUnitario = $PagamentoModel->getPagamentoValorParcelaUnitario();
+        $pagamentoData = $PagamentoModel->getPagamentoData();
+        $pagamentoValor = $PagamentoModel->getPagamentoValor();
+        $pagamentoId = $PagamentoModel->getPagamentoId();
 
         $query = "insert into Historicos_Pagamentos (historicoPagamentoId, clienteId, produtoId, pagamentoStatusProduto, pagamentoValorTotal, pagamentoParcela, pagamentoValorParcela, pagamentoValorParcelaUnitario, pagamentoData, pagamentoValor, pagamentoId) values (null, '$clienteId', '$produtoId', '$pagamentoStatusProduto', '$pagamentoValorTotal', '$pagamentoParcela', '$pagamentoValorParcela', '$pagamentoValorParcelaUnitario', '$pagamentoData', '$pagamentoValor', '$pagamentoId')";
 
@@ -193,14 +193,14 @@ class PagamentoAdo extends ADO {
         }
     }
 
-    public function alteraPagamento(Model $pagamentoModel, $pagamentoModelBanco) {
-        $pagamentoId = $pagamentoModel->getPagamentoId();
-        $clienteId = $pagamentoModel->getClienteId();
-        $produtoId = $pagamentoModel->getProdutoId();
-        $pagamentoParcela = $pagamentoModelBanco->getPagamentoParcela();
-        $pagamentoValorParcela = $pagamentoModelBanco->getPagamentoValorParcela();
-        $pagamentoValorParcelaUnitario = $pagamentoModelBanco->getPagamentoValorParcelaUnitario();
-        $pagamentoValor = $pagamentoModel->getPagamentoValor();
+    public function alteraPagamento(Model $PagamentoModel, $PagamentoModelBanco) {
+        $pagamentoId = $PagamentoModel->getPagamentoId();
+        $clienteId = $PagamentoModel->getClienteId();
+        $produtoId = $PagamentoModel->getProdutoId();
+        $pagamentoParcela = $PagamentoModelBanco->getPagamentoParcela();
+        $pagamentoValorParcela = $PagamentoModelBanco->getPagamentoValorParcela();
+        $pagamentoValorParcelaUnitario = $PagamentoModelBanco->getPagamentoValorParcelaUnitario();
+        $pagamentoValor = $PagamentoModel->getPagamentoValor();
         $CPF = new CPF();
 
         if ($pagamentoId != '-1' && $pagamentoId != NULL) {

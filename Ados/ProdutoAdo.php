@@ -98,26 +98,26 @@ class ProdutoAdo extends ADO {
         return $produtosModel;
     }
 
-    public function insereObjeto(Model $produtoModel) {
-        $produtoApartamento = $produtoModel->getProdutoApartamento();
-        $produtoBox = $produtoModel->getProdutoBox();
-        $produtoValor = $produtoModel->getProdutoValor();
-        $produtoDataVenda = $produtoModel->getProdutoDataVenda();
-        $produtoStatus = $produtoModel->getProdutoStatus();
-        $produtoParcelas = $produtoModel->getProdutoParcelas();
-        $produtoParcelasPeriodicidade = $produtoModel->getProdutoParcelasPeriodicidade();
-        $produtoParcelasDataVencimento = $produtoModel->getProdutoParcelasDataVencimento();
-        $produtoParcelasValorUnitario = $produtoModel->getProdutoParcelasValorUnitario() . ';0';
-        $produtoParcelasValorTotal = $produtoModel->getProdutoParcelasValorTotal() . ';0';
-        $produtoParcelasAtualizacaoMonetaria = $produtoModel->getProdutoParcelasAtualizacaoMonetaria();
-        $produtoParcelasFormaPagamento = $produtoModel->getProdutoParcelasFormaPagamento();
-        $produtoParcelasObservacoes = $produtoModel->getProdutoParcelasObservacoes();
-        $clienteId = $produtoModel->getClienteId();
-        $vendedorId = $produtoModel->getVendedorId();
-        $vendedorDataVencimento = $produtoModel->getVendedorDataVencimento();
-        $vendedorComissao = $produtoModel->getVendedorComissao();
-        $vendedorFormaPagamento = $produtoModel->getVendedorFormaPagamento();
-        $vendedorObservacao = $produtoModel->getVendedorObservacao();
+    public function insereObjeto(Model $ProdutoModel) {
+        $produtoApartamento = $ProdutoModel->getProdutoApartamento();
+        $produtoBox = $ProdutoModel->getProdutoBox();
+        $produtoValor = $ProdutoModel->getProdutoValor();
+        $produtoDataVenda = $ProdutoModel->getProdutoDataVenda();
+        $produtoStatus = $ProdutoModel->getProdutoStatus();
+        $produtoParcelas = $ProdutoModel->getProdutoParcelas();
+        $produtoParcelasPeriodicidade = $ProdutoModel->getProdutoParcelasPeriodicidade();
+        $produtoParcelasDataVencimento = $ProdutoModel->getProdutoParcelasDataVencimento();
+        $produtoParcelasValorUnitario = $ProdutoModel->getProdutoParcelasValorUnitario() . ';0';
+        $produtoParcelasValorTotal = $ProdutoModel->getProdutoParcelasValorTotal() . ';0';
+        $produtoParcelasAtualizacaoMonetaria = $ProdutoModel->getProdutoParcelasAtualizacaoMonetaria();
+        $produtoParcelasFormaPagamento = $ProdutoModel->getProdutoParcelasFormaPagamento();
+        $produtoParcelasObservacoes = $ProdutoModel->getProdutoParcelasObservacoes();
+        $clienteId = $ProdutoModel->getClienteId();
+        $vendedorId = $ProdutoModel->getVendedorId();
+        $vendedorDataVencimento = $ProdutoModel->getVendedorDataVencimento();
+        $vendedorComissao = $ProdutoModel->getVendedorComissao();
+        $vendedorFormaPagamento = $ProdutoModel->getVendedorFormaPagamento();
+        $vendedorObservacao = $ProdutoModel->getVendedorObservacao();
 
         $query = "insert into Produtos (produtoId, produtoApartamento, produtoBox, produtoValor, produtoDataVenda, produtoStatus, produtoParcelas, produtoParcelasPeriodicidade, produtoParcelasDataVencimento, produtoParcelasValorUnitario, produtoParcelasValorTotal, produtoParcelasAtualizacaoMonetaria, produtoParcelasFormaPagamento, produtoParcelasObservacoes, clienteId, vendedorId, vendedorDataVencimento, vendedorComissao, vendedorFormaPagamento, vendedorObservacao) values (null, '$produtoApartamento', '$produtoBox','$produtoValor', '$produtoDataVenda', '$produtoStatus', '$produtoParcelas', '$produtoParcelasPeriodicidade', '$produtoParcelasDataVencimento', '$produtoParcelasValorUnitario', '$produtoParcelasValorTotal', '$produtoParcelasAtualizacaoMonetaria', '$produtoParcelasFormaPagamento', '$produtoParcelasObservacoes', '$clienteId', '$vendedorId', '$vendedorDataVencimento', '$vendedorComissao', '$vendedorFormaPagamento', '$vendedorObservacao')";
 
@@ -130,9 +130,9 @@ class ProdutoAdo extends ADO {
         }
     }
 
-    public function alteraObjeto(Model $produtoModel) {
-        $produtoId = $produtoModel->getProdutoId();
-        $produtoStatus = $produtoModel->getProdutoStatus();
+    public function alteraObjeto(Model $ProdutoModel) {
+        $produtoId = $ProdutoModel->getProdutoId();
+        $produtoStatus = $ProdutoModel->getProdutoStatus();
 
         $query = "update Produtos set produtoStatus = '{$produtoStatus}'"
                 . " where produtoId = '{$produtoId}'";
@@ -151,8 +151,8 @@ class ProdutoAdo extends ADO {
         }
     }
 
-    public function excluiObjeto(Model $produtoModel) {
-        $produtoId = $produtoModel->getProdutoId();
+    public function excluiObjeto(Model $ProdutoModel) {
+        $produtoId = $ProdutoModel->getProdutoId();
 
         $query = "delete from Produtos "
                 . "where produtoId = {$produtoId}";

@@ -7,16 +7,16 @@ require_once '../PDF/RelatorioPagamentos.php';
 
 class PagamentoController {
 
-    private $pagamentoAdo = null;
-    private $pagamentoModel = null;
-    private $pagamentoView = null;
+    private $PagamentoAdo = null;
+    private $PagamentoModel = null;
+    private $PagamentoView = null;
 
     public function __construct() {
-        $this->pagamentoView = new PagamentoView();
-        $this->pagamentoModel = new PagamentoModel();
-        $this->pagamentoAdo = new PagamentoAdo();
+        $this->PagamentoView = new PagamentoView();
+        $this->PagamentoModel = new PagamentoModel();
+        $this->PagamentoAdo = new PagamentoAdo();
 
-        $acao = $this->pagamentoView->getAcao();
+        $acao = $this->PagamentoView->getAcao();
 
         switch ($acao) {
             case 'nov':
@@ -45,20 +45,20 @@ class PagamentoController {
                 break;
 
             default:
-                $this->pagamentoModel = new PagamentoModel();
+                $this->PagamentoModel = new PagamentoModel();
                 break;
         }
 
-        $this->pagamentoView->displayInterface($this->pagamentoModel);
+        $this->PagamentoView->displayInterface($this->PagamentoModel);
     }
 
     function novoPagamento() {
-        $this->pagamentoModel = new PagamentoModel();
+        $this->PagamentoModel = new PagamentoModel();
     }
 
     function incluiPagamento() {
-        $this->pagamentoModel = $this->pagamentoView->getDadosEntrada();
-        $id = $this->pagamentoModel->getPagamentoId();
+        $this->PagamentoModel = $this->PagamentoView->getDadosEntrada();
+        $id = $this->PagamentoModel->getPagamentoId();
 
         $PagamentoAdo = new PagamentoAdo();
         $ClienteAdo = new ClienteAdo();
@@ -67,39 +67,39 @@ class PagamentoController {
 
         $pagamentoClienteNome = $ClienteModel->getClienteNome();
 
-        if ($this->pagamentoModel->checaAtributos()) {
+        if ($this->PagamentoModel->checaAtributos()) {
 
-            if ($this->pagamentoAdo->alteraPagamento($this->pagamentoModel, $PagamentoModel) && $this->pagamentoAdo->insereHistoricoDePagamento($this->pagamentoModel)) {
-                $this->pagamentoView->adicionaMensagemSucesso("O Pagamento do Cliente: " . $pagamentoClienteNome . "foi efetuado com sucesso! ");
-                $this->pagamentoModel = new PagamentoModel();
+            if ($this->PagamentoAdo->alteraPagamento($this->PagamentoModel, $PagamentoModel) && $this->PagamentoAdo->insereHistoricoDePagamento($this->PagamentoModel)) {
+                $this->PagamentoView->adicionaMensagemSucesso("O Pagamento do Cliente: " . $pagamentoClienteNome . "foi efetuado com sucesso! ");
+                $this->PagamentoModel = new PagamentoModel();
             } else {
-                $this->pagamentoView->adicionaMensagemErro("O Pagamento do Cliente: " . $pagamentoClienteNome . " não foi efetuado com sucesso! ");
+                $this->PagamentoView->adicionaMensagemErro("O Pagamento do Cliente: " . $pagamentoClienteNome . " não foi efetuado com sucesso! ");
             }
         } else {
-            $this->pagamentoView->adicionaMensagemAlerta($this->pagamentoModel->getMensagem(), "Erro");
+            $this->PagamentoView->adicionaMensagemAlerta($this->PagamentoModel->getMensagem(), "Erro");
         }
     }
 
     function consultaPagamento() {
-        $pagamentoId = $this->pagamentoView->getIdConsulta();
+        $pagamentoId = $this->PagamentoView->getIdConsulta();
 
         if ($pagamentoId == '-1') {
-            $this->pagamentoView->adicionaMensagemAlerta("Escolha um pagamento para consulta.");
+            $this->PagamentoView->adicionaMensagemAlerta("Escolha um pagamento para consulta.");
             return;
         }
 
-        if ($pagamentoModel = $this->pagamentoAdo->consultaObjetoPeloId($pagamentoId)) {
-            $this->pagamentoModel = $pagamentoModel;
+        if ($pagamentoModel = $this->PagamentoAdo->consultaObjetoPeloId($pagamentoId)) {
+            $this->PagamentoModel = $pagamentoModel;
         } else {
-            $this->pagamentoView->adicionaMensagemErro("Erro na consulta!");
-            $this->pagamentoView->adicionaMensagemErro($this->pagamentoAdo->getMensagem());
-            $this->pagamentoModel = new PagamentoModel();
+            $this->PagamentoView->adicionaMensagemErro("Erro na consulta!");
+            $this->PagamentoView->adicionaMensagemErro($this->PagamentoAdo->getMensagem());
+            $this->PagamentoModel = new PagamentoModel();
         }
     }
 
     function emitirRelatorio() {
         $EmitirRelatorio = new RelatorioPagamentos();
-        $pagamentoId = $this->pagamentoView->getIdConsulta();
+        $pagamentoId = $this->PagamentoView->getIdConsulta();
 
         if ($pagamentoId == '-1' || $pagamentoId == null) {
             $EmitirRelatorio->EmitirRelatorioPagamentos();

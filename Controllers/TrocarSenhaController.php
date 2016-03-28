@@ -5,15 +5,16 @@ require_once '../Ados/UsuarioLoginAdo.php';
 
 class TrocarSenhaController {
 
-    private $trocarSenhaView = null;
+    private $TrocarSenhaView = null;
     private $usuarioLoginSenhaAn = null;
     private $usuarioLoginSenhaAt = null;
     private $usuarioLoginSenhaCf = null;
 
     public function __construct() {
 
-        $this->trocarSenhaView = new TrocarSenhaView();
-        $acao = $this->trocarSenhaView->getAcao();
+        $this->TrocarSenhaView = new TrocarSenhaView();
+
+        $acao = $this->TrocarSenhaView->getAcao();
 
         switch ($acao) {
             case "Trocar" :
@@ -21,7 +22,7 @@ class TrocarSenhaController {
                 break;
         }
 
-        $this->trocarSenhaView->displayInterface($this->usuarioLoginSenhaAn, $this->usuarioLoginSenhaAt, $this->usuarioLoginSenhaCf);
+        $this->TrocarSenhaView->displayInterface($this->usuarioLoginSenhaAn, $this->usuarioLoginSenhaAt, $this->usuarioLoginSenhaCf);
     }
 
     function trocarSenha() {
@@ -61,12 +62,12 @@ class TrocarSenhaController {
                     return false;
                 }
 
-                $this->trocarSenhaView->adicionaMensagemSucesso("Senha alterada com sucesso!");
+                $this->TrocarSenhaView->adicionaMensagemSucesso("Senha alterada com sucesso!");
                 $this->usuarioLoginSenhaAn = null;
                 $this->usuarioLoginSenhaAt = null;
                 $this->usuarioLoginSenhaACf = null;
             } else {
-                $this->trocarSenhaView->adicionaMensagemErro("Erro ao tentar ao trocar a senha!");
+                $this->TrocarSenhaView->adicionaMensagemErro("Erro ao tentar ao trocar a senha!");
                 $this->usuarioLoginSenhaAn = null;
                 $this->usuarioLoginSenhaAt = null;
                 $this->usuarioLoginSenhaACf = null;
