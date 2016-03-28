@@ -11,6 +11,7 @@ class LoginController {
     private $LoginModel = null;
 
     public function __construct() {
+
         $this->LoginView = new LoginView();
         $this->LoginModel = new LoginModel();
 
@@ -30,20 +31,6 @@ class LoginController {
     function Loga() {
         $LoginModel = $this->LoginView->getDadosEntrada();
 
-        if (!isset($_SESSION)) {
-            session_start();
-        }
-
-        // Verifica se não há a variável da sessão que identifica o usuário
-        if (isset($_SESSION['usuarioLoginId'])) {
-            // Destrói a sessão por segurança
-            session_destroy();
-            // Redireciona o visitante de volta pro login
-            header("Location: ../index.php");
-            exit;
-        }
-
-        //include('../Login/connect_pdo.php');
         $ConexaoBancoDeDados = new ConexaoBancoDeDados();
         $ConexaoBancoDeDados->connect_pdo();
 

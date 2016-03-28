@@ -25,7 +25,6 @@ class LoginView extends HtmlGeralLogin {
         $htmlFieldsetSenha = array("label" => "Senha", "classelb" => "col-sm-3", "type" => "password", "classefg" => "col-sm-9", "name" => "senha", "value" => $senha, "placeholder" => null, "disabled" => 0);
         $fieldsetSenha = $montahtml->montaInput($htmlFieldsetSenha);
 
-
         $dados .= "<div class='container'>
 
     <div class='row'>
