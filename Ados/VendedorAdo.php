@@ -13,7 +13,7 @@ class VendedorAdo extends ADO {
         if ($resultado) {
             //consulta Ok. Continua.
         } else {
-            parent::setMensagem("Erro no select de vendedor: " . parent::getBdError());
+            parent::setMensagem("Erro no select de consultaObjetoPeloId: " . parent::getBdError());
             return false;
         }
         $DatasEHoras = new DatasEHoras();
@@ -31,7 +31,7 @@ class VendedorAdo extends ADO {
         if ($resultado) {
             //consulta Ok. Continua.
         } else {
-            parent::setMensagem("Erro no select de vendedores: " . parent::getBdError());
+            parent::setMensagem("Erro no select de consultaArrayDeObjeto: " . parent::getBdError());
             return false;
         }
 
@@ -47,7 +47,7 @@ class VendedorAdo extends ADO {
         return $vendedoresModel;
     }
 
-    public function consultaArrayDeObjeto1() {
+    public function consultaVendedoresComIdMaiorQueUm() {
         $vendedorModel = null;
         $query = "select * from Vendedores where vendedorId > 1 order by vendedorNome";
 
@@ -55,7 +55,7 @@ class VendedorAdo extends ADO {
         if ($resultado) {
             //consulta Ok. Continua.
         } else {
-            parent::setMensagem("Erro no select de vendedores: " . parent::getBdError());
+            parent::setMensagem("Erro no select de consultaVendedoresComIdMaiorQueUm: " . parent::getBdError());
             return false;
         }
 
@@ -110,7 +110,7 @@ class VendedorAdo extends ADO {
         if ($resultado) {
             return true;
         } else {
-            parent::setMensagem("Erro no insert de vendedores: " . parent::getBdError());
+            parent::setMensagem("Erro no insert de insereObjeto: " . parent::getBdError());
             return false;
         }
     }
@@ -168,7 +168,7 @@ class VendedorAdo extends ADO {
         if ($resultado) {
             return true;
         } else {
-            parent::setMensagem("Erro no update de vendedor: " . parent::getBdError());
+            parent::setMensagem("Erro no update de alteraObjeto: " . parent::getBdError());
             return false;
         }
     }
@@ -182,7 +182,7 @@ class VendedorAdo extends ADO {
         if ($resultado) {
             return true;
         } else {
-            parent::setMensagem("Erro no delete de vendedor: " . parent::getBdError());
+            parent::setMensagem("Erro no delete de excluiObjeto: " . parent::getBdError());
             return false;
         }
     }

@@ -17,7 +17,7 @@ class IndiceAdo extends ADO {
         if ($resultado) {
             //consulta Ok. Continua.
         } else {
-            parent::setMensagem("Erro no select de id do indice: " . parent::getBdError());
+            parent::setMensagem("Erro no select do consultaIdPelaData: " . parent::getBdError());
             return false;
         }
 
@@ -37,7 +37,7 @@ class IndiceAdo extends ADO {
         if ($resultado) {
             //consulta Ok. Continua.
         } else {
-            parent::setMensagem("Erro no select de historico_indice: " . parent::getBdError());
+            parent::setMensagem("Erro no select de consultaHistoricoPeloId: " . parent::getBdError());
             return false;
         }
 
@@ -61,7 +61,7 @@ class IndiceAdo extends ADO {
         if ($resultado) {
             //consulta Ok. Continua.
         } else {
-            parent::setMensagem("Erro no select de indice: " . parent::getBdError());
+            parent::setMensagem("Erro no select de consultaObjetoPeloId: " . parent::getBdError());
             return false;
         }
         $DatasEHoras = new DatasEHoras();
@@ -79,7 +79,7 @@ class IndiceAdo extends ADO {
         if ($resultado) {
             //consulta Ok. Continua.
         } else {
-            parent::setMensagem("Erro no select de indice: " . parent::getBdError());
+            parent::setMensagem("Erro no select de consultaArrayDeObjeto: " . parent::getBdError());
             return false;
         }
 
@@ -115,7 +115,7 @@ class IndiceAdo extends ADO {
             if ($resultado2) {
                 return true;
             } else {
-                parent::setMensagem("Erro no insert de indice: " . parent::getBdError());
+                parent::setMensagem("Erro no insert de insereObjeto: " . parent::getBdError());
                 return false;
             }
         } else {
@@ -209,7 +209,7 @@ class IndiceAdo extends ADO {
         if ($resultado && $resultado2) {
             return true;
         } else {
-            parent::setMensagem("Erro no update do indice: " . parent::getBdError());
+            parent::setMensagem("Erro no update do adicionaIndice: " . parent::getBdError());
             return false;
         }
     }
@@ -227,7 +227,7 @@ class IndiceAdo extends ADO {
         if ($resultado) {
             return true;
         } else {
-            parent::setMensagem("Erro no delete de indices: " . parent::getBdError());
+            parent::setMensagem("Erro no delete de excluiObjeto: " . parent::getBdError());
             return false;
         }
     }

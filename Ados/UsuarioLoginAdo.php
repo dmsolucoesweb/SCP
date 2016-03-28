@@ -48,7 +48,7 @@ class UsuarioLoginAdo extends ADO {
         if ($resultado) {
             //consulta Ok. Continua.
         } else {
-            parent::setMensagem("Erro no select de Usuario-Login: " . parent::getBdError());
+            parent::setMensagem("Erro no select de consultaArrayDeObjeto: " . parent::getBdError());
             return false;
         }
 
@@ -76,7 +76,7 @@ class UsuarioLoginAdo extends ADO {
         if ($resultado) {
             return true;
         } else {
-            parent::setMensagem("Erro no insert de Usuario-Login: " . parent::getBdError());
+            parent::setMensagem("Erro no insert de insereObjeto: " . parent::getBdError());
             return false;
         }
     }
@@ -96,7 +96,7 @@ class UsuarioLoginAdo extends ADO {
         if ($resultado) {
             return true;
         } else {
-            parent::setMensagem("Erro no update de Usuario-Login: " . parent::getBdError());
+            parent::setMensagem("Erro no update de alteraObjeto: " . parent::getBdError());
             return false;
         }
     }
@@ -111,7 +111,7 @@ class UsuarioLoginAdo extends ADO {
         if ($resultado) {
             return true;
         } else {
-            parent::setMensagem("Erro no delete de produto: " . parent::getBdError());
+            parent::setMensagem("Erro no delete de excluiObjeto: " . parent::getBdError());
             return false;
         }
     }

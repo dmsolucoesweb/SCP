@@ -3,8 +3,8 @@
 class ConexaoBancoDeDados extends PDO {
 
     private $usuario = "root";
-    private $senha = "Cadu$9719!sn";
-    private $bdNome = "SCP";
+    private $senha = "";
+    private $bdNome = "scp";
     private $mensagem = NULL;
     private $confUTF8 = "charset=utf8";
     private $options = array(PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES utf8');

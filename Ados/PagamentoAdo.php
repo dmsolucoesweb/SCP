@@ -188,7 +188,7 @@ class PagamentoAdo extends ADO {
         if ($resultado) {
             return true;
         } else {
-            parent::setMensagem("Erro no insert de historico de insereHistoricoDePagamento: " . parent::getBdError());
+            parent::setMensagem("Erro no insert do insereHistoricoDePagamento: " . parent::getBdError());
             return false;
         }
     }
@@ -262,7 +262,7 @@ class PagamentoAdo extends ADO {
                     if ($resultado) {
                         return true;
                     } else {
-                        parent::setMensagem("Erro no insert do alteraPagamento: " . parent::getBdError());
+                        parent::setMensagem("Erro no update do alteraPagamento: " . parent::getBdError());
                         return false;
                     }
 
@@ -285,7 +285,7 @@ class PagamentoAdo extends ADO {
         if ($resultado) {
             return true;
         } else {
-            parent::setMensagem("Erro no delete de pagamento: " . parent::getBdError());
+            parent::setMensagem("Erro no delete de excluiPagamento: " . parent::getBdError());
             return false;
         }
     }
@@ -309,7 +309,7 @@ class PagamentoAdo extends ADO {
         if ($resultado && $resultado2) {
             return true;
         } else {
-            parent::setMensagem("Erro no delete de pagamento: " . parent::getBdError());
+            parent::setMensagem("Erro no delete de excluiHistorico: " . parent::getBdError());
             return false;
         }
     }

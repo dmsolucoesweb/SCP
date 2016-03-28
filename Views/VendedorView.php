@@ -45,7 +45,7 @@ class VendedorView extends HtmlGeral {
         $vendedorAdo = new VendedorAdo();
 
         try {
-            $arrayDeVendedores = $vendedorAdo->consultaArrayDeObjeto1();
+            $arrayDeVendedores = $vendedorAdo->consultaVendedoresComIdMaiorQueUm();
 
             if ($arrayDeVendedores === 0) {
                 return null;

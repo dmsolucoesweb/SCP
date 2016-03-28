@@ -61,7 +61,7 @@ class ProdutoAdo extends ADO {
         if ($resultado) {
             //consulta Ok. Continua.
         } else {
-            parent::setMensagem("Erro no select de produto: " . parent::getBdError());
+            parent::setMensagem("Erro no select de consultaObjetoPeloId: " . parent::getBdError());
             return false;
         }
 
@@ -81,7 +81,7 @@ class ProdutoAdo extends ADO {
         if ($resultado) {
             //consulta Ok. Continua.
         } else {
-            parent::setMensagem("Erro no select de produto: " . parent::getBdError());
+            parent::setMensagem("Erro no select de consultaArrayDeObjeto: " . parent::getBdError());
             return false;
         }
 
@@ -125,7 +125,7 @@ class ProdutoAdo extends ADO {
         if ($resultado) {
             return true;
         } else {
-            parent::setMensagem("Erro no insert de produto: " . parent::getBdError());
+            parent::setMensagem("Erro no insert de insereObjeto: " . parent::getBdError());
             return false;
         }
     }
@@ -146,7 +146,7 @@ class ProdutoAdo extends ADO {
         if ($resultado && $resultado2) {
             return true;
         } else {
-            parent::setMensagem("Erro no update de cliente: " . parent::getBdError());
+            parent::setMensagem("Erro no update de alteraObjeto: " . parent::getBdError());
             return false;
         }
     }
@@ -161,7 +161,7 @@ class ProdutoAdo extends ADO {
         if ($resultado) {
             return true;
         } else {
-            parent::setMensagem("Erro no delete de produto: " . parent::getBdError());
+            parent::setMensagem("Erro no delete de excluiObjeto: " . parent::getBdError());
             return false;
         }
     }
