@@ -4,6 +4,24 @@ require_once 'ADO.php';
 require_once '../Models/ProdutoModel.php';
 
 class ProdutoAdo extends ADO {
+
+    public function consultarUltimoNossoNumero() {
+        $query = "select max(boletoNossoNumero) from Boleto";
+
+        $resultado = parent::executaQuery($query);
+
+        if ($resultado) {
+            //consulta Ok. Continua.
+        } else {
+            parent::setMensagem("Erro no select de consultarUltimoNossoNumero: " . parent::getBdError());
+            return false;
+        }
+
+        $boletoNossoNumero = parent::leTabelaBD();
+
+        return $boletoNossoNumero;
+    }
+
     /* Função: consultaApartamentoEBoxPeloId
      * Utilidade: buscar o apartamento e box do cliente (caso exista). É usada na cliente view para montar a tabela de apartamentos do cliente.
      */
@@ -136,28 +154,48 @@ class ProdutoAdo extends ADO {
     }
 
     public function insereBoleto(Model $ProdutoModel) {
-        $produtoId = $ProdutoModel->getProdutoId();
-        $produtoApartamento = $ProdutoModel->getProdutoApartamento();
-        $produtoBox = $ProdutoModel->getProdutoBox();
-        $produtoValor = $ProdutoModel->getProdutoValor();
-        $produtoDataVenda = $ProdutoModel->getProdutoDataVenda();
-        $produtoStatus = $ProdutoModel->getProdutoStatus();
-        $produtoParcelas = $ProdutoModel->getProdutoParcelas();
-        $produtoParcelasPeriodicidade = $ProdutoModel->getProdutoParcelasPeriodicidade();
-        $produtoParcelasDataVencimento = $ProdutoModel->getProdutoParcelasDataVencimento();
-        $produtoParcelasValorUnitario = $ProdutoModel->getProdutoParcelasValorUnitario() . ';0';
-        $produtoParcelasValorTotal = $ProdutoModel->getProdutoParcelasValorTotal() . ';0';
-        $produtoParcelasAtualizacaoMonetaria = $ProdutoModel->getProdutoParcelasAtualizacaoMonetaria();
-        $produtoParcelasFormaPagamento = $ProdutoModel->getProdutoParcelasFormaPagamento();
-        $produtoParcelasObservacoes = $ProdutoModel->getProdutoParcelasObservacoes();
-        $clienteId = $ProdutoModel->getClienteId();
-        $vendedorId = $ProdutoModel->getVendedorId();
-        $vendedorDataVencimento = $ProdutoModel->getVendedorDataVencimento();
-        $vendedorComissao = $ProdutoModel->getVendedorComissao();
-        $vendedorFormaPagamento = $ProdutoModel->getVendedorFormaPagamento();
-        $vendedorObservacao = $ProdutoModel->getVendedorObservacao();
+        $ClienteAdo = new ClienteAdo();
 
-        $query = "insert into Boletos (boletoId, boletoNumeroDocumento, boletoNossoNumero, boletoSacado, boletoRemetido, boletoDataVencimento, boletoNumeroParcela, boletoValor, boletoProdutoId) values (null, '$produtoApartamento', '$produtoBox','$produtoValor', '$produtoDataVenda', '$produtoStatus', '$produtoParcelas', '$produtoParcelasPeriodicidade', '$produtoParcelasDataVencimento', '$produtoParcelasValorUnitario', '$produtoParcelasValorTotal', '$produtoParcelasAtualizacaoMonetaria', '$produtoParcelasFormaPagamento', '$produtoParcelasObservacoes', '$clienteId', '$vendedorId', '$vendedorDataVencimento', '$vendedorComissao', '$vendedorFormaPagamento', '$vendedorObservacao')";
+        $clienteId = $ProdutoModel->getClienteId();
+        $Cliente = $ClienteAdo->consultaObjetoPeloId($clienteId);
+        $clienteNome = $Cliente->getClienteNome();
+        $clienteCPF = $Cliente->getClienteCPF();
+        $clienteEndereco = $Cliente->getClienteEndereco();
+
+        $vendedorId = $ProdutoModel->getVendedorId();
+        $produtoId = $ProdutoModel->getProdutoId();
+        $boletoProdutoId = str_pad($produtoId, 3, "0", STR_PAD_LEFT);
+
+        $produtoParcelas = $ProdutoModel->getProdutoParcelas();
+        $produtoParcelasDataVencimento = $ProdutoModel->getProdutoParcelasDataVencimento();
+        $produtoParcelasValorUnitario = $ProdutoModel->getProdutoParcelasValorUnitario();
+
+        $Parcelas = explode(";", $produtoParcelas);
+        $ParcelasDataVencimento = explode(";", $produtoParcelasDataVencimento);
+        $ParcelasValorUnitario = explode(";", $produtoParcelasValorUnitario);
+
+        foreach ($array as $key => $value) {
+            
+        }
+
+        $contParcela += 0;
+        $boletoContParcela = str_pad($contParcela, 3, "0", STR_PAD_LEFT);
+        $numeroDocumento = $boletoProdutoId . $contParcela;
+
+        $boletoNossoNumero1 = 56410;
+
+        if ($this->consultarUltimoNossoNumero() == NULL) {
+            $nossoNumero2 = 00000;
+        } else {
+            $nossoNumero2 = substr($this->consultarUltimoNossoNumero(), 6, -1);
+            $boletoNossoNumero2 += $nossoNumero2;
+        }
+
+        $boletoNossoNumero = digitoVerificador_nossonumero($boletoNossoNumero1 . $boletoNossoNumero2);
+
+        $boletoSacado = $clienteNome . " | " . $clienteCPF . " | " . $clienteEndereco;
+
+        $query = "insert into Boletos (boletoId, boletoNumeroDocumento, boletoNossoNumero, boletoSacado, boletoRemetido, boletoDataVencimento, boletoNumeroParcela, boletoValor, boletoProdutoId) values (null, '$numeroDocumento', '$boletoNossoNumero','$boletoSacado', 0, '$produtoParcelasDataVencimento', '$contParcela', '$produtoParcelasValorUnitario', '$produtoParcelasDataVencimento', '$produtoParcelasValorUnitario', '$produtoId')";
 
         $resultado = parent::executaQuery($query);
         if ($resultado) {

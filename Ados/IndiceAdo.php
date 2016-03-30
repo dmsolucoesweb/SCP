@@ -31,7 +31,7 @@ class IndiceAdo extends ADO {
      */
 
     public function consultaHistoricoPeloId($historicoIndiceId) {
-        $query = "select * from Historicos_Indices where historicoIndiceId = '{$historicoIndiceId}'";
+        $query = "select * from Historicos_Indices where historicoInId = '{$historicoIndiceId}'";
 
         $resultado = parent::executaQuery($query);
         if ($resultado) {
