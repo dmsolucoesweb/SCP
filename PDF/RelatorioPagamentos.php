@@ -32,7 +32,6 @@ class RelatorioPagamentos {
         $ProdutoAdo = new ProdutoAdo();
 
         $arrayDePagamentos = $pagamentoAdo->consultaArrayDeObjeto();
-        $Html1 = null;
 
         if (is_array($arrayDePagamentos)) {
             foreach ($arrayDePagamentos as $pagamentoModel) {
