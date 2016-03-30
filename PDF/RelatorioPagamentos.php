@@ -98,7 +98,7 @@ class RelatorioPagamentos {
         $mpdf->simpleTables = true;
         $mpdf->useSubstitutions = false;
         $mpdf->SetHTMLHeader('<table class="header"><tbody><tr><td rowspan="3" class="logo"><img src="../IMG/logo89x50.png" /></td><td class="nopad_top">PARK VILLE INCORPORAÇÃO SPE LTDA</td></tr><tr><td class="nopad_top">Rua Cuiabá, Quadra 01-A, Lote 03, Vale das Goiabeiras, Inhumas/GO</td></tr><tr><td class="nopad_top">Telefone: (62) 8553-2638</td></tr><tr><td class="titulo_relatorio center" colspan="2">Demonstrativo de pagamentos</td></tr></tbody></table>');
-        $Html = "<table class='proposta center'><thead><tr><td class='secao'>Apartamento</td>"
+        $Html1 = "<table class='proposta center'><thead><tr><td class='secao'>Apartamento</td>"
                 . "<td class='secao'>Cliente</td>"
                 . "<td class='secao'>Valor da Venda (R$)</td>"
                 . "<td class='secao'>Recebidos (R$)</td>"
@@ -112,7 +112,6 @@ class RelatorioPagamentos {
         $ProdutoAdo = new ProdutoAdo();
 
         $pagamentoModel = $PagamentoAdo->consultaObjetoPeloId($pagamentoId);
-        $Html1 = null;
 
         $clienteId = $pagamentoModel->getClienteId();
         $produtoId = $pagamentoModel->getProdutoId();
