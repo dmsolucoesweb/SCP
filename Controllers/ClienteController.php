@@ -80,7 +80,7 @@ class ClienteController {
                 $this->ClienteView->adicionaMensagemSucesso("O Cliente: " . $this->ClienteModel->getClienteNome() . " foi inserido com sucesso!");
                 $this->ClienteModel = new ClienteModel();
             } else {
-                $this->ClienteView->adicionaMensagemErro("O Cliente: " . $this->ClienteModel->getClienteNome() . " n&atilde;o foi inserido! ");
+                $this->ClienteView->adicionaMensagemErro("O Cliente: " . $this->ClienteModel->getClienteNome() . " não foi inserido! ");
                 //$this->clienteView->adicionaMensagemErro($this->clienteAdo->getMensagem());
             }
         } else {
@@ -125,7 +125,7 @@ class ClienteController {
                 $this->ClienteView->adicionaMensagemSucesso("O Cliente: " . $this->ClienteModel->getClienteNome() . " foi alterado com sucesso! ");
                 $this->ClienteModel = new ClienteModel();
             } else {
-                $this->ClienteView->adicionaMensagemErro("O Cliente: " . $this->ClienteModel->getClienteNome() . " n&atilde;o foi alterado! ");
+                $this->ClienteView->adicionaMensagemErro("O Cliente: " . $this->ClienteModel->getClienteNome() . " não foi alterado! ");
             }
         } else {
             $this->ClienteView->adicionaMensagemAlerta($this->ClienteModel->getMensagem(), "Erro");
@@ -136,10 +136,10 @@ class ClienteController {
         $this->ClienteModel = $this->ClienteView->getDadosEntrada();
 
         if ($this->ClienteAdo->excluiObjeto($this->ClienteModel)) {
-            $this->ClienteView->adicionaMensagemSucesso("O Cliente: " . $this->ClienteModel->getClienteNome() . " foi exclu&iacute;do com sucesso! ");
+            $this->ClienteView->adicionaMensagemSucesso("O Cliente: " . $this->ClienteModel->getClienteNome() . " foi excluido com sucesso! ");
             $this->ClienteModel = new ClienteModel();
         } else {
-            $this->ClienteView->adicionaMensagemErro("O Cliente: " . $this->ClienteModel->getClienteNome() . " n&atilde;o foi exclu&iacute;do! ");
+            $this->ClienteView->adicionaMensagemErro("O Cliente: " . $this->ClienteModel->getClienteNome() . " não foi excluido! ");
         }
     }
 

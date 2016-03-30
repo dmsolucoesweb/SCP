@@ -40,7 +40,6 @@ class ProdutoController {
 
             case 'alt':
                 $this->alteraProduto();
-
                 break;
 
             case 'erl':
@@ -49,7 +48,14 @@ class ProdutoController {
 
             case 'exc':
                 $this->excluiProduto();
+                break;
 
+            case 'vbl':
+                $this->validarBoleto();
+                break;
+
+            case 'ibl':
+                $this->imprimirBoleto();
                 break;
 
             default:
@@ -105,7 +111,7 @@ class ProdutoController {
 
                 $this->ProdutoModel = new ProdutoModel();
             } else {
-                $this->ProdutoView->adicionaMensagemErro("O produto " . $this->ProdutoModel->getProdutoApartamento() . " n&atilde;o foi inserido! ");
+                $this->ProdutoView->adicionaMensagemErro("O Produto " . $this->ProdutoModel->getProdutoApartamento() . " n&atilde;o foi inserido! ");
                 $this->ProdutoView->adicionaMensagemErro($this->ProdutoAdo->getMensagem());
             }
         } else {
@@ -148,10 +154,10 @@ class ProdutoController {
 
         if ($this->ProdutoModel->checaAtributos()) {
             if ($this->ProdutoAdo->alteraObjeto($this->ProdutoModel)) {
-                $this->ProdutoView->adicionaMensagemSucesso("O produto " . $this->ProdutoModel->getProdutoApartamento() . " foi alterado com sucesso! ");
+                $this->ProdutoView->adicionaMensagemSucesso("O Produto " . $this->ProdutoModel->getProdutoApartamento() . " foi alterado com sucesso! ");
                 $this->ProdutoModel = new ProdutoModel();
             } else {
-                $this->ProdutoView->adicionaMensagemErro("O produto " . $this->ProdutoModel->getProdutoApartamento() . " n&atilde;o foi alterado! ");
+                $this->ProdutoView->adicionaMensagemErro("O Produto " . $this->ProdutoModel->getProdutoApartamento() . " não foi alterado! ");
             }
         } else {
             $this->ProdutoView->adicionaMensagemAlerta($this->ProdutoModel->getMensagem(), "Erro");
@@ -164,11 +170,31 @@ class ProdutoController {
         $pagamentoId = $this->PagamentoAdo->consultaIdPeloProduto($produtoId);
 
         if ($this->PagamentoAdo->excluiHistorico($produtoId, $pagamentoId) && $this->PagamentoAdo->excluiPagamento($produtoId) && $this->ProdutoAdo->excluiObjeto($this->ProdutoModel)) {
-            $this->ProdutoView->adicionaMensagemSucesso("O produto " . $this->ProdutoModel->getProdutoApartamento() . " foi exclu&iacute;do com sucesso! ");
+            $this->ProdutoView->adicionaMensagemSucesso("O Produto " . $this->ProdutoModel->getProdutoApartamento() . " foi excluido com sucesso! ");
             $this->ProdutoModel = new ProdutoModel();
         } else {
-            $this->ProdutoView->adicionaMensagemErro("O produto " . $this->ProdutoModel->getProdutoApartamento() . " n&atilde;o foi exclu&iacute;do! ");
+            $this->ProdutoView->adicionaMensagemErro("O Produto " . $this->ProdutoModel->getProdutoApartamento() . " não foi excluido! ");
         }
+    }
+
+    function validarBoleto() {
+        $this->ProdutoModel = $this->ProdutoView->getDadosEntrada();
+
+        if ($this->ProdutoModel->checaAtributos()) {
+            if ($this->ProdutoAdo->insereObjeto($this->PagamentoModel)) {
+                $this->ProdutoView->adicionaMensagemSucesso("O Boleto foi inserido com sucesso!");
+                $this->PagamentoModel = new ProdutoModel();
+            } else {
+                $this->ProdutoView->adicionaMensagemErro("O Boleto não foi inserido! ");
+                //$this->clienteView->adicionaMensagemErro($this->clienteAdo->getMensagem());
+            }
+        } else {
+            $this->ProdutoView->adicionaMensagemAlerta($this->PagamentoModel->getMensagem(), "Erro");
+        }
+    }
+
+    function imprimirBoleto() {
+        
     }
 
 }

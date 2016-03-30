@@ -111,7 +111,7 @@ class RelatorioPagamentos {
         $ClienteAdo = new ClienteAdo();
         $ProdutoAdo = new ProdutoAdo();
 
-        $arrayDePagamentos = $PagamentoAdo->consultaArrayDeObjeto();
+        $pagamentoModel = $PagamentoAdo->consultaObjetoPeloId($pagamentoId);
         $Html1 = null;
 
         $clienteId = $pagamentoModel->getClienteId();
@@ -133,9 +133,11 @@ class RelatorioPagamentos {
         if (is_array($arrayGeral)) {
             foreach ($arrayGeral as $historicoGeral) {
                 $id = $historicoGeral['0'];
-                $Data = $historicoGeral['1'];
+                $pagamentoId = $historicoGeral['1'];
                 $pagamentoValorTotalIncc = $historicoGeral['2'];
                 $pagamentoValorUnitarioIgpm = $historicoGeral['3'];
+                $Data = $historicoGeral['4'];
+
                 $timestamp = strtotime($Data);
                 $mes = date('M', $timestamp);
                 $ano = date('Y', $timestamp);
@@ -154,6 +156,7 @@ class RelatorioPagamentos {
 
                 if ($pagamentoValorTotalIncc == 0 || $pagamentoValorUnitarioIgpm == 0) {
                     $arrayDeIndices = $IndiceAdo->consultaHistoricoPeloId($id);
+
                     foreach ($arrayDeIndices as $indice) {
                         $indiceId = $indice['0'];
                         $indiceInccValor = $indice['1'];
@@ -224,6 +227,7 @@ class RelatorioPagamentos {
                 }
             }
         }
+
         $Html1 .= "</tbody></table>";
         $mpdf->WriteHTML($Html1);
         $arquivo = date("d-m-Y") . "-extrato.pdf";

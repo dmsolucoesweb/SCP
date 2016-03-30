@@ -45,8 +45,8 @@ class IndiceAdo extends ADO {
         $DatasEHoras = new DatasEHoras();
 
         while ($historicoIndice = parent::leTabelaBD()) {
-            $indiceData = $DatasEHoras->getDataEHorasDesinvertidaComBarras($historicoIndice['indiceData']);
-            $historicoIndiceModel = array($historicoIndice['indiceId'], $historicoIndice['indiceInccValor'], $historicoIndice['indiceIgpmValor'], $indiceData, $historicoIndice['usuarioId']);
+            $indiceData = $DatasEHoras->getDataEHorasDesinvertidaComBarras($historicoIndice['historicoInIndiceData']);
+            $historicoIndiceModel = array($historicoIndice['historicoInId'], $historicoIndice['historicoInPagamentoId'], $historicoIndice['historicoInIndiceInccValor'], $historicoIndice['historicoInIndiceIgpmValor'], $indiceData);
             $historicoIndicesModel[] = $historicoIndiceModel;
         }
 
@@ -198,7 +198,7 @@ class IndiceAdo extends ADO {
                         . " pagamentoValorParcelaUnitario = '{$VPU}'"
                         . " where pagamentoId = '{$pagamentoId}'";
 
-                $query2 = "insert into Historicos_Indices (historicoIndiceId, pagamentoId, indiceId, indiceInccValor, indiceIgpmValor, indiceData) values (null, '$pagamentoId', '$indiceId', '$incc', '$igpm', '$indiceData')";
+                $query2 = "insert into Historicos_Indices (historicoInId, historicoInPagamentoId, historicoInIndiceId, historicoInIndiceInccValor, historicoInIndiceIgpmValor, historicoInIndiceData) values (null, '$pagamentoId', '$indiceId', '$incc', '$igpm', '$indiceData')";
                 $ValorParcelas = $ValorParcelasUnitarias = $parcelasIrreajustavel = null;
 
                 $resultado = parent::executaQuery($query);

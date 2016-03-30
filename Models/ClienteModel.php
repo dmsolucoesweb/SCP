@@ -576,7 +576,7 @@ class ClienteModel extends Model {
 
         if (is_null($this->clienteProfissao)) {
             $atributosValidos = FALSE;
-            $this->adicionaMensagem("Digite a Profiss&aatilde;o corretamente do Cliente.");
+            $this->adicionaMensagem("Digite a Profissão corretamente do Cliente.");
         }
 
         if (is_null($this->clienteRenda)) {
@@ -620,7 +620,7 @@ class ClienteModel extends Model {
                 $this->adicionaMensagem("Digite o Org&aatilde;o Emissor corretamente do ClienteCpp.");
             }
 
-            if (is_null($this->clienteEstadoOrgaoEmissor)) {
+            if (is_null($this->clienteCppEstadoOrgaoEmissor)) {
                 $atributosValidos = FALSE;
                 $this->adicionaMensagem("Selecione o Estado do Org&aatilde;o Emissor do ClienteCpp.");
             }

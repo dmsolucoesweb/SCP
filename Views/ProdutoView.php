@@ -279,7 +279,6 @@ class ProdutoView extends HtmlGeral {
 
         if ($produtoId != '-1' && $produtoId != NULL) {
             if ($produtoParcelas != 0) {
-                echo 'aqui';
                 $Parcelas = explode(";", $produtoParcelas);
                 $ParcelasPeriodicidade = explode(";", $produtoParcelasPeriodicidade);
                 $ParcelasDataVencimento = explode(";", $produtoParcelasDataVencimento);
@@ -377,17 +376,21 @@ class ProdutoView extends HtmlGeral {
                 $dados .= "</div>";
             }
         }
+        
         $dados .= "<div class='dados_int row'><h4>Informações sobre o vendedor</h4>"
                 . $fieldsetDataVenc
                 . $fieldsetValorComissao
                 . $comboDeFPagVendedor
                 . $fieldsetObservacao
                 . "</div>";
+        
         $dados .= "<div class='row'>
                 <button name='bt' type='submit' class='btn btn-info' value='nov'><i class='glyphicon glyphicon-asterisk'></i> Novo</button>
                 <button name='bt' id='inc' type='submit' class='btn btn-success' disabled='true' value='inc' ><i class='glyphicon glyphicon-ok'></i> Incluir</button>
                 <button name='bt' id='alt' type='submit' class='btn btn-warning' disabled='true' value='alt'><i class='glyphicon glyphicon-refresh'></i> Alterar</button>
                 <button name='bt' type='submit' class='btn btn-danger' value='exc'><i class='glyphicon glyphicon-trash'></i> Excluir</button></div>
+                <button name='bt' id='inc' type='submit' class='btn btn-success' disabled='true' value='vbl' ><i class='glyphicon glyphicon-ok'></i> Validar Boletos</button>
+                <button name='bt' id='inc' type='submit' class='btn btn-success' disabled='true' value='ibl' ><i class='glyphicon glyphicon-ok'></i> Imprimir Boletos</button>
                 </form></div>";
 
         $this->setDados($dados);
