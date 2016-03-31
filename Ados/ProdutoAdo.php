@@ -199,17 +199,16 @@ class ProdutoAdo extends ADO {
                 $boletoNossoNumero1 = 56410;
                 $digitoVerificador = digitoVerificador_nossonumero($boletoNossoNumero1 . $boletoNossoNumero2);
                 $nossoNumeroCompleto = $boletoNossoNumero1 . $boletoNossoNumero2 . $digitoVerificador;
-                $boletoSacado = $clienteNome . " | " . $clienteCPF . " | " . $clienteEndereco;
 
                 if ($i == 1) {
                     $dataVencimento = $ParcelasDataVencimento[$contElementos];
                 } else {
-                    $dataVencimento = date("m/d/Y", strtotime("+30 day", strtotime($DatasEHoras->getDataEHorasInvertidaComTracos($ParcelasDataVencimento[$contElementos]))));
+                    $dataVencimento = date("d/m/Y", strtotime("+30 day", strtotime($DatasEHoras->getDataEHorasInvertidaComTracos($ParcelasDataVencimento[$contElementos]))));
                 }
 
                 $valorUnitario = $ParcelasValorUnitario[$contElementos];
 
-                $query = "insert into Boletos (boletoId, boletoNumeroDocumento, boletoNossoNumero, boletoSacado, boletoRemetido, boletoDataVencimento, boletoNumeroParcela, boletoValor, boletoProdutoId) values (null, '$boletoNumeroDocumento', '$nossoNumeroCompleto','$boletoSacado', '0', '$dataVencimento', '$contParcela', '$valorUnitario', '$produtoId')";
+                $query = "insert into Boletos (boletoId, boletoNumeroDocumento, boletoNossoNumero, boletoSacado, boletoRemetido, boletoDataVencimento, boletoNumeroParcela, boletoValor, boletoProdutoId) values (null, '$boletoNumeroDocumento', '$nossoNumeroCompleto','$clienteId', '0', '$dataVencimento', '$contParcela', '$valorUnitario', '$produtoId')";
 
                 $resultado = parent::executaQuery($query);
             }
@@ -222,7 +221,7 @@ class ProdutoAdo extends ADO {
         if ($resultado) {
             return true;
         } else {
-            parent::setMensagem("Erro no insert de insereObjeto: " . parent::getBdError());
+            parent::setMensagem("Erro no insert de insereBoleto: " . parent::getBdError());
             return false;
         }
     }
