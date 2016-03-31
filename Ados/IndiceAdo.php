@@ -198,7 +198,7 @@ class IndiceAdo extends ADO {
                         . " pagamentoValorParcelaUnitario = '{$VPU}'"
                         . " where pagamentoId = '{$pagamentoId}'";
 
-                $query2 = "insert into Historicos_Indices (historicoInId, historicoInPagamentoId, historicoInIndiceId, historicoInIndiceInccValor, historicoInIndiceIgpmValor, historicoInIndiceData) values (null, '$pagamentoId', '$indiceId', '$incc', '$igpm', '$indiceData')";
+                $query2 = "insert into Historicos_Indices(historicoInId, historicoInPagamentoId, historicoInIndiceId, historicoInIndiceInccValor, historicoInIndiceIgpmValor, historicoInIndiceData) values (null, '$pagamentoId', '$indiceId', '$incc', '$igpm', '$indiceData')";
                 $ValorParcelas = $ValorParcelasUnitarias = $parcelasIrreajustavel = null;
 
                 $resultado = parent::executaQuery($query);

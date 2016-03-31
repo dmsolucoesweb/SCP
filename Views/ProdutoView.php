@@ -288,7 +288,7 @@ class ProdutoView extends HtmlGeral {
                 $ParcelasFormaPagamento = explode(";", $produtoParcelasFormaPagamento);
                 $ParcelasObservacoes = explode(";", $produtoParcelasObservacoes);
                 $ultimo = count($Parcelas);
-                $ultimo--;
+                //$ultimo--;
                 $dados .= "<div id='campoPai'>";
 
                 for ($i = 0; $i < $ultimo; $i++) {
@@ -376,14 +376,14 @@ class ProdutoView extends HtmlGeral {
                 $dados .= "</div>";
             }
         }
-        
+
         $dados .= "<div class='dados_int row'><h4>Informações sobre o vendedor</h4>"
                 . $fieldsetDataVenc
                 . $fieldsetValorComissao
                 . $comboDeFPagVendedor
                 . $fieldsetObservacao
                 . "</div>";
-        
+
         $dados .= "<div class='row'>
                 <button name='bt' type='submit' class='btn btn-info' value='nov'><i class='glyphicon glyphicon-asterisk'></i> Novo</button>
                 <button name='bt' id='inc' type='submit' class='btn btn-success' disabled='true' value='inc' ><i class='glyphicon glyphicon-ok'></i> Incluir</button>
