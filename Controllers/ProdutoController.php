@@ -180,16 +180,12 @@ class ProdutoController {
     function validarBoleto() {
         $this->ProdutoModel = $this->ProdutoView->getDadosEntrada();
 
-        if ($this->ProdutoModel->checaAtributos()) {
-            if ($this->ProdutoAdo->insereObjeto($this->PagamentoModel)) {
-                $this->ProdutoView->adicionaMensagemSucesso("O Boleto foi inserido com sucesso!");
-                $this->PagamentoModel = new ProdutoModel();
-            } else {
-                $this->ProdutoView->adicionaMensagemErro("O Boleto não foi inserido! ");
-                //$this->clienteView->adicionaMensagemErro($this->clienteAdo->getMensagem());
-            }
+        if ($this->ProdutoAdo->insereBoleto($this->ProdutoModel)) {
+            $this->ProdutoView->adicionaMensagemSucesso("O Boleto foi inserido com sucesso!");
+            $this->ProdutoModel = new ProdutoModel();
         } else {
-            $this->ProdutoView->adicionaMensagemAlerta($this->PagamentoModel->getMensagem(), "Erro");
+            $this->ProdutoView->adicionaMensagemErro("O Boleto não foi inserido! ");
+            //$this->clienteView->adicionaMensagemErro($this->clienteAdo->getMensagem());
         }
     }
 

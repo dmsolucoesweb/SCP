@@ -2,11 +2,12 @@
 
 require_once 'ADO.php';
 require_once '../Models/ProdutoModel.php';
+require_once '../Boleto/include/funcoes_hsbc.php';
 
 class ProdutoAdo extends ADO {
 
     public function consultarUltimoNossoNumero() {
-        $query = "select max(boletoNossoNumero) from Boleto";
+        $query = "select max(boletoNossoNumero) from Boletos";
 
         $resultado = parent::executaQuery($query);
 
@@ -155,6 +156,10 @@ class ProdutoAdo extends ADO {
 
     public function insereBoleto(Model $ProdutoModel) {
         $ClienteAdo = new ClienteAdo();
+        $DatasEHoras = new DatasEHoras();
+        $contParcela = $boletoNossoNumero2 = NULL;
+        $contElementos = 0;
+        $boletoNossoNumero2 = '00000';
 
         $clienteId = $ProdutoModel->getClienteId();
         $Cliente = $ClienteAdo->consultaObjetoPeloId($clienteId);
@@ -176,40 +181,49 @@ class ProdutoAdo extends ADO {
 
         foreach ($Parcelas as $numeroParcelas) {
             for ($i = 1; $i <= $numeroParcelas; $i++) {
-                if ($this->consultarUltimoNossoNumero() == NULL) {
-                    $nossoNumero2 = 00000;
+
+                $nossoNumeroTeste = $this->consultarUltimoNossoNumero();
+
+                if ($nossoNumeroTeste == NULL) {
+                    $boletoNossoNumero2 = '00000';
                 } else {
-                    $nossoNumero2 = substr($this->consultarUltimoNossoNumero(), 6, -1);
-                    $boletoNossoNumero2 += $nossoNumero2;
+                    $boletoNossoNumero2 = substr($nossoNumeroTeste['max(boletoNossoNumero)'], 5, 5);
+                    $boletoNossoNumero2 += 1;
+                    $boletoNossoNumero2 = str_pad($boletoNossoNumero2, 5, "0", STR_PAD_LEFT);
                 }
 
-                $contParcela += 0;
+                $contParcela += 1;
                 $boletoContParcela = str_pad($contParcela, 3, "0", STR_PAD_LEFT);
-                $numeroDocumento = $boletoProdutoId . $contParcela;
+                $boletoContParcela = str_pad($contParcela, 3, "0", STR_PAD_LEFT);
+                $boletoNumeroDocumento = $boletoProdutoId . $boletoContParcela;
                 $boletoNossoNumero1 = 56410;
-                $boletoNossoNumero = digitoVerificador_nossonumero($boletoNossoNumero1 . $boletoNossoNumero2);
+                $digitoVerificador = digitoVerificador_nossonumero($boletoNossoNumero1 . $boletoNossoNumero2);
+                $nossoNumeroCompleto = $boletoNossoNumero1 . $boletoNossoNumero2 . $digitoVerificador;
                 $boletoSacado = $clienteNome . " | " . $clienteCPF . " | " . $clienteEndereco;
 
                 if ($i == 1) {
-                    $dataVencimento = current($ParcelasDataVencimento);
+                    $dataVencimento = $ParcelasDataVencimento[$contElementos];
                 } else {
-                    $dataVencimento = strtotime("+1 month", $ParcelasDataVencimento);
+                    $dataVencimento = date("m/d/Y", strtotime("+30 day", strtotime($DatasEHoras->getDataEHorasInvertidaComTracos($ParcelasDataVencimento[$contElementos]))));
                 }
 
-                $valorUnitario = current($ParcelasValorUnitario);
+                $valorUnitario = $ParcelasValorUnitario[$contElementos];
 
-                $query = "insert into Boletos (boletoId, boletoNumeroDocumento, boletoNossoNumero, boletoSacado, boletoRemetido, boletoDataVencimento, boletoNumeroParcela, boletoValor, boletoProdutoId) values (null, '$numeroDocumento', '$boletoNossoNumero','$boletoSacado', 0, '$produtoParcelasDataVencimento', '$contParcela', '$produtoParcelasValorUnitario', '$dataVencimento', '$valorUnitario', '$produtoId')";
+                $query = "insert into Boletos (boletoId, boletoNumeroDocumento, boletoNossoNumero, boletoSacado, boletoRemetido, boletoDataVencimento, boletoNumeroParcela, boletoValor, boletoProdutoId) values (null, '$boletoNumeroDocumento', '$nossoNumeroCompleto','$boletoSacado', '0', '$dataVencimento', '$contParcela', '$valorUnitario', '$produtoId')";
+
                 $resultado = parent::executaQuery($query);
-                if ($resultado) {
-                    return true;
-                } else {
-                    parent::setMensagem("Erro no insert de insereObjeto: " . parent::getBdError());
-                    return false;
-                }
             }
 
             next($ParcelasDataVencimento);
             next($ParcelasValorUnitario);
+            $contElementos += 1;
+        }
+
+        if ($resultado) {
+            return true;
+        } else {
+            parent::setMensagem("Erro no insert de insereObjeto: " . parent::getBdError());
+            return false;
         }
     }
 
