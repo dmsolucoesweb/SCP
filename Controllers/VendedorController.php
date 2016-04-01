@@ -57,10 +57,10 @@ class VendedorController {
 
         if ($this->VendedorModel->checaAtributos()) {
             if ($this->VendedorAdo->insereObjeto($this->VendedorModel)) {
-                $this->VendedorView->adicionaMensagemSucesso("O vendedor " . $this->VendedorModel->getVendedorNome() . " foi inserido com sucesso! ");
+                $this->VendedorView->adicionaMensagemSucesso("O vendedor " . $this->VendedorModel->getVendedorNome() . " foi cadastrado com sucesso! ");
                 $this->VendedorModel = new VendedorModel();
             } else {
-                $this->VendedorView->adicionaMensagemErro("O vendedor " . $this->VendedorModel->getVendedorNome() . " n&atilde;o foi inserido! ");
+                $this->VendedorView->adicionaMensagemErro("Erro ao cadastrar vendedor " . $this->VendedorModel->getVendedorNome() . "!");
                 $this->VendedorView->adicionaMensagemErro($this->VendedorAdo->getMensagem());
             }
         } else {
@@ -72,7 +72,7 @@ class VendedorController {
         $vendedorId = $this->VendedorView->getIdConsulta();
 
         if ($vendedorId == '-1') {
-            $this->VendedorView->adicionaMensagemAlerta("Escolha um vendedor para consulta.");
+            $this->VendedorView->adicionaMensagemAlerta("Escolha um vendedor para consulta");
             return;
         }
 
@@ -93,7 +93,7 @@ class VendedorController {
                 $this->VendedorView->adicionaMensagemSucesso("O vendedor " . $this->VendedorModel->getVendedorNome() . " foi alterado com sucesso! ");
                 $this->VendedorModel = new VendedorModel();
             } else {
-                $this->VendedorView->adicionaMensagemErro("O vendedor " . $this->VendedorModel->getVendedorNome() . " n&atilde;o foi alterado! ");
+                $this->VendedorView->adicionaMensagemErro("Erro ao alterar vendedor " . $this->VendedorModel->getVendedorNome() . "!");
             }
         } else {
             $this->VendedorView->adicionaMensagemErro($this->VendedorModel->getMensagem(), "Erro");
@@ -104,10 +104,10 @@ class VendedorController {
         $this->VendedorModel = $this->VendedorView->getDadosEntrada();
 
         if ($this->VendedorAdo->excluiObjeto($this->VendedorModel)) {
-            $this->VendedorView->adicionaMensagemSucesso("O vendedor " . $this->VendedorModel->getVendedorNome() . " foi exclu&iacute;do com sucesso! ");
+            $this->VendedorView->adicionaMensagemSucesso("O vendedor " . $this->VendedorModel->getVendedorNome() . " foi excluído com sucesso! ");
             $this->VendedorModel = new VendedorModel();
         } else {
-            $this->VendedorView->adicionaMensagemErro("O vendedor " . $this->VendedorModel->getVendedorNome() . " n&atilde;o foi exclu&iacute;do! ");
+            $this->VendedorView->adicionaMensagemErro("Erro ao excluir vendedor " . $this->VendedorModel->getVendedorNome() . "!");
         }
     }
 

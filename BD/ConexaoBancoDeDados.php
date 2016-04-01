@@ -26,7 +26,7 @@ class ConexaoBancoDeDados extends PDO {
                 $this->configuraUTF8();
             }
         } catch (PDOException $e) {
-            $this->setMensagem("N&atildeo foi poss&iacute;vel conectar ao SGBD. Erro: " . $this->getBdError(1));
+            $this->setMensagem("Não foi possível conectar ao SGBD. Erro: " . $this->getBdError(1));
             //$this->setMensagem($e->getMessage());
             $this->setStatusDoConstrutor(FALSE);
             return;
@@ -43,7 +43,7 @@ class ConexaoBancoDeDados extends PDO {
                 $this->configuraUTF8();
             }
         } catch (PDOException $e) {
-            $this->setMensagem("N&atildeo foi poss&iacute;vel conectar ao SGBD. Erro: " . $this->getBdError(1));
+            $this->setMensagem("Não foi possível conectar ao SGBD. Erro: " . $this->getBdError(1));
             //$this->setMensagem($e->getMessage());
             $this->setStatusDoConstrutor(FALSE);
             return;

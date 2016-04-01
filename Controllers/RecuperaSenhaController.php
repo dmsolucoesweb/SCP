@@ -35,24 +35,25 @@ class RecuperaSenhaController {
                     $this->usuarioLoginLogin = $Usuario->getUsuarioLoginLogin();
 
                     if ($usuarioLoginId == null) {
-                        $this->RecuperaSenhaView->adicionaMensagemErro("Erro ao tentar enviar a nova senha para o e-mail informado.");
+                        $this->RecuperaSenhaView->adicionaMensagemErro("Erro ao enviar a nova senha para o e-mail informado.");
                     } else {
                         if ($this->enviaEmail()) {
                             $novaSenha = sha1($this->novaSenha);
-                            $query = "update Usuarios_Login set usuarioLoginSenha = '{$novaSenha}' where usuarioLoginId = '{$usuarioLoginId}'";
+                            $query = "update Usuarioslogin set usuarioLoginSenha = '{$novaSenha}' where usuarioLoginId = '{$usuarioLoginId}'";
                             $resultado = $ConexaoBancoDeDados->executaQuery($query);
 
                             if ($resultado) {
                                 //consulta Ok. Continua.
+                                // ERRO 101: Erro ao realizar o select de usuario_login (senha)
                             } else {
-                                parent::setMensagem("Erro no select de Usuarios-Login(senha): " . parent::getBdError());
+                                parent::setMensagem("Erro 101 " . parent::getBdError());
                                 return false;
                             }
 
                             $this->RecuperaSenhaView->adicionaMensagemSucesso("Senha redefinida com sucesso! Acesse o e-mail informado para verificar sua nova senha.", "Informacao");
                             $this->usuarioLoginEmail = null;
                         } else {
-                            $this->RecuperaSenhaView->adicionaMensagemErro("Erro ao tentar enviar a nova senha para o e-mail informado.");
+                            $this->RecuperaSenhaView->adicionaMensagemErro("Erro ao enviar a nova senha para o e-mail informado.");
                         }
                     }
                 }

@@ -23,20 +23,20 @@ class MontaHTML {
         $fieldset = NULL;
         if (empty($dadosFieldset['classefg'])) {
             $dadosFieldset['classefg'] = null;
-        } else {
-            $dadosFieldset['classefg'] = $dadosFieldset['classefg'];
-        }
+        } else { }
 
         if (empty($dadosFieldset['classelb'])) {
             $dadosFieldset['classelb'] = null;
-        } else {
-            
-        }
+        } else {}
 
+        if (!$dadosFieldset['obg']) {
+            $obg = null;
+        } else {
+            $obg = "<small><i class='glyphicon glyphicon-asterisk text-danger obrigatorio'></i></small>";
+        }
         if (empty($dadosFieldset['classecampo'])) {
             $dadosFieldset['classecampo'] = null;
         } else {
-            $dadosFieldset['classecampo'] = $dadosFieldset['classecampo'];
         }
 
         $disabled = null;
@@ -46,7 +46,7 @@ class MontaHTML {
         }
 
         $fieldset .= "\n\t<div class=\"form-group {$dadosFieldset['classefg']} linhaFieldset\">\n";
-        $fieldset .= "\t\t<label for=\"{$dadosFieldset['name']}\" class=\"{$dadosFieldset['classelb']}\">{$dadosFieldset['label']}</label>\n";
+        $fieldset .= "\t\t<label for=\"{$dadosFieldset['name']}\" class=\"{$dadosFieldset['classelb']}\">{$dadosFieldset['label']} $obg</label>\n";
         $fieldset .= "\t\t<input class='form-control {$dadosFieldset['classecampo']}' type=\"{$dadosFieldset['type']}\" "
                 . "name=\"{$dadosFieldset['name']}\" value=\"{$dadosFieldset['value']}\" "
                 . "placeholder=\"{$dadosFieldset['placeholder']}\" {$disabled} />\n";
@@ -91,11 +91,16 @@ class MontaHTML {
         } else {
             
         }
+        if (!$dadosFieldset['obg']) {
+            $obg = null;
+        } else {
+            $obg = "<small><i class='glyphicon glyphicon-asterisk text-danger obrigatorio'></i></small>";
+        }
         $disabled = null;
         if ($dadosFieldset['disabled']) {
             $disabled = "disabled=\"disabled\"";
         }
-        $fieldset .= "\n\t<div class='form-group {$dadosFieldset['classefg']}'><label for=\"{$dadosFieldset['name']}\">{$dadosFieldset['label']}</label>\n";
+        $fieldset .= "\n\t<div class='form-group {$dadosFieldset['classefg']}'><label for=\"{$dadosFieldset['name']}\">{$dadosFieldset['label']} $obg</label>\n";
         $fieldset .= "\t\t<div class=\"input-group date linhaFieldset\">\n";
         $fieldset .= "\t\t<input type=\"text\" class=\"form-control datePicker mascaraData\""
                 . "name=\"{$dadosFieldset['name']}\" value=\"{$dadosFieldset['value']}\" "
@@ -116,9 +121,13 @@ class MontaHTML {
      */
     function montaTextArea(array $dadosTextArea) {
         $textArea = NULL;
-
+if (!$dadosTextArea['obg']) {
+            $obg = null;
+        } else {
+            $obg = "<small><i class='glyphicon glyphicon-asterisk text-danger obrigatorio'></i></small>";
+        }
         $textArea = "\n\t\t\t<div class=\"form-group linhaFieldset\">";
-        $textArea .= "<label for=\"{$dadosTextArea['name']}\">{$dadosTextArea['label']}</label>";
+        $textArea .= "<label for=\"{$dadosTextArea['name']}\">{$dadosTextArea['label']} $obg</label>";
         $textArea .= "<textarea class='form-control' name=\"{$dadosTextArea['name']}\">{$dadosTextArea['texto']}";
         $textArea .= "</textarea></div>";
 
@@ -127,6 +136,11 @@ class MontaHTML {
 
     private function montaComboboxParte1(array $dadosCombo, $textoOpcaoPadrao, $onChange = null, $disabled = false) {
         $combobox = NULL;
+        if (!$dadosCombo['obg']) {
+            $obg = null;
+        } else {
+            $obg = "<small><i class='glyphicon glyphicon-asterisk text-danger obrigatorio'></i></small>";
+        }
         if (empty($dadosCombo['classefg'])) {
             $dadosCombo['classefg'] = null;
         }
@@ -140,7 +154,7 @@ class MontaHTML {
         }
 
         $combobox .= "\n\t<div class=\"form-group {$dadosCombo['classefg']} linhaSelect\">\n";
-        $combobox .= "\t\t<label for=\"{$dadosCombo['name']}\">{$dadosCombo['label']}</label>\n";
+        $combobox .= "\t\t<label for=\"{$dadosCombo['name']}\">{$dadosCombo['label']} $obg</label>\n";
         $combobox .= "\t\t<select class=\"form-control {$dadosCombo['classecampo']} selectpicker\" name=\"{$dadosCombo['name']}\" id=\"{$dadosCombo['name']}\" $onChange $disabled>\n";
         $combobox .= "\t\t\t<option value='-1'>" . $textoOpcaoPadrao . "</option>\n";
 
@@ -204,12 +218,17 @@ class MontaHTML {
      */
     function montaRadioEmLinha(array $dadosRadio) {
         $radio = NULL;
+       if (!$dadosRadio['obg']) {   
+            $obg = null;
+        } else {
+            $obg = "<small><i class='glyphicon glyphicon-asterisk text-danger obrigatorio'></i></small>";
+        }
         if (empty($dadosRadio['classefg'])) {
             $dadosRadio['classefg'] = null;
         }
 
         $radio .= "<div class=\"form-group {$dadosRadio['classefg']} linhaFieldset\">";
-        $radio .= "<label class='rotulo_inline'>{$dadosRadio['label']}</label>";
+        $radio .= "<label class='rotulo_inline'>{$dadosRadio['label']} $obg</label>";
 
         foreach ($dadosRadio['buttons'] as $dadosR) {
             $checked = null;
@@ -237,13 +256,17 @@ class MontaHTML {
      */
     function montaRadioEmColuna(array $dadosRadio) {
         $radio = NULL;
-
+if (!$dadosRadio['obg']) {
+            $obg = null;
+        } else {
+            $obg = "<small><i class='glyphicon glyphicon-asterisk text-danger obrigatorio'></i></small>";
+        }
         if (empty($dadosRadio['classefg'])) {
             $dadosRadio['classefg'] = null;
         }
 
         $radio .= "<div class=\"form-group {$dadosRadio['classefg']} linhaFieldset\">";
-        $radio .= "<label>{$dadosRadio['label']}</label>";
+        $radio .= "<label>{$dadosRadio['label']} $obg</label>";
 
         $primeiroRadio = TRUE;
 
@@ -272,12 +295,16 @@ class MontaHTML {
     function montaCheckboxEmLinha(array $dadosCheckbox) {
         $checkbox = NULL;
         $checkbox .= "<div class=\"linhaFieldset\">";
-
+if (!$dadosCheckbox['obg']) {
+            $obg = null;
+        } else {
+            $obg = "<small><i class='glyphicon glyphicon-asterisk text-danger obrigatorio'></i></small>";
+        }
         if ($dadosCheckbox['label'] == null) {
             $dadosCheckbox['label'] = '&nbsp';
         }
 
-        $checkbox .= "<label>{$dadosCheckbox['label']}</label>";
+        $checkbox .= "<label>{$dadosCheckbox['label']} $obg</label>";
 
         foreach ($dadosCheckbox['options'] as $dadosCheck) {
             $checked = null;
@@ -306,9 +333,14 @@ class MontaHTML {
      * @return string retorna uma string com o código HTML do CheckBox desejado.
      */
     function montaCheckboxEmColuna(array $dadosCheckbox) {
+        if (!$dadosCheckbox['obg']) {
+            $obg = null;
+        } else {
+            $obg = "<small><i class='glyphicon glyphicon-asterisk text-danger obrigatorio'></i></small>";
+        }
         $checkbox = NULL;
         $checkbox .= "<div class=\"linhaFieldset\">";
-        $checkbox .= "<label>{$dadosCheckbox['label']}</label>";
+        $checkbox .= "<label>{$dadosCheckbox['label']} $obg</label>";
 
         $primeiroCheck = TRUE;
 

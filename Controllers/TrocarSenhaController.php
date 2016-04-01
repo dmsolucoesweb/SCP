@@ -52,13 +52,14 @@ class TrocarSenhaController {
             $senhaAntTeste = $Usuario->getUsuarioLoginSenha();
 
             if ($this->usuarioLoginSenhaAn == $senhaAntTeste && $this->usuarioLoginSenhaAt === $this->usuarioLoginSenhaCf) {
-                $query = "update Usuarios_Login set usuarioLoginSenha = '{$this->usuarioLoginSenhaAt}' where usuarioLoginId = '{$id}'";
+                $query = "update Usuarioslogin set usuarioLoginSenha = '{$this->usuarioLoginSenhaAt}' where usuarioLoginId = '{$id}'";
                 $resultado = $ConexaoBancoDeDados->executaQuery($query);
 
                 if ($resultado) {
                     //consulta Ok. Continua.
                 } else {
-                    parent::setMensagem("Erro no select de Usuarios-Login(senha): " . parent::getBdError());
+                    // ERRO 101: Erro ao realizar o select de usuario_login (senha)
+                    parent::setMensagem("Erro 101: " . parent::getBdError());
                     return false;
                 }
 
@@ -67,7 +68,7 @@ class TrocarSenhaController {
                 $this->usuarioLoginSenhaAt = null;
                 $this->usuarioLoginSenhaACf = null;
             } else {
-                $this->TrocarSenhaView->adicionaMensagemErro("Erro ao tentar ao trocar a senha!");
+                $this->TrocarSenhaView->adicionaMensagemErro("Erro ao trocar a senha!");
                 $this->usuarioLoginSenhaAn = null;
                 $this->usuarioLoginSenhaAt = null;
                 $this->usuarioLoginSenhaACf = null;

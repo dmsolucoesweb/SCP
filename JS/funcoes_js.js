@@ -133,3 +133,93 @@ function removerCampo(id) {
     //Removendo o DIV com id específico do nó-pai:
     var removido = objPai.removeChild(objFilho);
 }
+$(document).ready(function () {
+    $('.obrigatorio').hover().tooltip('show','top');
+// funcao javascript que implementa datepicker
+    $('.input-group.date').datepicker({
+        format: 'dd/mm/yyyy',
+        todayBtn: 'linked',
+        clearBtn: true,
+        language: 'pt-BR',
+        multidate: false
+    });
+// função javascript que implementa select2 bootstrap 
+// $('select').select2({ language: 'pt-BR' });
+// função javascript que mostra opções do vendedor na página de vendas
+    $('.vendedor_produto').change(function () { 
+        if ($('.vendedor_produto').val() == 1) {
+            $('.dados_int').hide( 'fast', 'linear' );
+        } else { $('.dados_int').show( 'fast', 'linear' );}
+    });
+// função javascript que mostra opções do Cpp na página de cadastro de clientes
+$('input[name=\"clienteCppStatus\"]').change(function () {
+    var status = $('input[name=\"clienteCppStatus\"]:checked').val();
+    if (status == 'N') { 
+    $('.spp').hide(); 
+    $('.linha').addClass('hidden');     
+    $('.cliente').removeClass('col-md-6').addClass('col-md-12');
+    } else { 
+    $('.cliente').removeClass('col-md-12').addClass('col-md-6');
+    $('.linha').removeClass('hidden');    
+    $('.spp').show( 'fast', 'linear' ); 
+    } });
+ 
+        $('select[name=\"clienteEstadoCivil\"]').change(function () {
+        var status_estado = $('select[name=\"clienteEstadoCivil\"]').val();
+        if ( status_estado == '1' ) {
+        $('select[name=\"clienteRegimeComunhao\"]').prop('disabled', 'disabled'); 
+        $('select[name=\"clienteRegimeComunhao\"]').val() = -1;
+} 
+        else if ( status_estado == '3' ) {
+        $('select[name=\"clienteRegimeComunhao\"]').prop('disabled', 'disabled'); 
+        $('select[name=\"clienteRegimeComunhao\"]').val() = -1;
+} 
+        else if ( status_estado == '4' ) {
+        $('select[name=\"clienteRegimeComunhao\"]').prop('disabled', 'disabled'); 
+        $('select[name=\"clienteRegimeComunhao\"]').val() = -1;
+}
+        else { $('select[name=\"clienteRegimeComunhao\"]').prop('disabled', ''); }
+    });
+    
+        $('select[name=\"vendedorEstadoCivil\"]').change(function () {
+        var status_estado = $('select[name=\"vendedorEstadoCivil\"]').val();
+        if ( status_estado == '1' ) {
+        $('select[name=\"vendedorRegimeComunhao\"]').prop('disabled', 'disabled'); 
+        $('select[name=\"vendedorRegimeComunhao\"]').val() = -1;
+} 
+        else if ( status_estado == '3' ) {
+        $('select[name=\"vendedorRegimeComunhao\"]').prop('disabled', 'disabled'); 
+        $('select[name=\"vendedorRegimeComunhao\"]').val() = -1;
+} 
+        else if ( status_estado == '4' ) {
+        $('select[name=\"vendedorRegimeComunhao\"]').prop('disabled', 'disabled'); 
+        $('select[name=\"vendedorRegimeComunhao\"]').val() = -1;
+}
+        else { $('select[name=\"vendedorRegimeComunhao\"]').prop('disabled', ''); }
+    });
+    
+    $('select[name=\"clienteCppEstadoCivil\"]').change(function () {
+        var status_estado = $('select[name=\"clienteCppEstadoCivil\"]').val();
+        if ( status_estado == '1' ) {
+        $('select[name=\"clienteCppRegimeComunhao\"]').prop('disabled', 'disabled'); 
+        $('select[name=\"clienteCppRegimeComunhao\"]').val() = -1;
+} 
+        else if ( status_estado == '3' ) {
+        $('select[name=\"clienteCppRegimeComunhao\"]').prop('disabled', 'disabled'); 
+        $('select[name=\"clienteCppRegimeComunhao\"]').val() = -1;        
+} 
+        else if ( status_estado == '4' ) {
+        $('select[name=\"clienteCppRegimeComunhao\"]').prop('disabled', 'disabled'); 
+        $('select[name=\"clienteCppRegimeComunhao\"]').val() = -1;
+}
+        else { $('select[name=\"clienteCppRegimeComunhao\"]').prop('disabled', ''); }
+    });
+    });
+    
+jQuery(function($){
+$('.moeda').maskMoney({symbol:'R$ ',decimal:',',thousands:'.',showSymbol : false});
+   $('.fone').mask('(99) 9999-9999');
+   $('.cpf').mask('999.999.999-99');
+   $('.cep').mask('99.999-999');
+   $('.indice').mask('0.0000');
+});

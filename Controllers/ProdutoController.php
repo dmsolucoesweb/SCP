@@ -89,7 +89,7 @@ class ProdutoController {
 
         if ($this->ProdutoModel->checaAtributos()) {
             if ($this->ProdutoAdo->insereObjeto($this->ProdutoModel)) {
-                $this->ProdutoView->adicionaMensagemSucesso("O produto " . $this->ProdutoModel->getProdutoApartamento() . " foi inserido com sucesso! ");
+                $this->ProdutoView->adicionaMensagemSucesso("Venda do apartamento " . $this->ProdutoModel->getProdutoApartamento() . " realizada com sucesso! ");
                 // pegando o id do produto pelo apartamento por causa da ligação do banco de dados
                 $produtoId = $this->PagamentoAdo->consultaProdutoPeloApartamento($apt);
 
@@ -111,7 +111,7 @@ class ProdutoController {
 
                 $this->ProdutoModel = new ProdutoModel();
             } else {
-                $this->ProdutoView->adicionaMensagemErro("O Produto " . $this->ProdutoModel->getProdutoApartamento() . " n&atilde;o foi inserido! ");
+                $this->ProdutoView->adicionaMensagemErro("Erro ao realizar a venda do apartamento " . $this->ProdutoModel->getProdutoApartamento() . "!");
                 $this->ProdutoView->adicionaMensagemErro($this->ProdutoAdo->getMensagem());
             }
         } else {
@@ -123,7 +123,7 @@ class ProdutoController {
         $produtoId = $this->ProdutoView->getIdConsulta();
 
         if ($produtoId == '-1') {
-            $this->ProdutoView->adicionaMensagemAlerta("Escolha um produto para consulta.");
+            $this->ProdutoView->adicionaMensagemAlerta("Escolha um produto para consulta");
             return;
         }
 
@@ -154,10 +154,10 @@ class ProdutoController {
 
         if ($this->ProdutoModel->checaAtributos()) {
             if ($this->ProdutoAdo->alteraObjeto($this->ProdutoModel)) {
-                $this->ProdutoView->adicionaMensagemSucesso("O Produto " . $this->ProdutoModel->getProdutoApartamento() . " foi alterado com sucesso! ");
+                $this->ProdutoView->adicionaMensagemSucesso("Status do apartamento " . $this->ProdutoModel->getProdutoApartamento() . " atualizado com sucesso!");
                 $this->ProdutoModel = new ProdutoModel();
             } else {
-                $this->ProdutoView->adicionaMensagemErro("O Produto " . $this->ProdutoModel->getProdutoApartamento() . " não foi alterado! ");
+                $this->ProdutoView->adicionaMensagemErro("Status do apartamento " . $this->ProdutoModel->getProdutoApartamento() . " não foi alterado!");
             }
         } else {
             $this->ProdutoView->adicionaMensagemAlerta($this->ProdutoModel->getMensagem(), "Erro");
@@ -170,10 +170,10 @@ class ProdutoController {
         $pagamentoId = $this->PagamentoAdo->consultaIdPeloProduto($produtoId);
 
         if ($this->PagamentoAdo->excluiHistorico($produtoId, $pagamentoId) && $this->PagamentoAdo->excluiPagamento($produtoId) && $this->ProdutoAdo->excluiObjeto($this->ProdutoModel)) {
-            $this->ProdutoView->adicionaMensagemSucesso("O Produto " . $this->ProdutoModel->getProdutoApartamento() . " foi excluido com sucesso! ");
+            $this->ProdutoView->adicionaMensagemSucesso("A venda do apartamento " . $this->ProdutoModel->getProdutoApartamento() . " foi excluida com sucesso! ");
             $this->ProdutoModel = new ProdutoModel();
         } else {
-            $this->ProdutoView->adicionaMensagemErro("O Produto " . $this->ProdutoModel->getProdutoApartamento() . " não foi excluido! ");
+            $this->ProdutoView->adicionaMensagemErro("A venda do apartamento " . $this->ProdutoModel->getProdutoApartamento() . " não pôde ser excluída!");
         }
     }
 

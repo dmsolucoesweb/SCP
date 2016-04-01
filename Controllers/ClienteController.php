@@ -77,10 +77,10 @@ class ClienteController {
 
         if ($this->ClienteModel->checaAtributos()) {
             if ($this->ClienteAdo->insereObjeto($this->ClienteModel)) {
-                $this->ClienteView->adicionaMensagemSucesso("O Cliente: " . $this->ClienteModel->getClienteNome() . " foi inserido com sucesso!");
+                $this->ClienteView->adicionaMensagemSucesso("O cliente " . $this->ClienteModel->getClienteNome() . " foi cadastrado com sucesso!");
                 $this->ClienteModel = new ClienteModel();
             } else {
-                $this->ClienteView->adicionaMensagemErro("O Cliente: " . $this->ClienteModel->getClienteNome() . " não foi inserido! ");
+                $this->ClienteView->adicionaMensagemErro("Erro ao cadastrar o cliente " . $this->ClienteModel->getClienteNome() . "!");
                 //$this->clienteView->adicionaMensagemErro($this->clienteAdo->getMensagem());
             }
         } else {
@@ -92,7 +92,7 @@ class ClienteController {
         $clienteId = $this->ClienteView->getIdConsulta();
 
         if ($clienteId == '-1') {
-            $this->ClienteView->adicionaMensagemAlerta("Escolha um Cliente para consulta.");
+            $this->ClienteView->adicionaMensagemAlerta("Escolha um cliente para consulta.");
             return;
         }
 
@@ -122,10 +122,10 @@ class ClienteController {
 
         if ($this->ClienteModel->checaAtributos()) {
             if ($this->ClienteAdo->alteraObjeto($this->ClienteModel)) {
-                $this->ClienteView->adicionaMensagemSucesso("O Cliente: " . $this->ClienteModel->getClienteNome() . " foi alterado com sucesso! ");
+                $this->ClienteView->adicionaMensagemSucesso("O cliente " . $this->ClienteModel->getClienteNome() . " foi alterado com sucesso! ");
                 $this->ClienteModel = new ClienteModel();
             } else {
-                $this->ClienteView->adicionaMensagemErro("O Cliente: " . $this->ClienteModel->getClienteNome() . " não foi alterado! ");
+                $this->ClienteView->adicionaMensagemErro("Erro ao alterar o cliente " . $this->ClienteModel->getClienteNome() . "!");
             }
         } else {
             $this->ClienteView->adicionaMensagemAlerta($this->ClienteModel->getMensagem(), "Erro");
@@ -136,10 +136,10 @@ class ClienteController {
         $this->ClienteModel = $this->ClienteView->getDadosEntrada();
 
         if ($this->ClienteAdo->excluiObjeto($this->ClienteModel)) {
-            $this->ClienteView->adicionaMensagemSucesso("O Cliente: " . $this->ClienteModel->getClienteNome() . " foi excluido com sucesso! ");
+            $this->ClienteView->adicionaMensagemSucesso("O cliente " . $this->ClienteModel->getClienteNome() . " foi excluido com sucesso! ");
             $this->ClienteModel = new ClienteModel();
         } else {
-            $this->ClienteView->adicionaMensagemErro("O Cliente: " . $this->ClienteModel->getClienteNome() . " não foi excluido! ");
+            $this->ClienteView->adicionaMensagemErro("Erro ao excluir o Cliente " . $this->ClienteModel->getClienteNome() . "!");
         }
     }
 
