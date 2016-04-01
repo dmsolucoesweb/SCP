@@ -1,7 +1,6 @@
 <?php
 
 require_once '../Ados/ClienteAdo.php';
-require_once '../Ados/PagamentoAdo.php';
 
 // +----------------------------------------------------------------------+
 // | BoletoPhp - Versão Beta                                              |
@@ -30,64 +29,51 @@ require_once '../Ados/PagamentoAdo.php';
 // ------------------------- DADOS DINÂMICOS DO SEU CLIENTE PARA A GERAÇÃO DO BOLETO (FIXO OU VIA GET) -------------------- //
 // Os valores abaixo podem ser colocados manualmente ou ajustados p/ formulário c/ POST, GET ou de BD (MySql,Postgre,etc)	//
 // DADOS DO BOLETO PARA O SEU CLIENTE
-$PagamentoAdo = new PagamentoAdo();
-$ClienteAdo = new ClienteAdo();
-$arrayDePagamentos = $PagamentoAdo->consultaArrayDeObjeto();
 
-if (is_array($arrayDePagamentos)) {
-    foreach ($arrayDePagamentos as $pagamentoModel) {
-        $clienteId = $pagamentoModel->getClienteId();
+class BoletoHsbc {
 
-        $ClienteModel = $ClienteAdo->consultaObjetoPeloId($clienteId);
+    function geraBoleto($produtoId) {
+        $BoletoAdo = new BoletoAdo();
+        $ClienteAdo = new ClienteAdo();
+        $arrayDeBoletos = $BoletoAdo->consultaArrayDeBoletos($produtoId);
 
-        $clienteNome = $ClienteModel->getClienteNome();
-        $clienteEndereco = $ClienteModel->getClienteEndereco();
-        $produtoId = $pagamentoModel->getProdutoId();
-        $pagamentoStatusProduto = $pagamentoModel->getPagamentoStatusProduto();
-        $pagamentoValorTotal = $pagamentoModel->getPagamentoValorTotal();
-        $pagamentoParcela = $pagamentoModel->getPagamentoParcela();
-        $pagamentoValorParcela = $pagamentoModel->getPagamentoValorParcela();
-        $pagamentoValorParcelaUnitario = $pagamentoModel->getPagamentoValorParcelaUnitario();
-        $pagamentoData = $pagamentoModel->getPagamentoData();
-        $pagamentoValor = $pagamentoModel->getPagamentoValor();
-        $pagamentoId = $pagamentoModel->getPagamentoId();
+        if (is_array($arrayDeBoletos)) {
+            foreach ($arrayDeBoletos as $BoletoModel) {
 
-        $arrayParcelas = explode(";", $pagamentoParcela);
-        $arrayValorParcelas = explode(";", $pagamentoValorParcela);
-        $arrayValorParcelasUnitario = explode(";", $pagamentoValorParcelaUnitario);
-        $ultimo = count($arrayParcelas);
-        $ultimo--;
+                $boletoId = $BoletoModel[0];
+                $boletoNumeroDocumento = $BoletoModel[1];
+                $boletoNossoNumero = $BoletoModel[2];
+                $boletoSacado = $BoletoModel[3];
+                $boletoRemetido = $BoletoModel[4];
+                $boletoDataVencimento = $BoletoModel[5];
+                $boletoNumeroParcela = $BoletoModel[6];
+                $boletoValor = $BoletoModel[7];
+                $boletoProdutoId = $BoletoModel[8];
+                var_dump($BoletoModel);
 
-        for ($i = 0; $i < $ultimo; $i++) {
-            $Parcelas = $arrayParcelas[$i];
-            $ValorParcelas = $arrayValorParcelas[$i];
-            $ValorParcelasUnitario = $arrayValorParcelasUnitario[$i];
+                $Cliente = $ClienteAdo->consultaObjetoPeloId($boletoSacado);
+                $clienteNome = $Cliente->getClienteNome();
+                $clienteEndereco = $Cliente->getClienteEndereco();
+                $clienteEstado = $Cliente->getClienteEstado();
+                $clienteCidade = $Cliente->getClienteCidade();
+                $clienteCEP = $Cliente->getClienteCEP();
 
-            for ($j = 0; $j < $Parcelas; $i++) {
                 $dias_de_prazo_para_pagamento = 5;
                 $taxa_boleto = 2.95;
-                //$data_venc = date("d/m/Y", time() + ($dias_de_prazo_para_pagamento * 86400));  // Prazo de X dias OU informe data: "13/04/2006"; 
-                $data_venc = $pagamentoData + ($dias_de_prazo_para_pagamento * 86400);
-                $valor_cobrado = $ValorParcelasUnitario; // Valor - REGRA: Sem pontos na milhar e tanto faz com "." ou "," ou com 1 ou 2 ou sem casa decimal
-                //$valor_cobrado = str_replace(",", ".", $valor_cobrado);
+                $data_venc = $boletoDataVencimento + ($dias_de_prazo_para_pagamento * 86400);
+                $valor_cobrado = $boletoValor; // Valor - REGRA: Sem pontos na milhar e tanto faz com "." ou "," ou com 1 ou 2 ou sem casa decimal
                 $valor_boleto = number_format($valor_cobrado + $taxa_boleto, 2, ',', '');
 
-                $dadosboleto["numero_documento"] = "12345678"; // Número do documento - REGRA: Máximo de 13 digitos
+                $dadosboleto["numero_documento"] = $boletoNumeroDocumento; // Número do documento - REGRA: Máximo de 13 digitos
                 $dadosboleto["data_vencimento"] = $data_venc; // Data de Vencimento do Boleto - REGRA: Formato DD/MM/AAAA
-
-                if ($i == 1) {
-                    //Não faz nada    
-                } else {
-                    $dadosboleto["data_vencimento"] = strtotime("+1 month", $data_venc);
-                }
 
                 $dadosboleto["data_documento"] = date("d/m/Y"); // Data de emissão do Boleto
                 $dadosboleto["data_processamento"] = date("d/m/Y"); // Data de processamento do boleto (opcional)
                 $dadosboleto["valor_boleto"] = $valor_boleto;  // Valor do Boleto - REGRA: Com vírgula e sempre com duas casas depois da virgula
 
                 $dadosboleto["sacado"] = $clienteNome;
-                $dadosboleto["endereco1"] = $clienteEndereco['clienteEndereco'];
-                $dadosboleto["endereco2"] = $clienteEndereco['clienteCidade'] . '-' . $clienteEndereco['clienteEstado'] . '-' . $clienteEndereco['clienteCEP'];
+                $dadosboleto["endereco1"] = $clienteEndereco;
+                $dadosboleto["endereco2"] = $clienteCidade . '-' . $clienteEstado . '-' . $clienteCEP;
 
                 $dadosboleto["demonstrativo1"] = "Pagamento de Compra na Loja Nonononono";
                 $dadosboleto["demonstrativo2"] = "Mensalidade referente a nonon nonooon nononon<br>Taxa bancária - R$ " . number_format($taxa_boleto, 2, ',', '');
@@ -113,10 +99,10 @@ if (is_array($arrayDePagamentos)) {
                 $dadosboleto["cedente"] = "Coloque a Razão Social da sua empresa aqui";
             }
         }
-    }
-}
 
-// NÃO ALTERAR!
-include("include/funcoes_hsbc.php");
-include("include/layout_hsbc.php");
-?>
+        // NÃO ALTERAR!
+        include("include/funcoes_hsbc.php");
+        include("include/layout_hsbc.php");
+    }
+
+}

@@ -371,8 +371,10 @@ class ProdutoView extends HtmlGeral {
                             . $fieldsetValorTotal
                             . $comboDeAtMonetaria
                             . $comboDeFormaPagamento
-                            . $fieldsetObservacoes . "</div>";
+                            . $fieldsetObservacoes
+                            . "</div>";
                 }
+
                 $dados .= "</div>";
             }
         }
