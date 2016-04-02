@@ -6,6 +6,8 @@ require_once '../Ados/ProdutoAdo.php';
 require_once '../Models/PagamentoModel.php';
 require_once '../Ados/PagamentoAdo.php';
 require_once '../PDF/RelatorioProdutos.php';
+require_once '../Ados/BoletoAdo.php';
+require_once '../Boleto/BoletoHsbc.php';
 
 class ProdutoController {
 
@@ -14,14 +16,15 @@ class ProdutoController {
     private $ProdutoAdo = null;
     private $PagamentoModel = null;
     private $PagamentoAdo = null;
+    private $BoletoAdo = null;
 
     public function __construct() {
         $this->ProdutoView = new ProdutoView();
         $this->ProdutoModel = new ProdutoModel();
         $this->ProdutoAdo = new ProdutoAdo();
-
         $this->PagamentoModel = new PagamentoModel();
         $this->PagamentoAdo = new PagamentoAdo();
+        $this->BoletoAdo = new BoletoAdo();
 
         $acao = $this->ProdutoView->getAcao();
 
@@ -143,9 +146,8 @@ class ProdutoController {
         if ($produtoId == '-1') {
             $EmitirRelatorio->EmitirRelatorioDeProdutos();
         } else {
-            $produtoModel = $this->ProdutoAdo->consultaObjetoPeloId($produtoId);
-            $produtoM = $produtoModel;
-            $EmitirRelatorio->EmitirRelatorioDeProduto($produtoM);
+            $ProdutoModel = $this->ProdutoAdo->consultaObjetoPeloId($produtoId);
+            $EmitirRelatorio->EmitirRelatorioDeProduto($ProdutoModel);
         }
     }
 
@@ -180,21 +182,20 @@ class ProdutoController {
     function validarBoleto() {
         $this->ProdutoModel = $this->ProdutoView->getDadosEntrada();
 
-        if ($this->ProdutoModel->checaAtributos()) {
-            if ($this->ProdutoAdo->insereObjeto($this->PagamentoModel)) {
-                $this->ProdutoView->adicionaMensagemSucesso("O Boleto foi inserido com sucesso!");
-                $this->PagamentoModel = new ProdutoModel();
-            } else {
-                $this->ProdutoView->adicionaMensagemErro("O Boleto não foi inserido! ");
-                //$this->clienteView->adicionaMensagemErro($this->clienteAdo->getMensagem());
-            }
+        if ($this->BoletoAdo->insereObjeto($this->ProdutoModel)) {
+            $this->ProdutoView->adicionaMensagemSucesso("O Boleto foi inserido com sucesso!");
+            $this->ProdutoModel = new ProdutoModel();
         } else {
-            $this->ProdutoView->adicionaMensagemAlerta($this->PagamentoModel->getMensagem(), "Erro");
+            $this->ProdutoView->adicionaMensagemErro("O Boleto não foi inserido! ");
+            //$this->clienteView->adicionaMensagemErro($this->clienteAdo->getMensagem());
         }
     }
 
     function imprimirBoleto() {
-        
+        $BoletoHsbc = new BoletoHsbc();
+        $produtoId = $this->ProdutoView->getIdConsulta();
+
+        $BoletoHsbc->geraBoleto($produtoId);
     }
 
 }

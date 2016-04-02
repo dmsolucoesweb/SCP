@@ -2,6 +2,7 @@
 
 require_once 'ADO.php';
 require_once '../Models/ProdutoModel.php';
+require_once '../Boleto/include/funcoes_hsbc.php';
 
 class ProdutoAdo extends ADO {
     /* Função: consultaApartamentoEBoxPeloId
@@ -31,7 +32,7 @@ class ProdutoAdo extends ADO {
 
     public function consultaProdutoPeloCliente($clienteId) {
         $produtoModel = null;
-        $query = "select * from Produtos where clienteId = $clienteId";
+        $query = "select * from Produtos where clienteId = '{$clienteId}' ";
 
         $resultado = parent::executaQuery($query);
         if ($resultado) {
@@ -41,8 +42,8 @@ class ProdutoAdo extends ADO {
             return false;
         }
 
-        $produtosModel = null;
         $DatasEHoras = new DatasEHoras();
+        $produtosModel = null;
 
         while ($produto = parent::leTabelaBD()) {
             $produtoDataVenda = $DatasEHoras->getDataEHorasDesinvertidaComBarras($produto['produtoDataVenda']);
@@ -52,10 +53,6 @@ class ProdutoAdo extends ADO {
         }
 
         return $produtosModel;
-    }
-
-    public function consultaBoletos($id) {
-        
     }
 
     public function consultaObjetoPeloId($id) {
@@ -135,39 +132,6 @@ class ProdutoAdo extends ADO {
         }
     }
 
-    public function insereBoleto(Model $ProdutoModel) {
-        $produtoId = $ProdutoModel->getProdutoId();
-        $produtoApartamento = $ProdutoModel->getProdutoApartamento();
-        $produtoBox = $ProdutoModel->getProdutoBox();
-        $produtoValor = $ProdutoModel->getProdutoValor();
-        $produtoDataVenda = $ProdutoModel->getProdutoDataVenda();
-        $produtoStatus = $ProdutoModel->getProdutoStatus();
-        $produtoParcelas = $ProdutoModel->getProdutoParcelas();
-        $produtoParcelasPeriodicidade = $ProdutoModel->getProdutoParcelasPeriodicidade();
-        $produtoParcelasDataVencimento = $ProdutoModel->getProdutoParcelasDataVencimento();
-        $produtoParcelasValorUnitario = $ProdutoModel->getProdutoParcelasValorUnitario() . ';0';
-        $produtoParcelasValorTotal = $ProdutoModel->getProdutoParcelasValorTotal() . ';0';
-        $produtoParcelasAtualizacaoMonetaria = $ProdutoModel->getProdutoParcelasAtualizacaoMonetaria();
-        $produtoParcelasFormaPagamento = $ProdutoModel->getProdutoParcelasFormaPagamento();
-        $produtoParcelasObservacoes = $ProdutoModel->getProdutoParcelasObservacoes();
-        $clienteId = $ProdutoModel->getClienteId();
-        $vendedorId = $ProdutoModel->getVendedorId();
-        $vendedorDataVencimento = $ProdutoModel->getVendedorDataVencimento();
-        $vendedorComissao = $ProdutoModel->getVendedorComissao();
-        $vendedorFormaPagamento = $ProdutoModel->getVendedorFormaPagamento();
-        $vendedorObservacao = $ProdutoModel->getVendedorObservacao();
-
-        $query = "insert into Boletos (boletoId, boletoNumeroDocumento, boletoNossoNumero, boletoSacado, boletoRemetido, boletoDataVencimento, boletoNumeroParcela, boletoValor, boletoProdutoId) values (null, '$produtoApartamento', '$produtoBox','$produtoValor', '$produtoDataVenda', '$produtoStatus', '$produtoParcelas', '$produtoParcelasPeriodicidade', '$produtoParcelasDataVencimento', '$produtoParcelasValorUnitario', '$produtoParcelasValorTotal', '$produtoParcelasAtualizacaoMonetaria', '$produtoParcelasFormaPagamento', '$produtoParcelasObservacoes', '$clienteId', '$vendedorId', '$vendedorDataVencimento', '$vendedorComissao', '$vendedorFormaPagamento', '$vendedorObservacao')";
-
-        $resultado = parent::executaQuery($query);
-        if ($resultado) {
-            return true;
-        } else {
-            parent::setMensagem("Erro no insert de insereObjeto: " . parent::getBdError());
-            return false;
-        }
-    }
-
     public function alteraObjeto(Model $ProdutoModel) {
         $produtoId = $ProdutoModel->getProdutoId();
         $produtoStatus = $ProdutoModel->getProdutoStatus();
@@ -202,10 +166,6 @@ class ProdutoAdo extends ADO {
             parent::setMensagem("Erro no delete de excluiObjeto: " . parent::getBdError());
             return false;
         }
-    }
-
-    public function excluiBoleto(Model $ProdutoModel) {
-        
     }
 
 }

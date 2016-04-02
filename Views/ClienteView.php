@@ -4,6 +4,7 @@ require_once 'HtmlGeral.php';
 require_once '../Classes/montahtml.php';
 require_once '../Classes/datasehoras.php';
 require_once '../Classes/cpf.php';
+require_once '../Ados/ProdutoAdo.php';
 include('../Classes/functions.php');
 
 class ClienteView extends HtmlGeral {
@@ -96,9 +97,9 @@ class ClienteView extends HtmlGeral {
 
     public function montaDados($clienteModel) {
         $dados = null;
-        $montahtml = new MontaHTML();
-        $clienteAdo = new ClienteAdo();
-        $produtoAdo = new ProdutoAdo();
+        $MontaHtml = new MontaHTML();
+        $ClienteAdo = new ClienteAdo();
+        $ProdutoAdo = new ProdutoAdo();
 
         $clienteId = $clienteModel->getClienteId();
         $clienteNome = $clienteModel->getClienteNome();
@@ -148,13 +149,12 @@ class ClienteView extends HtmlGeral {
         $clienteCppRenda = number_format($clienteModel->getClienteCppRenda(), 2, ",", ".");
         $clienteCppEmpresa = $clienteModel->getClienteCppEmpresa();
         $clienteCppCargo = $clienteModel->getClienteCppCargo();
-        $Produto = $produtoAdo->consultaObjetoPeloId($clienteId);
-        $produtoApartamento = $Produto->getProdutoApartamento();
-        $produtoBox = $Produto->getProdutoBox();
-        $produtoId = $Produto->getProdutoId();
+        $Produto = $ProdutoAdo->consultaProdutoPeloCliente($clienteId);
+
+
 
         $htmlComboClientes = array("label" => "Clientes", "name" => "idConsulta", "options" => $this->montaOpcoesDeClientes($clienteId));
-        $comboDeClientes = $montahtml->montaCombobox($htmlComboClientes, $textoPadrao = 'Escolha um Cliente...', $onChange = null, $disabled = false);
+        $comboDeClientes = $MontaHtml->montaCombobox($htmlComboClientes, $textoPadrao = 'Escolha um Cliente...', $onChange = null, $disabled = false);
 
         $dados .= "<form action='Cliente.php' method='post'>
                     <h1>Cadastro de Cliente</h1>
@@ -165,18 +165,20 @@ class ClienteView extends HtmlGeral {
         $dados .= "<button name='bt' type='submit' class='btn btn-info' value='con'><i class='glyphicon glyphicon-search'></i> Consultar</button>
                    <button name='bt' type='submit' class='btn btn-info' value='erl'><i class='glyphicon glyphicon-print'></i> Emitir Relatório</button></div>";
 
-
-
-        if (is_array($produtoId)) {
+        if (is_array($Produto)) {
             $dados .= "<div class='aptos_cliente'><h3 class='h3aptos_cliente'>Apartamentos adquiridos pelo cliente</h3>";
-            foreach ($produtoId as $produtoid) {
-                $dados .= "<button name='bt' type='submit' class='btn btn-block btn-cliente' value='$produtoid'><div class='esquerda'><i class='glyphicon glyphicon-flag'></i></div> <div class='esquerda'><span>ID:</span> $produtoid<br /><span>Apartamento:</span> [$produtoApartamento]<br /><span>Box:</span> [$produtoBox]</div></button>";
+            foreach ($Produto as $Produto) {
+                $produtoApartamento = $Produto->getProdutoApartamento();
+                $produtoBox = $Produto->getProdutoBox();
+                $produtoId = $Produto->getProdutoId();
+
+                $dados .= "<button name='bt' type='submit' class='btn btn-block btn-cliente' value='$produtoId'><div class='esquerda'><i class='glyphicon glyphicon-flag'></i></div> <div class='esquerda'><span>ID:</span> $produtoId<br /><span>Apartamento:</span> [$produtoApartamento]<br /><span>Box:</span> [$produtoBox]</div></button>";
             }
             $dados .= "</div>";
         }
 
         $dadosfieldsetHidden = array("name" => "clienteId", "value" => $clienteId);
-        $hiddenId = $montahtml->montaInputHidden($dadosfieldsetHidden);
+        $hiddenId = $MontaHtml->montaInputHidden($dadosfieldsetHidden);
         $hiddenId .= "<div class='row'>";
 
         $htmlFieldsetNome = array("label" => "Nome", "obg" => true,"classefg" => "col-md-12", "type" => "text", "name" => "clienteNome", "value" => $clienteNome, "placeholder" => null, "disabled" => false);
@@ -196,7 +198,7 @@ class ClienteView extends HtmlGeral {
         $htmlComboNacionalidade = array("label" => "Nacionalidade", "obg" => true, "classefg" => "col-md-6", "name" => "clienteNacionalidade",
             "options" => array(array("value" => "1", "selected" => $selected1, "text" => "Brasileiro(a)"),
                 array("value" => "2", "selected" => $selected2, "text" => "Internacional")));
-        $comboDeNacionalidade = $montahtml->montaCombobox($htmlComboNacionalidade, $textoPadrao = 'Escolha uma Nacionalidade...');
+        $comboDeNacionalidade = $MontaHtml->montaCombobox($htmlComboNacionalidade, $textoPadrao = 'Escolha uma Nacionalidade...');
 
         $htmlFieldsetData = array("label" => "Data de Nascimento", "obg" => true, "classefg" => "col-md-6", "name" => "clienteDataNascimento", "value" => $clienteDataNascimento, "disabled" => false);
         $fieldsetDataNascimento = $montahtml->montaInputDeData($htmlFieldsetData);
@@ -218,7 +220,7 @@ class ClienteView extends HtmlGeral {
         $htmlDadosRadioSexo = array("label" => "Sexo", "obg" => true, "classefg" => "col-md-5", "buttons" => array
                 (array("name" => "clienteSexo", "value" => "M", "checked" => $m, "text" => "Masculino"),
                 array("name" => "clienteSexo", "value" => "F", "checked" => $f, "text" => "Feminino")));
-        $sexoHtml = $montahtml->montaRadioEmLinha($htmlDadosRadioSexo);
+        $sexoHtml = $MontaHtml->montaRadioEmLinha($htmlDadosRadioSexo);
         $sexoHtml .= "</div><div class='row'>";
 
         $htmlFieldsetRG = array("label" => "RG ", "obg" => true, "classefg" => "col-md-4", "type" => "text", "name" => "clienteRG", "value" => $clienteRG, "placeholder" => null, "disabled" => false);
@@ -260,7 +262,7 @@ class ClienteView extends HtmlGeral {
                 array("value" => "3", "selected" => $selected5, "text" => "Divorciado(a)"),
                 array("value" => "4", "selected" => $selected6, "text" => "Viuvo(a)"),
                 array("value" => "5", "selected" => $selected7, "text" => "União Estável")));
-        $comboDeEstadoCivil = $montahtml->montaCombobox($htmlComboEstadoCivil, $textoPadrao = 'Escolha um Estado Civil...');
+        $comboDeEstadoCivil = $MontaHtml->montaCombobox($htmlComboEstadoCivil, $textoPadrao = 'Escolha um Estado Civil...');
 
         $selected8 = $selected9 = $selected10 = $selected11 = $selected12 = null;
         switch ($clienteRegimeComunhao) {
@@ -283,7 +285,7 @@ class ClienteView extends HtmlGeral {
                 array("value" => "2", "selected" => $selected9, "text" => "Comunhão Universal de Bens"),
                 array("value" => "3", "selected" => $selected10, "text" => "Separação Total de Bens"),
                 array("value" => "4", "selected" => $selected11, "text" => "Participação Final de Aquestos")));
-        $comboDeEstadoRegimeComunhao = $montahtml->montaCombobox($htmlComboRegimeComunhao, $textoPadrao = 'Escolha um Regime de Bens...', $onChange = null, $disabled = $disabled_regime);
+        $comboDeEstadoRegimeComunhao = $MontaHtml->montaCombobox($htmlComboRegimeComunhao, $textoPadrao = 'Escolha um Regime de Bens...', $onChange = null, $disabled = $disabled_regime);
 
         $htmlFieldsetRenda = array("label" => "Renda", "obg" => true, "classefg" => "col-md-4", "classecampo" => "moeda", "type" => "text", "name" => "clienteRenda", "value" => $clienteRenda, "placeholder" => null, "disabled" => false);
         $fieldseRenda = $montahtml->montaInput($htmlFieldsetRenda);
@@ -313,20 +315,20 @@ class ClienteView extends HtmlGeral {
         $fieldseTelefone = $montahtml->montaInput($htmlFieldsetTelefone);
 
         $htmlFieldsetTelefone2 = array("label" => "Telefone Fixo", "type" => "text", "classefg" => "col-md-4", "classecampo" => "fone", "name" => "clienteTelefone2", "value" => $clienteTelefone2, "placeholder" => null, "disabled" => false);
-        $fieldseTelefone2 = $montahtml->montaInput($htmlFieldsetTelefone2);
+        $fieldseTelefone2 = $MontaHtml->montaInput($htmlFieldsetTelefone2);
 
         $htmlFieldsetEmail = array("label" => "E-mail", "type" => "email", "classefg" => "col-md-4", "name" => "clienteEmail", "value" => $clienteEmail, "placeholder" => null, "disabled" => false);
-        $fieldseEmail = $montahtml->montaInput($htmlFieldsetEmail);
+        $fieldseEmail = $MontaHtml->montaInput($htmlFieldsetEmail);
         $fieldseEmail .= "</div><div class='row'>";
 
         $htmlFieldsetProfissao = array("label" => "Profissão", "obg" => true, "classefg" => "col-md-4", "type" => "text", "name" => "clienteProfissao", "value" => $clienteProfissao, "placeholder" => null, "disabled" => false);
         $fieldseProfissao = $montahtml->montaInput($htmlFieldsetProfissao);
 
         $htmlFieldsetEmpresa = array("label" => "Empresa", "classefg" => "col-md-4", "type" => "text", "name" => "clienteEmpresa", "value" => $clienteEmpresa, "placeholder" => null, "disabled" => false);
-        $fieldseEmpresa = $montahtml->montaInput($htmlFieldsetEmpresa);
+        $fieldseEmpresa = $MontaHtml->montaInput($htmlFieldsetEmpresa);
 
         $htmlFieldsetCargo = array("label" => "Cargo", "classefg" => "col-md-4", "type" => "text", "name" => "clienteCargo", "value" => $clienteCargo, "placeholder" => null, "disabled" => false);
-        $fieldseCargo = $montahtml->montaInput($htmlFieldsetCargo) . "</div>";
+        $fieldseCargo = $MontaHtml->montaInput($htmlFieldsetCargo) . "</div>";
 
         /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         $cpp1 = $cpp2 = $cpp3 = $cpp4 = null;
@@ -353,7 +355,7 @@ class ClienteView extends HtmlGeral {
                 array("name" => "clienteCppStatus", "value" => "SP", "checked" => $cpp2, "text" => "Segundo Proponente"),
                 array("name" => "clienteCppStatus", "value" => "P", "checked" => $cpp3, "text" => "Procurador"),
                 array("name" => "clienteCppStatus", "value" => "N", "checked" => $cpp4, "text" => "Nenhum")));
-        $radioHtmlStatusCpp = $montahtml->montaRadioEmLinha($htmlDadosRadioStatusCpp) . "</div>";
+        $radioHtmlStatusCpp = $MontaHtml->montaRadioEmLinha($htmlDadosRadioStatusCpp) . "</div>";
 
         $htmlFieldsetNomeCpp = array("label" => "Nome", "obg" => true, "classefg" => "col-md-12", "type" => "text", "name" => "clienteCppNome", "value" => $clienteCppNome, "placeholder" => null, "disabled" => false);
         $fieldsetNomeCpp = "<div class='row'>" . $montahtml->montaInput($htmlFieldsetNomeCpp);
@@ -372,7 +374,7 @@ class ClienteView extends HtmlGeral {
         $htmlComboNacionalidadeCpp = array("label" => "Nacionalidade", "obg" => true, "classefg" => "col-md-6", "name" => "clienteCppNacionalidade",
             "options" => array(array("value" => "1", "selected" => $selected13, "text" => "Brasileiro(a)"),
                 array("value" => "2", "selected" => $selected14, "text" => "Internacional")));
-        $comboDeNacionalidadeCpp = $montahtml->montaCombobox($htmlComboNacionalidadeCpp, $textoPadrao = 'Escolha uma Nacionalidade');
+        $comboDeNacionalidadeCpp = $MontaHtml->montaCombobox($htmlComboNacionalidadeCpp, $textoPadrao = 'Escolha uma Nacionalidade');
 
         $htmlFieldsetDataCpp = array("label" => "Data de Nascimento", "obg" => true, "name" => "clienteCppDataNascimento", "classefg" => "col-md-6", "value" => $clienteCppDataNascimento, "disabled" => false);
         $fieldsetDataNascimentoCpp = $montahtml->montaInputDeData($htmlFieldsetDataCpp);
@@ -394,7 +396,7 @@ class ClienteView extends HtmlGeral {
         $htmlDadosRadioSexoCpp = array("label" => "Sexo", "obg" => true, "classefg" => "col-md-5", "buttons" => array
                 (array("name" => "clienteCppSexo", "value" => "M", "checked" => $mcpp, "text" => "Masculino"),
                 array("name" => "clienteCppSexo", "value" => "F", "checked" => $fcpp, "text" => "Feminino")));
-        $sexoHtmlCpp = $montahtml->montaRadioEmLinha($htmlDadosRadioSexoCpp) . "</div><div class='row'>";
+        $sexoHtmlCpp = $MontaHtml->montaRadioEmLinha($htmlDadosRadioSexoCpp) . "</div><div class='row'>";
 
         $htmlFieldsetRGCpp = array("label" => "RG ", "obg" => true, "classefg" => "col-md-4", "type" => "text", "name" => "clienteCppRG", "value" => $clienteCppRG, "placeholder" => null, "disabled" => false);
         $fieldseRGCpp = $montahtml->montaInput($htmlFieldsetRGCpp);
@@ -434,7 +436,7 @@ class ClienteView extends HtmlGeral {
                 array("value" => "3", "selected" => $selected17, "text" => "Divorciado(a)"),
                 array("value" => "4", "selected" => $selected18, "text" => "Viuvo(a)"),
                 array("value" => "5", "selected" => $selected19, "text" => "União Estável")));
-        $comboDeEstadoCivilCpp = $montahtml->montaCombobox($htmlComboEstadoCivilCpp, $textoPadrao = 'Escolha um Estado Civil...');
+        $comboDeEstadoCivilCpp = $MontaHtml->montaCombobox($htmlComboEstadoCivilCpp, $textoPadrao = 'Escolha um Estado Civil...');
 
         $selected20 = $selected21 = $selected22 = $selected23 = null;
         switch ($clienteCppRegimeComunhao) {
@@ -457,10 +459,10 @@ class ClienteView extends HtmlGeral {
                 array("value" => "2", "selected" => $selected21, "text" => "Comunhão Universal de Bens"),
                 array("value" => "3", "selected" => $selected22, "text" => "Separação Total de Bens"),
                 array("value" => "4", "selected" => $selected23, "text" => "Participação Final nos Aquestos")));
-        $comboDeEstadoRegimeComunhaoCpp = $montahtml->montaCombobox($htmlComboRegimeComunhaoCpp, $textoPadrao = 'Escolha um Regime de Bens...', $onChange = null, $disabled = $disabled_regime2);
+        $comboDeEstadoRegimeComunhaoCpp = $MontaHtml->montaCombobox($htmlComboRegimeComunhaoCpp, $textoPadrao = 'Escolha um Regime de Bens...', $onChange = null, $disabled = $disabled_regime2);
 
         $htmlFieldsetRendaCpp = array("label" => "Renda", "classefg" => "col-md-4", "type" => "text", "classecampo" => "moeda", "name" => "clienteCppRenda", "value" => $clienteCppRenda, "placeholder" => null, "disabled" => false);
-        $fieldseRendaCpp = $montahtml->montaInput($htmlFieldsetRendaCpp) . "</div><div class='row'>";
+        $fieldseRendaCpp = $MontaHtml->montaInput($htmlFieldsetRendaCpp) . "</div><div class='row'>";
 
         $labelFiliacaoCpp = "<div class='col-md-2'><legend>Filiação</legend></div><div class='col-md-10'>";
 
@@ -485,19 +487,19 @@ class ClienteView extends HtmlGeral {
         $fieldseTelefoneCpp = $montahtml->montaInput($htmlFieldsetTelefoneCpp);
 
         $htmlFieldsetTelefone2Cpp = array("label" => "Telefone Fixo", "type" => "text", "classefg" => "col-md-4", "classecampo" => "fone", "name" => "clienteCppTelefone2", "value" => $clienteCppTelefone2, "placeholder" => null, "disabled" => false);
-        $fieldseTelefone2Cpp = $montahtml->montaInput($htmlFieldsetTelefone2Cpp);
+        $fieldseTelefone2Cpp = $MontaHtml->montaInput($htmlFieldsetTelefone2Cpp);
 
         $htmlFieldsetEmailCpp = array("label" => "E-mail", "type" => "email", "classefg" => "col-md-4", "name" => "clienteCppEmail", "value" => $clienteCppEmail, "placeholder" => null, "disabled" => false);
-        $fieldseEmailCpp = $montahtml->montaInput($htmlFieldsetEmailCpp) . "</div><div class='row'>";
+        $fieldseEmailCpp = $MontaHtml->montaInput($htmlFieldsetEmailCpp) . "</div><div class='row'>";
 
         $htmlFieldsetProfissaoCpp = array("label" => "Profissão", "obg" => true, "classefg" => "col-md-4", "type" => "text", "name" => "clienteCppProfissao", "value" => $clienteCppProfissao, "placeholder" => null, "disabled" => false);
         $fieldseProfissaoCpp = $montahtml->montaInput($htmlFieldsetProfissaoCpp);
 
         $htmlFieldsetEmpresaCpp = array("label" => "Empresa", "classefg" => "col-md-4", "type" => "text", "name" => "clienteCppEmpresa", "value" => $clienteCppEmpresa, "placeholder" => null, "disabled" => false);
-        $fieldseEmpresaCpp = $montahtml->montaInput($htmlFieldsetEmpresaCpp);
+        $fieldseEmpresaCpp = $MontaHtml->montaInput($htmlFieldsetEmpresaCpp);
 
         $htmlFieldsetCargoCpp = array("label" => "Cargo", "classefg" => "col-md-4", "type" => "text", "name" => "clienteCargoCpp", "value" => $clienteCppCargo, "placeholder" => null, "disabled" => false);
-        $fieldseCargoCpp = $montahtml->montaInput($htmlFieldsetCargoCpp) . "</div>";
+        $fieldseCargoCpp = $MontaHtml->montaInput($htmlFieldsetCargoCpp) . "</div>";
 
         if($cpp4 == 1 or $cpp4 = null) {
             $cclinte = "col-md-12";

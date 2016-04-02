@@ -110,6 +110,7 @@ class RelatorioPagamentos {
         $CPF = new CPF();
         $ClienteAdo = new ClienteAdo();
         $ProdutoAdo = new ProdutoAdo();
+        $IndiceAdo = new IndiceAdo();
 
         $pagamentoModel = $PagamentoAdo->consultaObjetoPeloId($pagamentoId);
 

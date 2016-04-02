@@ -236,27 +236,27 @@ class ProdutoModel extends Model {
             $this->adicionaMensagem("Selecione o Status do Apartamento (Entregue/Aguardando).");
         }
 
-        if ($this->produtoParcelas == 0) {
+        if ($this->produtoParcelas == null || $this->produtoParcelas == 0) {
             $atributosValidos = FALSE;
             $this->adicionaMensagem("Informe a Quantidade de Parcelas do Apartamento.");
         }
 
-        if ($this->produtoParcelasPeriodicidade == 0) {
+        if ($this->produtoParcelasPeriodicidade == null || $this->produtoParcelasPeriodicidade == 0) {
             $atributosValidos = FALSE;
             $this->adicionaMensagem("Informe a Periodicidade da Parcela do Apartamento.");
         }
 
-        if ($this->produtoParcelasDataVencimento == 0) {
+        if ($this->produtoParcelasDataVencimento == null || $this->produtoParcelasDataVencimento == 0) {
             $atributosValidos = FALSE;
             $this->adicionaMensagem("Informe a Data de Vencimento da Parcela do Apartamento.");
         }
 
-        if ($this->produtoParcelasFormaPagamento == "-1") {
+        if ($this->produtoParcelasFormaPagamento == null || $this->produtoParcelasFormaPagamento == "-1") {
             $atributosValidos = FALSE;
             $this->adicionaMensagem("Informe a Forma de Pagamento da Parcela do Apartamento.");
         }
 
-        if ($this->produtoParcelasAtualizacaoMonetaria == "-1") {
+        if ($this->produtoParcelasAtualizacaoMonetaria == null || $this->produtoParcelasAtualizacaoMonetaria == "-1") {
             $atributosValidos = FALSE;
             $this->adicionaMensagem("Informe o tipo de Atualização Monetária da Parcela do Apartamento.");
         }

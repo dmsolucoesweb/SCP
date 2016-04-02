@@ -80,33 +80,33 @@ class VendedorView extends HtmlGeral {
         return $opcoesDeVendedores;
     }
 
-    public function montaDados($vendedorModel) {
+    public function montaDados($VendedorModel) {
         $dados = null;
         $montahtml = new MontaHTML();
 
-        $vendedorId = $vendedorModel->getVendedorId();
-        $vendedorNome = $vendedorModel->getVendedorNome();
-        $vendedorNacionalidade = $vendedorModel->getVendedorNacionalidade();
-        $vendedorDataNascimento = $vendedorModel->getVendedorDataNascimento();
-        $vendedorCPF = $vendedorModel->getVendedorCPF();
-        $vendedorRG = $vendedorModel->getVendedorRG();
-        $vendedorOrgaoEmissor = $vendedorModel->getVendedorOrgaoEmissor();
-        $vendedorEstadoOrgaoEmissor = $vendedorModel->getVendedorEstadoOrgaoEmissor();
-        $vendedorSexo = $vendedorModel->getVendedorSexo();
-        $vendedorEstadoCivil = $vendedorModel->getVendedorEstadoCivil();
-        $vendedorRegimeComunhao = $vendedorModel->getVendedorRegimeComunhao();
-        $vendedorFiliacao = $vendedorModel->getVendedorFiliacao();
-        $vendedorFiliacao2 = $vendedorModel->getVendedorFiliacao2();
-        $vendedorTelefone = $vendedorModel->getVendedorTelefone();
-        $vendedorTelefone2 = $vendedorModel->getVendedorTelefone2();
-        $vendedorEndereco = $vendedorModel->getVendedorEndereco();
-        $vendedorCidade = $vendedorModel->getVendedorCidade();
-        $vendedorEstado = $vendedorModel->getVendedorEstado();
-        $vendedorCEP = $vendedorModel->getVendedorCEP();
-        $vendedorEmail = $vendedorModel->getVendedorEmail();
-        $vendedorProfissao = $vendedorModel->getVendedorProfissao();
-        $vendedorRenda = $vendedorModel->getVendedorRenda();
-        $vendedorEmpresa = $vendedorModel->getVendedorEmpresa();
+        $vendedorId = $VendedorModel->getVendedorId();
+        $vendedorNome = $VendedorModel->getVendedorNome();
+        $vendedorNacionalidade = $VendedorModel->getVendedorNacionalidade();
+        $vendedorDataNascimento = $VendedorModel->getVendedorDataNascimento();
+        $vendedorCPF = $VendedorModel->getVendedorCPF();
+        $vendedorRG = $VendedorModel->getVendedorRG();
+        $vendedorOrgaoEmissor = $VendedorModel->getVendedorOrgaoEmissor();
+        $vendedorEstadoOrgaoEmissor = $VendedorModel->getVendedorEstadoOrgaoEmissor();
+        $vendedorSexo = $VendedorModel->getVendedorSexo();
+        $vendedorEstadoCivil = $VendedorModel->getVendedorEstadoCivil();
+        $vendedorRegimeComunhao = $VendedorModel->getVendedorRegimeComunhao();
+        $vendedorFiliacao = $VendedorModel->getVendedorFiliacao();
+        $vendedorFiliacao2 = $VendedorModel->getVendedorFiliacao2();
+        $vendedorTelefone = $VendedorModel->getVendedorTelefone();
+        $vendedorTelefone2 = $VendedorModel->getVendedorTelefone2();
+        $vendedorEndereco = $VendedorModel->getVendedorEndereco();
+        $vendedorCidade = $VendedorModel->getVendedorCidade();
+        $vendedorEstado = $VendedorModel->getVendedorEstado();
+        $vendedorCEP = $VendedorModel->getVendedorCEP();
+        $vendedorEmail = $VendedorModel->getVendedorEmail();
+        $vendedorProfissao = $VendedorModel->getVendedorProfissao();
+        $vendedorRenda = $VendedorModel->getVendedorRenda();
+        $vendedorEmpresa = $VendedorModel->getVendedorEmpresa();
 
         $htmlComboVendedores = array("label" => "Vendedores", "name" => "idConsulta", "options" => $this->montaOpcoesDeVendedores($vendedorId));
         $comboDeVendedores = $montahtml->montaCombobox($htmlComboVendedores, $textoPadrao = 'Escolha um Vendedor...', $onChange = null, $disabled = false);

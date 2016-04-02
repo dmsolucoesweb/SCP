@@ -288,7 +288,7 @@ class ProdutoView extends HtmlGeral {
                 $ParcelasFormaPagamento = explode(";", $produtoParcelasFormaPagamento);
                 $ParcelasObservacoes = explode(";", $produtoParcelasObservacoes);
                 $ultimo = count($Parcelas);
-                $ultimo--;
+                //$ultimo--;
                 $dados .= "<div id='campoPai'>";
 
                 for ($i = 0; $i < $ultimo; $i++) {
@@ -316,12 +316,12 @@ class ProdutoView extends HtmlGeral {
                             break;
                     }
 
-                    $htmlComboPeriodicidade = array("label" => "Periodicidade", "classefg" => "form-group col-md-2", "name" => "produtoParcelasPeriodicidade",
+                    $htmlComboPeriodicidade = array("label" => "Periodicidade", "classefg" => "form-group col-md-2", "name" => "produtoParcelasPeriodicidade[$i]",
                         "options" => array(array("value" => "1", "selected" => $selectedp, "text" => "Única"),
                             array("value" => "2", "selected" => $selectedp2, "text" => "Mensal")));
                     $comboDePeriodicidade = $montahtml->montaCombobox($htmlComboPeriodicidade, $textoPadrao = 'Periodicidade');
 
-                    $htmlFieldsetDataVencimento = array("label" => "Data de Vencimento", "type" => "text", "classefg" => "form-group col-md-3", "name" => "produtoParcelasDataVencimento", "value" => $DataVencimento, "placeholder" => null, "disabled" => $disabled);
+                    $htmlFieldsetDataVencimento = array("label" => "Data de Vencimento", "type" => "text", "classefg" => "form-group col-md-3", "name" => "produtoParcelasDataVencimento[$i]", "value" => $DataVencimento, "placeholder" => null, "disabled" => $disabled);
                     $fieldsetDataVencimento = $montahtml->montaInput($htmlFieldsetDataVencimento);
 
                     $htmlFieldsetValorUnitario = array("label" => "Valor Unitario", "type" => "text", "classefg" => "form-group col-md-3", "name" => "produtoParcelasValorUnitario[$i]", "value" => $ValorUnitario, "placeholder" => null, "disabled" => $disabled);
@@ -371,27 +371,29 @@ class ProdutoView extends HtmlGeral {
                             . $fieldsetValorTotal
                             . $comboDeAtMonetaria
                             . $comboDeFormaPagamento
-                            . $fieldsetObservacoes . "</div>";
+                            . $fieldsetObservacoes
+                            . "</div>";
                 }
+
                 $dados .= "</div>";
             }
         }
-        
+
         $dados .= "<div class='dados_int row'><h4>Informações sobre o vendedor</h4>"
                 . $fieldsetDataVenc
                 . $fieldsetValorComissao
                 . $comboDeFPagVendedor
                 . $fieldsetObservacao
                 . "</div>";
-        
+
         $dados .= "<div class='row'>
                 <button name='bt' type='submit' class='btn btn-info' value='nov'><i class='glyphicon glyphicon-asterisk'></i> Novo</button>
                 <button name='bt' id='inc' type='submit' class='btn btn-success' disabled='true' value='inc' ><i class='glyphicon glyphicon-ok'></i> Incluir</button>
                 <button name='bt' id='alt' type='submit' class='btn btn-warning' disabled='true' value='alt'><i class='glyphicon glyphicon-refresh'></i> Alterar</button>
                 <button name='bt' type='submit' class='btn btn-danger' value='exc'><i class='glyphicon glyphicon-trash'></i> Excluir</button></div>
-                <button name='bt' id='inc' type='submit' class='btn btn-success' disabled='true' value='vbl' ><i class='glyphicon glyphicon-ok'></i> Validar Boletos</button>
-                <button name='bt' id='inc' type='submit' class='btn btn-success' disabled='true' value='ibl' ><i class='glyphicon glyphicon-ok'></i> Imprimir Boletos</button>
-                </form></div>";
+                <button name='bt' type='submit' class='btn btn-info' value='vbl'><i class='glyphicon glyphicon-asterisk'></i> Validar Boleto</button>
+                <button name='bt' type='submit' class='btn btn-info' value='ibl'><i class='glyphicon glyphicon-asterisk'></i> Imprimir Boleto</button>
+</form></div>";
 
         $this->setDados($dados);
     }
