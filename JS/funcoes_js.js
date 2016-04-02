@@ -144,7 +144,7 @@ $(document).ready(function () {
         multidate: false
     });
 // função javascript que implementa select2 bootstrap 
-// $('select').select2({ language: 'pt-BR' });
+$('select').select2({ language: 'pt-BR' });
 // função javascript que mostra opções do vendedor na página de vendas
     $('.vendedor_produto').change(function () { 
         if ($('.vendedor_produto').val() == 1) {
@@ -217,9 +217,10 @@ $('input[name=\"clienteCppStatus\"]').change(function () {
     });
     
 jQuery(function($){
-$('.moeda').maskMoney({symbol:'R$ ',decimal:',',thousands:'.',showSymbol : false});
-   $('.fone').mask('(99) 9999-9999');
-   $('.cpf').mask('999.999.999-99');
-   $('.cep').mask('99.999-999');
-   $('.indice').mask('0.0000');
+    $('.obrigatorio').tooltip('hide');
+    $('.moeda').maskMoney({symbol:'R$ ',decimal:',',thousands:'.',showSymbol : false});
+    $('.fone').mask('(99) 9999-9999');
+    $('.cpf').mask('999.999.999-99');
+    $('.cep').mask('99.999-999');
+    $('.indice').mask('0.0000');
 });

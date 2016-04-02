@@ -29,14 +29,15 @@ class MontaHTML {
             $dadosFieldset['classelb'] = null;
         } else {}
 
-        if (!$dadosFieldset['obg']) {
+        if (empty($dadosFieldset['obg'])) {
             $obg = null;
         } else {
-            $obg = "<small><i class='glyphicon glyphicon-asterisk text-danger obrigatorio'></i></small>";
+            $obg = "<small><i class='glyphicon glyphicon-asterisk text-danger obrigatorio' data-toggle='tooltip' data-placement='top' title='Campo Obrigatório'></i></small>";
         }
         if (empty($dadosFieldset['classecampo'])) {
             $dadosFieldset['classecampo'] = null;
         } else {
+            
         }
 
         $disabled = null;
@@ -91,10 +92,10 @@ class MontaHTML {
         } else {
             
         }
-        if (!$dadosFieldset['obg']) {
+        if (empty($dadosFieldset['obg'])) {
             $obg = null;
         } else {
-            $obg = "<small><i class='glyphicon glyphicon-asterisk text-danger obrigatorio'></i></small>";
+            $obg = "<small><i class='glyphicon glyphicon-asterisk text-danger obrigatorio' data-toggle='tooltip' data-placement='top' title='Campo Obrigatório'></i></small>";
         }
         $disabled = null;
         if ($dadosFieldset['disabled']) {
@@ -121,10 +122,10 @@ class MontaHTML {
      */
     function montaTextArea(array $dadosTextArea) {
         $textArea = NULL;
-if (!$dadosTextArea['obg']) {
+if (empty($dadosTextArea['obg'])) {
             $obg = null;
         } else {
-            $obg = "<small><i class='glyphicon glyphicon-asterisk text-danger obrigatorio'></i></small>";
+            $obg = "<small><i class='glyphicon glyphicon-asterisk text-danger obrigatorio' data-toggle='tooltip' data-placement='top' title='Campo Obrigatório'></i></small>";
         }
         $textArea = "\n\t\t\t<div class=\"form-group linhaFieldset\">";
         $textArea .= "<label for=\"{$dadosTextArea['name']}\">{$dadosTextArea['label']} $obg</label>";
@@ -136,10 +137,10 @@ if (!$dadosTextArea['obg']) {
 
     private function montaComboboxParte1(array $dadosCombo, $textoOpcaoPadrao, $onChange = null, $disabled = false) {
         $combobox = NULL;
-        if (!$dadosCombo['obg']) {
+        if (empty($dadosCombo['obg'])) {
             $obg = null;
         } else {
-            $obg = "<small><i class='glyphicon glyphicon-asterisk text-danger obrigatorio'></i></small>";
+            $obg = "<small><i class='glyphicon glyphicon-asterisk text-danger obrigatorio' data-toggle='tooltip' data-placement='top' title='Campo Obrigatório'></i></small>";
         }
         if (empty($dadosCombo['classefg'])) {
             $dadosCombo['classefg'] = null;
@@ -218,10 +219,10 @@ if (!$dadosTextArea['obg']) {
      */
     function montaRadioEmLinha(array $dadosRadio) {
         $radio = NULL;
-       if (!$dadosRadio['obg']) {   
+       if (empty($dadosRadio['obg'])) {   
             $obg = null;
         } else {
-            $obg = "<small><i class='glyphicon glyphicon-asterisk text-danger obrigatorio'></i></small>";
+            $obg = "<small><i class='glyphicon glyphicon-asterisk text-danger obrigatorio' data-toggle='tooltip' data-placement='top' title='Campo Obrigatório'></i></small>";
         }
         if (empty($dadosRadio['classefg'])) {
             $dadosRadio['classefg'] = null;
@@ -256,10 +257,10 @@ if (!$dadosTextArea['obg']) {
      */
     function montaRadioEmColuna(array $dadosRadio) {
         $radio = NULL;
-if (!$dadosRadio['obg']) {
+if (empty($dadosRadio['obg'])) {
             $obg = null;
         } else {
-            $obg = "<small><i class='glyphicon glyphicon-asterisk text-danger obrigatorio'></i></small>";
+            $obg = "<small><i class='glyphicon glyphicon-asterisk text-danger obrigatorio' data-toggle='tooltip' data-placement='top' title='Campo Obrigatório'></i></small>";
         }
         if (empty($dadosRadio['classefg'])) {
             $dadosRadio['classefg'] = null;
@@ -295,10 +296,10 @@ if (!$dadosRadio['obg']) {
     function montaCheckboxEmLinha(array $dadosCheckbox) {
         $checkbox = NULL;
         $checkbox .= "<div class=\"linhaFieldset\">";
-if (!$dadosCheckbox['obg']) {
+if (empty($dadosCheckbox['obg'])) {
             $obg = null;
         } else {
-            $obg = "<small><i class='glyphicon glyphicon-asterisk text-danger obrigatorio'></i></small>";
+            $obg = "<small><i class='glyphicon glyphicon-asterisk text-danger obrigatorio' data-toggle='tooltip' data-placement='top' title='Campo Obrigatório'></i></small>";
         }
         if ($dadosCheckbox['label'] == null) {
             $dadosCheckbox['label'] = '&nbsp';
@@ -333,10 +334,10 @@ if (!$dadosCheckbox['obg']) {
      * @return string retorna uma string com o código HTML do CheckBox desejado.
      */
     function montaCheckboxEmColuna(array $dadosCheckbox) {
-        if (!$dadosCheckbox['obg']) {
+        if (empty($dadosCheckbox['obg'])) {
             $obg = null;
         } else {
-            $obg = "<small><i class='glyphicon glyphicon-asterisk text-danger obrigatorio'></i></small>";
+            $obg = "<small><i class='glyphicon glyphicon-asterisk text-danger obrigatorio' data-toggle='tooltip' data-placement='top' title='Campo Obrigatório'></i></small>";
         }
         $checkbox = NULL;
         $checkbox .= "<div class=\"linhaFieldset\">";

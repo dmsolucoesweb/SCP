@@ -268,7 +268,8 @@ class ProdutoView extends HtmlGeral {
                 . $fieldsetValor
                 . $comboDeStatus;
 
-        $dados .= "<h4>Parcelas</h4><p class='text-primary'>Adicione o número de parcelas necessárias para a quitação do apartamento.</p><div class='alert alert-info' id='alerta_parc' role='alert'>Para incluir ou alterar o produto, clique em verificar as parcelas para ter certeza de que a soma delas é igual ao valor do apartamento.</div>";
+        $dados .= "<h4>Parcelas</h4>";
+        if ($produtoId == '-1' || $produtoId == NULL) {$dados .= "<p class='text-primary'>Adicione o número de parcelas necessárias para a quitação do apartamento.</p><div class='alert alert-info' id='alerta_parc' role='alert'>Para realizar a venda do apartamento verifique se o valor das parcelas são iguais ao valor integral do apartamento.</div>";}
         if ($produtoId == '-1' || $produtoId == NULL) {
             $dados .= "<script>$(document).ready(function () { addCampos(); });
                     </script>"
@@ -376,6 +377,10 @@ class ProdutoView extends HtmlGeral {
                 }
 
                 $dados .= "</div>";
+                $desativa = "false";
+                if ($produtoId != '-1' && $produtoId != NULL) {$desativa = "true";
+                    $dados .= "<div class='row'><button name='bt' type='submit' class='btn btn-sm btn-info' value='vbl'><i class='glyphicon glyphicon-asterisk'></i> Validar Boleto</button>
+                <button name='bt' type='submit' class='btn btn-sm btn-info' value='ibl'><i class='glyphicon glyphicon-asterisk'></i> Imprimir Boleto</button></div>";}
             }
         }
 
@@ -389,10 +394,8 @@ class ProdutoView extends HtmlGeral {
         $dados .= "<div class='row'>
                 <button name='bt' type='submit' class='btn btn-info' value='nov'><i class='glyphicon glyphicon-asterisk'></i> Novo</button>
                 <button name='bt' id='inc' type='submit' class='btn btn-success' disabled='true' value='inc' ><i class='glyphicon glyphicon-ok'></i> Incluir</button>
-                <button name='bt' id='alt' type='submit' class='btn btn-warning' disabled='true' value='alt'><i class='glyphicon glyphicon-refresh'></i> Alterar</button>
+                <button name='bt' id='alt' type='submit' class='btn btn-warning' disabled='{$disabled}' value='alt'><i class='glyphicon glyphicon-refresh'></i> Alterar</button>
                 <button name='bt' type='submit' class='btn btn-danger' value='exc'><i class='glyphicon glyphicon-trash'></i> Excluir</button></div>
-                <button name='bt' type='submit' class='btn btn-info' value='vbl'><i class='glyphicon glyphicon-asterisk'></i> Validar Boleto</button>
-                <button name='bt' type='submit' class='btn btn-info' value='ibl'><i class='glyphicon glyphicon-asterisk'></i> Imprimir Boleto</button>
 </form></div>";
 
         $this->setDados($dados);
