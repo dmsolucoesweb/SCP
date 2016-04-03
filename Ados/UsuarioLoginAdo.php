@@ -5,11 +5,11 @@ require_once '../Models/UsuarioLoginModel.php';
 
 class UsuarioLoginAdo extends ADO {
     /* Função: consultaIdPeloEmail
-     * Utilidade: Busca o Id do Usuarioslogin pela Email. É usado no RecuperaSenhaController.  
+     * Utilidade: Busca o Id do Usuarios_Login pela Email. É usado no RecuperaSenhaController.  
      */
 
     public function consultaIdPeloEmail($usuarioLoginEmail) {
-        $query = "select usuarioLoginId from Usuarioslogin where usuarioLoginEmail = '{$usuarioLoginEmail}'";
+        $query = "select usuarioLoginId from Usuarios_Login where usuarioLoginEmail = '{$usuarioLoginEmail}'";
 
         $resultado = parent::executaQuery($query);
 
@@ -26,7 +26,7 @@ class UsuarioLoginAdo extends ADO {
     }
 
     public function consultaObjetoPeloId($usuarioLoginId) {
-        $query = "select * from Usuarioslogin where usuarioLoginId = '{$usuarioLoginId}' ";
+        $query = "select * from Usuarios_Login where usuarioLoginId = '{$usuarioLoginId}' ";
 
         $resultado = parent::executaQuery($query);
 
@@ -42,7 +42,7 @@ class UsuarioLoginAdo extends ADO {
 
     public function consultaArrayDeObjeto() {
         $usuarioLoginModel = null;
-        $query = "select * from Usuarioslogin order by usuarioLoginNome";
+        $query = "select * from Usuarios_Login order by usuarioLoginNome";
 
         $resultado = parent::executaQuery($query);
         if ($resultado) {
@@ -70,7 +70,7 @@ class UsuarioLoginAdo extends ADO {
         $usuarioLoginSenha = $UsuarioLoginModel->getUsuarioLoginSenha();
         $usuarioLoginSenhaHash = sha1($usuarioLoginSenha);
 
-        $query = "insert into Usuarioslogin (usuarioLoginId, usuarioLoginNome, usuarioLoginEmail, usuarioLoginTipo, usuarioLoginLogin, usuarioLoginSenha) values ('null', '$usuarioLoginNome', '$usuarioLoginEmail', '$usuarioLoginTipo', '$usuarioLoginLogin', '$usuarioLoginSenhaHash');";
+        $query = "insert into Usuarios_Login (usuarioLoginId, usuarioLoginNome, usuarioLoginEmail, usuarioLoginTipo, usuarioLoginLogin, usuarioLoginSenha) values ('null', '$usuarioLoginNome', '$usuarioLoginEmail', '$usuarioLoginTipo', '$usuarioLoginLogin', '$usuarioLoginSenhaHash');";
 
         $resultado = parent::executaQuery($query);
         if ($resultado) {
@@ -87,7 +87,7 @@ class UsuarioLoginAdo extends ADO {
         $usuarioLoginEmail = $UsuarioLoginModel->getUsuarioLoginEmail();
         $usuarioLoginTipo = $UsuarioLoginModel->getUsuarioLoginTipo();
 
-        $query = "update Usuarioslogin set usuarioLoginNome = '{$usuarioLoginNome}',"
+        $query = "update Usuarios_Login set usuarioLoginNome = '{$usuarioLoginNome}',"
                 . " usuarioLoginEmail = '{$usuarioLoginEmail}'"
                 . " usuarioLoginTipo = '{$usuarioLoginTipo}'"
                 . " where usuarioLoginId = '{$usuarioLoginId}'";
@@ -104,7 +104,7 @@ class UsuarioLoginAdo extends ADO {
     public function excluiObjeto(\Model $UsuarioLoginModel) {
         $usuarioLoginId = $UsuarioLoginModel->getUsuarioLoginId();
 
-        $query = "delete from Usuarioslogin "
+        $query = "delete from Usuarios_Login "
                 . "where usuarioLoginId = {$usuarioLoginId}";
 
         $resultado = parent::executaQuery($query);

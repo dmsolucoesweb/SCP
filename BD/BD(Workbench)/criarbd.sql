@@ -269,9 +269,9 @@ COLLATE = ucs2_general_ci;
 
 
 -- -----------------------------------------------------
--- Table `SCP`.`UsuariosLogin`
+-- Table `SCP`.`Usuarios_Login`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `SCP`.`UsuariosLogin` (
+CREATE TABLE IF NOT EXISTS `SCP`.`Usuarios_Login` (
   `usuarioLoginId` INT UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '',
   `usuarioLoginNome` VARCHAR(45) NOT NULL COMMENT '',
   `usuarioLoginEmail` VARCHAR(45) NOT NULL COMMENT '',

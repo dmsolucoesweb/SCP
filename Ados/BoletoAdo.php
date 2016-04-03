@@ -57,7 +57,6 @@ class BoletoAdo extends ADO {
         $DatasEHoras = new DatasEHoras();
         $contParcela = $boletoNossoNumero2 = NULL;
         $contElementos = 0;
-        $boletoNossoNumero2 = '00000';
 
         $clienteId = $ProdutoModel->getClienteId();
         $Cliente = $ClienteAdo->consultaObjetoPeloId($clienteId);
@@ -82,7 +81,7 @@ class BoletoAdo extends ADO {
 
                 $nossoNumeroTeste = $this->consultarUltimoNossoNumero();
 
-                if ($nossoNumeroTeste == NULL) {
+                if ($nossoNumeroTeste['max(boletoNossoNumero)'] == NULL) {
                     $boletoNossoNumero2 = '00000';
                 } else {
                     $boletoNossoNumero2 = substr($nossoNumeroTeste['max(boletoNossoNumero)'], 5, 5);
