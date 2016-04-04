@@ -1,4 +1,6 @@
 <?php
+//SFASDFASDFASDFASD
+
 include '../Config/config.php';
 
 session_destroy();
