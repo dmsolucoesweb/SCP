@@ -1,5 +1,4 @@
 <?php
-//SFASDFASDFASDFASD
 
 include '../Config/config.php';
 
