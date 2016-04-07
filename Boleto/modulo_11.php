@@ -1,12 +1,13 @@
 <?php
-function modulo_11($num, $base=9, $r=0)  {
+
+function modulo_11($num, $base = 9, $r = 0) {
     $soma = 0;
     $fator = 2;
 
     /* Separacao dos numeros */
     for ($i = strlen($num); $i > 0; $i--) {
         // pega cada numero isoladamente
-        $numeros[$i] = substr($num,$i-1,1);
+        $numeros[$i] = substr($num, $i - 1, 1);
         // Efetua multiplicacao do numero pelo falor
         $parcial[$i] = $numeros[$i] * $fator;
         // Soma dos digitos
@@ -26,9 +27,10 @@ function modulo_11($num, $base=9, $r=0)  {
             $digito = 0;
         }
         return $digito;
-    } elseif ($r == 1){
+    } elseif ($r == 1) {
         $resto = $soma % 11;
         return $resto;
     }
 }
+
 ?>

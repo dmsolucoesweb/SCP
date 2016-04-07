@@ -1,6 +1,6 @@
 <?php
 
-require_once '../Ados/ADO.php';
+require_once 'ADO.php';
 
 class BoletoAdo extends ADO {
 
@@ -23,7 +23,7 @@ class BoletoAdo extends ADO {
 
     public function consultaArrayDeBoletos($produtoId) {
         $BoletoModel = null;
-        $query = "select * from Boletos where produtoId '{$produtoId}' ";
+        $query = "select * from Boletos where boletoProdutoId = '{$produtoId}' ";
 
         $resultado = parent::executaQuery($query);
         if ($resultado) {

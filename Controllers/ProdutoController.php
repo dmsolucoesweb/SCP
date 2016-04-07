@@ -195,7 +195,8 @@ class ProdutoController {
         $BoletoHsbc = new BoletoHsbc();
         $produtoId = $this->ProdutoView->getIdConsulta();
 
-        $BoletoHsbc->geraBoleto($produtoId);
+        $Layout = new BoletoHsbc();
+        $Layout->geraBoleto($produtoId);
     }
 
 }
