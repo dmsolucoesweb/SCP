@@ -2,7 +2,7 @@
 
 require_once 'ADO.php';
 require_once '../Models/ProdutoModel.php';
-require_once '../Boleto/include/funcoes_hsbc.php';
+require_once '../Boleto/FuncoesBoletoHsbc.php';
 
 class ProdutoAdo extends ADO {
     /* Função: consultaApartamentoEBoxPeloId

@@ -1,7 +1,7 @@
 <?php
 
 require_once 'ADO.php';
-
+require_once '../Classes/cpf.php';
 class BoletoAdo extends ADO {
 
     public function consultarUltimoNossoNumero() {
@@ -78,7 +78,7 @@ class BoletoAdo extends ADO {
 
         foreach ($Parcelas as $numeroParcelas) {
             for ($i = 1; $i <= $numeroParcelas; $i++) {
-
+                
                 $nossoNumeroTeste = $this->consultarUltimoNossoNumero();
 
                 if ($nossoNumeroTeste['max(boletoNossoNumero)'] == NULL) {
@@ -98,16 +98,16 @@ class BoletoAdo extends ADO {
                 $boletoContParcela = str_pad($contParcela, 3, "0", STR_PAD_LEFT);
                 $boletoNumeroDocumento = $boletoProdutoId . $boletoContParcela;
                 $boletoNossoNumero1 = 56410;
-                $digitoVerificador = digitoVerificador_nossonumero($boletoNossoNumero1 . $boletoNossoNumero2);
+                $digitoVerificador = modulo_11($boletoNossoNumero1 . $boletoNossoNumero2);
                 $nossoNumeroCompleto = $boletoNossoNumero1 . $boletoNossoNumero2 . $digitoVerificador;
 
                 if ($i == 1) {
                     $dataVencimento = $ParcelasDataVencimento[$contElementos];
                 } else {
-                    $dataVencimento = date("d/m/Y", strtotime("+30 day", strtotime($DatasEHoras->getDataEHorasInvertidaComTracos($ParcelasDataVencimento[$contElementos]))));
+                    $dataVencimento = strtotime("+30 day", strtotime($DatasEHoras->getDataEHorasInvertidaComTracos($ParcelasDataVencimento[$contElementos])));
                 }
-
-                $valorUnitario = $ParcelasValorUnitario[$contElementos];
+                $cpf = new CPF;
+                $valorUnitario = number_format($cpf::retiraMascaraRenda($ParcelasValorUnitario[$contElementos]), 2, ".","");
 
                 $query = "insert into Boletos (boletoId, boletoNumeroDocumento, boletoNossoNumero, boletoSacado, boletoRemetido, boletoDataVencimento, boletoNumeroParcela, boletoValor, boletoProdutoId) values (null, '$boletoNumeroDocumento', '$nossoNumeroCompleto','$clienteId', '0', '$dataVencimento', '$contParcela', '$valorUnitario', '$produtoId')";
 
