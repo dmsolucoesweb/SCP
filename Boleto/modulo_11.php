@@ -32,5 +32,3 @@ function modulo_11($num, $base = 9, $r = 0) {
         return $resto;
     }
 }
-
-?>

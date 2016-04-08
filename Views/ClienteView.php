@@ -229,7 +229,7 @@ class ClienteView extends HtmlGeral {
         $htmlFieldsetOE = array("label" => "Org. Exped.", "obg" => true, "classefg" => "col-md-4", "type" => "text", "name" => "clienteOrgaoEmissor", "value" => $clienteOrgaoEmissor, "placeholder" => null, "disabled" => false);
         $fieldseOE = $MontaHtml->montaInput($htmlFieldsetOE);
 
-        $estadosBrasileirosHtml = parent::montaHtmlEstadosBrasileiros("UF", "clienteEstadoOrgaoEmissor", "col-md-4", $clienteEstadoOrgaoEmissor);
+        $estadosBrasileirosHtml = parent::montaHtmlEstadosBrasileiros("UF", "clienteEstadoOrgaoEmissor", true, "col-md-4", $clienteEstadoOrgaoEmissor);
         $estadosBrasileirosHtml .= "</div><div class='row'>";
 
         $selected3 = $selected4 = $selected5 = $selected6 = $selected7 = null;
@@ -296,7 +296,7 @@ class ClienteView extends HtmlGeral {
         $htmlFieldsetFiliacao2 = array("label" => "Mãe", "obg" => true, "classefg" => "col-md-11", "type" => "text", "name" => "clienteFiliacao2", "value" => $clienteFiliacao2, "placeholder" => null, "disabled" => false);
         $fieldseFiliacao2 = $MontaHtml->montaInput($htmlFieldsetFiliacao2);
 
-        $htmlFieldsetFiliacao = array("label" => "Pai", "obg" => true, "classefg" => "col-md-11", "type" => "text", "name" => "clienteFiliacao", "value" => $clienteFiliacao, "placeholder" => null, "disabled" => false);
+        $htmlFieldsetFiliacao = array("label" => "Pai", "obg" => false, "classefg" => "col-md-11", "type" => "text", "name" => "clienteFiliacao", "value" => $clienteFiliacao, "placeholder" => null, "disabled" => false);
         $fieldseFiliacao = $MontaHtml->montaInput($htmlFieldsetFiliacao) . "</div></div><div class='row'>";
 
         $htmlFieldsetEndereco = array("label" => "Endereço", "obg" => true, "classefg" => "col-md-12", "type" => "text", "name" => "clienteEndereco", "value" => $clienteEndereco, "placeholder" => null, "disabled" => false);
@@ -308,7 +308,7 @@ class ClienteView extends HtmlGeral {
         $htmlFieldsetCidade = array("label" => "Cidade", "obg" => true, "classefg" => "col-md-4", "type" => "text", "name" => "clienteCidade", "value" => $clienteCidade, "placeholder" => null, "disabled" => false);
         $fieldseCidade = $MontaHtml->montaInput($htmlFieldsetCidade);
 
-        $estadosBrasileirosHtml2 = parent::montaHtmlEstadosBrasileiros("UF", "clienteEstado", "col-md-4", $clienteEstado);
+        $estadosBrasileirosHtml2 = parent::montaHtmlEstadosBrasileiros("UF", "clienteEstado", true, "col-md-4", $clienteEstado);
         $estadosBrasileirosHtml2 .="</div><div class='row'>";
 
         $htmlFieldsetTelefone = array("label" => "Telefone Celular", "obg" => true, "classefg" => "col-md-4", "classecampo" => "fone", "type" => "text", "name" => "clienteTelefone", "value" => $clienteTelefone, "placeholder" => null, "disabled" => false);
@@ -398,13 +398,13 @@ class ClienteView extends HtmlGeral {
                 array("name" => "clienteCppSexo", "value" => "F", "checked" => $fcpp, "text" => "Feminino")));
         $sexoHtmlCpp = $MontaHtml->montaRadioEmLinha($htmlDadosRadioSexoCpp) . "</div><div class='row'>";
 
-        $htmlFieldsetRGCpp = array("label" => "RG ", "obg" => true, "classefg" => "col-md-4", "type" => "text", "name" => "clienteCppRG", "value" => $clienteCppRG, "placeholder" => null, "disabled" => false);
+        $htmlFieldsetRGCpp = array("label" => "RG", "obg" => true, "classefg" => "col-md-4", "type" => "text", "name" => "clienteCppRG", "value" => $clienteCppRG, "placeholder" => null, "disabled" => false);
         $fieldseRGCpp = $MontaHtml->montaInput($htmlFieldsetRGCpp);
 
         $htmlFieldsetOECpp = array("label" => "Org. Exped.", "obg" => true, "classefg" => "col-md-4", "type" => "text", "name" => "clienteCppOrgaoEmissor", "value" => $clienteCppOrgaoEmissor, "placeholder" => null, "disabled" => false);
         $fieldseOECpp = $MontaHtml->montaInput($htmlFieldsetOECpp);
 
-        $estadosBrasileirosHtmlCpp = parent::montaHtmlEstadosBrasileiros("UF", "clienteCppEstadoOrgaoEmissor", "col-md-4", $clienteCppEstadoOrgaoEmissor) . "</div><div class='row'>";
+        $estadosBrasileirosHtmlCpp = parent::montaHtmlEstadosBrasileiros("UF", "clienteCppEstadoOrgaoEmissor", true, "col-md-4", $clienteCppEstadoOrgaoEmissor) . "</div><div class='row'>";
 
         $selected15 = $selected16 = $selected17 = $selected18 = $selected19 = null;
         switch ($clienteCppEstadoCivil) {
@@ -461,7 +461,7 @@ class ClienteView extends HtmlGeral {
                 array("value" => "4", "selected" => $selected23, "text" => "Participação Final nos Aquestos")));
         $comboDeEstadoRegimeComunhaoCpp = $MontaHtml->montaCombobox($htmlComboRegimeComunhaoCpp, $textoPadrao = 'Escolha um Regime de Bens...', $onChange = null, $disabled = $disabled_regime2);
 
-        $htmlFieldsetRendaCpp = array("label" => "Renda", "classefg" => "col-md-4", "type" => "text", "classecampo" => "moeda", "name" => "clienteCppRenda", "value" => $clienteCppRenda, "placeholder" => null, "disabled" => false);
+        $htmlFieldsetRendaCpp = array("label" => "Renda", "obg" => true, "classefg" => "col-md-4", "type" => "text", "classecampo" => "moeda", "name" => "clienteCppRenda", "value" => $clienteCppRenda, "placeholder" => null, "disabled" => false);
         $fieldseRendaCpp = $MontaHtml->montaInput($htmlFieldsetRendaCpp) . "</div><div class='row'>";
 
         $labelFiliacaoCpp = "<div class='col-md-2'><legend>Filiação</legend></div><div class='col-md-10'>";
@@ -469,7 +469,7 @@ class ClienteView extends HtmlGeral {
         $htmlFieldsetFiliacao2Cpp = array("label" => "Mãe", "obg" => true, "classefg" => "col-md-12", "type" => "text", "name" => "clienteCppFiliacao2", "value" => $clienteCppFiliacao2, "placeholder" => null, "disabled" => false);
         $fieldseFiliacao2Cpp = $MontaHtml->montaInput($htmlFieldsetFiliacao2Cpp);
 
-        $htmlFieldsetFiliacaoCpp = array("label" => "Pai ", "obg" => true, "classefg" => "col-md-12", "type" => "text", "name" => "clienteCppFiliacao", "value" => $clienteCppFiliacao, "placeholder" => null, "disabled" => false);
+        $htmlFieldsetFiliacaoCpp = array("label" => "Pai", "obg" => false, "classefg" => "col-md-12", "type" => "text", "name" => "clienteCppFiliacao", "value" => $clienteCppFiliacao, "placeholder" => null, "disabled" => false);
         $fieldseFiliacaoCpp = $MontaHtml->montaInput($htmlFieldsetFiliacaoCpp) . "</div></div><div class='row'>";
 
         $htmlFieldsetEnderecoCpp = array("label" => "Endereço", "obg" => true, "classefg" => "col-md-12", "type" => "text", "name" => "clienteCppEndereco", "value" => $clienteCppEndereco, "placeholder" => null, "disabled" => false);
@@ -481,7 +481,7 @@ class ClienteView extends HtmlGeral {
         $htmlFieldsetCidadeCpp = array("label" => "Cidade", "obg" => true, "classefg" => "col-md-4", "type" => "text", "name" => "clienteCppCidade", "value" => $clienteCppCidade, "placeholder" => null, "disabled" => false);
         $fieldseCidadeCpp = $MontaHtml->montaInput($htmlFieldsetCidadeCpp);
 
-        $estadosBrasileirosHtml2Cpp = parent::montaHtmlEstadosBrasileiros("Estado", "clienteCppEstado", "col-md-4", $clienteCppEstado) . "</div><div class='row'>";
+        $estadosBrasileirosHtml2Cpp = parent::montaHtmlEstadosBrasileiros("Estado", "clienteCppEstado", true, "col-md-4", $clienteCppEstado) . "</div><div class='row'>";
 
         $htmlFieldsetTelefoneCpp = array("label" => "Telefone Celular", "obg" => true, "classefg" => "col-md-4", "classecampo" => "fone", "type" => "text", "name" => "clienteCppTelefone", "value" => $clienteCppTelefone, "placeholder" => null, "disabled" => false);
         $fieldseTelefoneCpp = $MontaHtml->montaInput($htmlFieldsetTelefoneCpp);

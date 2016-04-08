@@ -78,14 +78,18 @@ abstract class viewabstract {
         return $data;
     }
 
-    function montaHtmlEstadosBrasileiros($label, $name, $classefg, $uf = -1, $disabled = NULL) {
-
+    function montaHtmlEstadosBrasileiros($label, $name, $obg, $classefg, $uf = -1, $disabled = NULL) {
+if (empty($obg)) {
+            $obg = null;
+        } else {
+            $obg = "<small><i class='glyphicon glyphicon-asterisk text-danger obrigatorio' data-toggle='tooltip' data-placement='top' title='Campo Obrigatório'></i></small>";
+        }
         if (empty($classefg)) {
             $classefg = null;
         } else {
             $classefg = $classefg;
         }
-        $estados = "\t\t\t\t<div class=\"form-group $classefg linhaFieldset\"><label>$label </label> ";
+        $estados = "\t\t\t\t<div class=\"form-group $classefg linhaFieldset\"><label>$label $obg</label> ";
         $estados .= "\t<select class=\"form-control\" name=\"$name\" $disabled>\n";
         $estados .= "\t\t<option value=\"-1\">UF</option>\n";
         $estados .= "\t\t<option ";

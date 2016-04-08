@@ -287,7 +287,7 @@ class VendedorModel extends Model {
             $this->adicionaMensagem("Selecione o Estado Civil do Vendedor.");
         }
 
-        if ($this->clienteEstadoCivil == '2') {
+        if ($this->vendedorEstadoCivil == '2') {
             if (is_null($this->vendedorRegimeComunhao)) {
                 $atributosValidos = FALSE;
                 $this->adicionaMensagem("Selecione o Regime de Comunhão do Vendedor.");

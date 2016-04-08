@@ -52,7 +52,7 @@ class TrocarSenhaController {
             $senhaAntTeste = $Usuario->getUsuarioLoginSenha();
 
             if ($this->usuarioLoginSenhaAn == $senhaAntTeste && $this->usuarioLoginSenhaAt === $this->usuarioLoginSenhaCf) {
-                $query = "update Usuarios_Login set usuarioLoginSenha = '{$this->usuarioLoginSenhaAt}' where usuarioLoginId = '{$id}'";
+                $query = "update usuarios_login set usuarioLoginSenha = '{$this->usuarioLoginSenhaAt}' where usuarioLoginId = '{$id}'";
                 $resultado = $ConexaoBancoDeDados->executaQuery($query);
 
                 if ($resultado) {

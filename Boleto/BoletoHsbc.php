@@ -1,11 +1,11 @@
-
-
-
-
 <?php
-
 require_once '../Ados/BoletoAdo.php';
 require_once 'LayoutBoletoHsbc.php';
+require_once 'FuncoesBoletoHsbc.php';
+ini_set("memory_limit", "-1");
+if(!defined('MPDF_PATH')) {define('MPDF_PATH', 'class/mpdf/');}
+require_once '../PDF/mpdf/mpdf.php';
+
 
 //include("modulo_11.php");
 
@@ -16,8 +16,10 @@ class BoletoHsbc {
         $BoletoAdo = new BoletoAdo();
         $ClienteAdo = new ClienteAdo();
         $LayoutBoleto = new LayoutBoletoHsbc();
+        $FuncoesBoletoHsbc = new FuncoesBoletoHsbc($dadosboleto);
         $arrayDeBoletos = $BoletoAdo->consultaArrayDeBoletos($produtoId);
-
+        $mpdf = new mPDF('pt', 'A4', 0, 'arial', 5, 5, 5, 5, 9, 9, 'P');
+        $Html = null;
         if (is_array($arrayDeBoletos)) {
             foreach ($arrayDeBoletos as $BoletoModel) {
 
@@ -70,7 +72,7 @@ class BoletoHsbc {
                 $dadosboleto['data_processamento'] = date("d/m/Y"); // Data de processamento do boleto (opcional) <-- SALVAR DATA NO BANCO
                 // CALCULOS
                 $valor_cobrado = str_replace(",", ".", $boletoValor);
-                $valor_boleto = number_format($valor_cobrado + $taxa_boleto, 2, ',', '');
+               // $valor_boleto = number_format($valor_cobrado + $taxa_boleto, 2, ',', '');
                 $dadosboleto['data_vencimento'] = $boletoDataVencimento + ($dias_de_prazo_para_pagamento * 86400);
                 $dadosboleto['valor_boleto'] = number_format($valor_cobrado + $taxa_boleto, 2, ',', '');
 
@@ -104,9 +106,18 @@ class BoletoHsbc {
                 // FUNÇÕES E LAYOUT DO BOLETO
                 // include("funcoes_hsbc.php");
                 // include("layout_hsbc.php");
-                $LayoutBoleto->LayoutHsbc($dadosboleto);
+        $dadosboleto["codigo_barras"] = $FuncoesBoletoHsbc::$linha;
+        $dadosboleto["linha_digitavel"] = $FuncoesBoletoHsbc::$linha_digitavel;
+        $dadosboleto["agencia_codigo"] = $FuncoesBoletoHsbc::$agencia_codigo;
+        $dadosboleto["nosso_numero"] = $FuncoesBoletoHsbc::$nosso_numero;
+        $dadosboleto["codigo_banco_com_dv"] = $FuncoesBoletoHsbc::$codigo_banco_com_dv;
+                $Html .= $LayoutBoleto->LayoutHsbc($dadosboleto);
+                $mpdf->WriteHTML($Html);
             }
         }
+        $arquivo = date("d-m-Y") . "-aptos_vendidos.pdf";
+        $mpdf->Output($arquivo, "I");
+        exit();
     }
 
 }

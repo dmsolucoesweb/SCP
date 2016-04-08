@@ -27,18 +27,20 @@ require_once 'modulo_11.php';
 
 class FuncoesBoletoHsbc {
 
-    public function __construct() {
+    public function __construct($dadosboleto) {
+        $FuncoesGeraisBoleto = new FuncoesGeraisBoleto;
         $codigobanco = '399';
-        $codigo_banco_com_dv = geraCodigoBanco($codigobanco);
+        $parte1 = substr($codigobanco, 0, 3);
+        $codigo_banco_com_dv = $parte1. "-" .modulo_11($parte1);
         $nummoeda = "9";
-        $fator_vencimento = fator_vencimento($dadosboleto["data_vencimento"]);
+        $fator_vencimento = $FuncoesGeraisBoleto->fator_vencimento($dadosboleto["data_vencimento"]);
 
         //valor tem 10 digitos, sem virgula
-        $valor = formata_numero($dadosboleto["valor_boleto"], 10, 0, "valor");
+        $valor = $FuncoesGeraisBoleto->formata_numero($dadosboleto["valor_boleto"], 10, 0, "valor");
         //carteira � CNR
         $carteira = $dadosboleto["carteira"];
         //codigocedente deve possuir 7 caracteres
-        $codigocedente = formata_numero($dadosboleto["codigo_cedente"], 7, 0);
+        $codigocedente = $FuncoesGeraisBoleto->formata_numero($dadosboleto["codigo_cedente"], 7, 0);
 
         $ndoc = $dadosboleto["numero_documento"];
         $vencimento = $dadosboleto["data_vencimento"];
@@ -49,7 +51,7 @@ class FuncoesBoletoHsbc {
         /* $nossonumero = geraNossoNumero($nnum,$codigocedente,$vencimento,'4'); */
         $nossonumero = $dadosboleto["nosso_numero"];
 
-        $vencjuliano = dataJuliano($vencimento);
+        $vencjuliano = $FuncoesGeraisBoleto->dataJuliano($vencimento);
         $app = "1";
 
         $agencia_codigo = $codigocedente;
@@ -58,17 +60,25 @@ class FuncoesBoletoHsbc {
 
         // 43 numeros para o calculo do digito verificador do codigo de barras
         $barra = "$codigobanco$nummoeda$fator_vencimento$valor$nossonumero$numero_agencia$codigocedente$carteira$app";
-        $dv = digitoVerificador_barra($barra, 9, 0);
+        $dv = $FuncoesGeraisBoleto->digitoVerificador_barra($barra, 9, 0);
         // Numero para o codigo de barras com 44 digitos
         $linha = substr($barra, 0, 4) . $dv . substr($barra, 4);
-
-        $dadosboleto["codigo_barras"] = $linha;
-        $dadosboleto["linha_digitavel"] = monta_linha_digitavel($linha);
-        $dadosboleto["agencia_codigo"] = $agencia_codigo;
-        $dadosboleto["nosso_numero"] = $nossonumero;
-        $dadosboleto["codigo_banco_com_dv"] = $codigo_banco_com_dv;
+        
+        $codigo_barras = $linha;
+        $linha_digitavel = $FuncoesGeraisBoleto->monta_linha_digitavel($linha);
+        $agencia_codigo= $agencia_codigo;
+        $nosso_numero = $nossonumero;
+        $codigo_banco_com_dv = $codigo_banco_com_dv;
     }
+    
+}
 
+class FuncoesGeraisBoleto {
+    function geraCodigoBanco($numero) {
+        $parte1 = substr($numero, 0, 3);
+        $parte2 = modulo_11($parte1);
+        return $parte1 . "-" . $parte2;
+    }
     function geraNossoNumero($ndoc, $cedente, $venc, $tipoid) {
         $ndoc = $ndoc . modulo_11_invertido($ndoc) . $tipoid;
         $venc = substr($venc, 0, 2) . substr($venc, 3, 2) . substr($venc, 8, 2);
@@ -220,11 +230,12 @@ class FuncoesBoletoHsbc {
     }
 
     function fator_vencimento($data) {
-        $data = explode("/", $data);
-        $ano = $data[2];
-        $mes = $data[1];
-        $dia = $data[0];
-        return(abs((_dateToDays("1997", "10", "07")) - (_dateToDays($ano, $mes, $dia))));
+        $ndata = explode("-", $data);
+        $ano = $ndata[2];
+        $mes = $ndata[1];
+        $dia = $ndata[0];
+        
+        return(abs(($this->_dateToDays("1997", "10", "07")) - ($this->_dateToDays($ano, $mes, $dia))));
     }
 
     function _dateToDays($year, $month, $day) {
@@ -319,19 +330,19 @@ class FuncoesBoletoHsbc {
         // do campo livre e DV (modulo10) deste campo
         $campo1 = substr($codigo, 0, 4) . substr($nossonumero, 0, 1);
         $campo1 = $campo1 . substr($nossonumero, 1, 5);
-        $campo1 = $campo1 . modulo_10($campo1);
+        $campo1 = $campo1 . $this->modulo_10($campo1);
         $campo1 = substr($campo1, 0, 5) . '.' . substr($campo1, 5, 5);
 
         // 2. Campo - composto pelas posi�oes 6 a 15 do campo livre
         // e livre e DV (modulo10) deste campo
         $campo2 = substr($nossonumero, 5, 6) . substr($numero_agencia, 0, 4);
-        $campo2 = $campo2 . modulo_10($campo2);
+        $campo2 = $campo2 . $this->modulo_10($campo2);
         $campo2 = substr($campo2, 0, 5) . '.' . substr($campo2, 5, 6);
 
         // 3. Campo composto pelas posicoes 16 a 25 do campo livre
         // e livre e DV (modulo10) deste campo
         $campo3 = $codigocedente . $carteira . 1;
-        $campo3 = $campo3 . modulo_10($campo3);
+        $campo3 = $campo3 . $this->modulo_10($campo3);
         $campo3 = substr($campo3, 0, 5) . '.' . substr($campo3, 5, 6);
 
         // 4. Campo - digito verificador do codigo de barras
@@ -344,12 +355,4 @@ class FuncoesBoletoHsbc {
 
         return "$campo1 $campo2 $campo3 $campo4 $campo5";
     }
-
-    function geraCodigoBanco($numero) {
-        $parte1 = substr($numero, 0, 3);
-        $parte2 = modulo_11($parte1);
-        return $parte1 . "-" . $parte2;
-    }
-
 }
-?>

@@ -9,6 +9,7 @@ require_once '../PDF/RelatorioProdutos.php';
 require_once '../Ados/BoletoAdo.php';
 require_once '../Boleto/BoletoHsbc.php';
 
+
 class ProdutoController {
 
     private $ProdutoView = null;
@@ -183,10 +184,10 @@ class ProdutoController {
         $this->ProdutoModel = $this->ProdutoView->getDadosEntrada();
 
         if ($this->BoletoAdo->insereObjeto($this->ProdutoModel)) {
-            $this->ProdutoView->adicionaMensagemSucesso("O Boleto foi inserido com sucesso!");
+            $this->ProdutoView->adicionaMensagemSucesso("Boletos gerados com sucesso!");
             $this->ProdutoModel = new ProdutoModel();
         } else {
-            $this->ProdutoView->adicionaMensagemErro("O Boleto não foi inserido! ");
+            $this->ProdutoView->adicionaMensagemErro("Erro ao gerar boleto!");
             //$this->clienteView->adicionaMensagemErro($this->clienteAdo->getMensagem());
         }
     }
@@ -195,8 +196,7 @@ class ProdutoController {
         $BoletoHsbc = new BoletoHsbc();
         $produtoId = $this->ProdutoView->getIdConsulta();
 
-        $Layout = new BoletoHsbc();
-        $Layout->geraBoleto($produtoId);
+        $BoletoHsbc->geraBoleto($produtoId);
     }
 
 }

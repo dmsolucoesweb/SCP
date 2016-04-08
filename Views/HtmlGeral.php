@@ -42,30 +42,27 @@ abstract class HtmlGeral extends ViewAbstract {
                         <meta charset='UTF-8'>
                         <title>Sistema de Controle de Pagamento</title>
                         
-                        <link rel='stylesheet' href='../CSS/estilo.css'>
-                        <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.1/css/select2.min.css'> 
-                        <link rel='stylesheet' href='../CSS/bootstrap.min.css'>
-                        <link rel='stylesheet' href='../CSS/bootstrap-theme.min.css'>  
-                        <link rel='stylesheet' href='../CSS/bootstrap-datepicker3.standalone.min.css'>
-                        <link rel='stylesheet' href='../CSS/sweet-alert.css'>
+                        <link rel='stylesheet' href='" . URL_SITE . "CSS/estilo.css'>
+                        <link rel='stylesheet' href='" . URL_SITE . "CSS/select2.min.css'> 
+                        <link rel='stylesheet' href='" . URL_SITE . "CSS/bootstrap.min.css'>
+                        <link rel='stylesheet' href='" . URL_SITE . "CSS/bootstrap-theme.min.css'>  
+                        <link rel='stylesheet' href='" . URL_SITE . "CSS/bootstrap-datepicker3.standalone.min.css'>
+                        <link rel='stylesheet' href='" . URL_SITE . "CSS/sweet-alert.css'>
                         <script src='" . URL_SITE . "JS/sweet-alert.js'></script>
                         <script src='" . URL_SITE . "JS/jquery-1.11.0.js' ></script>
                         <script src='" . URL_SITE . "JS/jquery-migrate-1.2.1.js' ></script>    
                         <script src='" . URL_SITE . "JS/bootstrap.min.js' ></script>
                         <script src='" . URL_SITE . "JS/MontaMascaraCPF.js' ></script>
-                        <script src='https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.1/js/select2.min.js'></script>
-                        <script src='https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.1/js/i18n/pt-BR.js'></script>
+                        <script src='" . URL_SITE . "JS/select2.min.js'></script>
+                        <script src='" . URL_SITE . "JS/select2_pt-BR.js'></script>
                         <script src='" . URL_SITE . "JS/bootstrap-datepicker.min.js'></script>
                         <script src='" . URL_SITE . "JS/jquery.maskedinput.min.js'></script>
                         <script src='" . URL_SITE . "JS/jquery.maskMoney.js'></script>
                         <script src='" . URL_SITE . "JS/NumberFormat.js'></script>
-                            <script src='" . URL_SITE . "JS/funcoes_js.js'></script>
+                        <script src='" . URL_SITE . "JS/funcoes_js.js'></script>
                         <script src='" . URL_SITE . "JS/bootstrap-datepicker.pt-BR.min.js'></script>
-                                         
                     </head>
-                    
                     <body>
- 
                 <div class='container'>
                 <header id='topo'>
                     <figure class='logo'>

@@ -39,7 +39,7 @@ class RecuperaSenhaController {
                     } else {
                         if ($this->enviaEmail()) {
                             $novaSenha = sha1($this->novaSenha);
-                            $query = "update Usuarios_Login set usuarioLoginSenha = '{$novaSenha}' where usuarioLoginId = '{$usuarioLoginId}'";
+                            $query = "update usuarios_login set usuarioLoginSenha = '{$novaSenha}' where usuarioLoginId = '{$usuarioLoginId}'";
                             $resultado = $ConexaoBancoDeDados->executaQuery($query);
 
                             if ($resultado) {
