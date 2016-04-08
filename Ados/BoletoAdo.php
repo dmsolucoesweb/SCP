@@ -102,9 +102,10 @@ class BoletoAdo extends ADO {
                 $nossoNumeroCompleto = $boletoNossoNumero1 . $boletoNossoNumero2 . $digitoVerificador;
 
                 if ($i == 1) {
-                    $dataVencimento = $ParcelasDataVencimento[$contElementos];
+                    $dataVencimento = $DatasEHoras->getDataInvertidaComTracos($ParcelasDataVencimento[$contElementos]);
                 } else {
-                    $dataVencimento = strtotime("+30 day", strtotime($DatasEHoras->getDataEHorasInvertidaComTracos($ParcelasDataVencimento[$contElementos])));
+                    $aumento = $i-1;
+                    $dataVencimento = date('Y-m-d', strtotime("+$aumento month", strtotime($DatasEHoras->getDataInvertidaComTracos($ParcelasDataVencimento[$contElementos]))));
                 }
                 $cpf = new CPF;
                 $valorUnitario = number_format($cpf::retiraMascaraRenda($ParcelasValorUnitario[$contElementos]), 2, ".","");
