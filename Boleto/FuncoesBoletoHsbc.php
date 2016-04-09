@@ -27,20 +27,26 @@ require_once 'modulo_11.php';
 
 class FuncoesBoletoHsbc {
 
+    private $linha = null;
+    private $codigo_barras = null;
+    private $linha_digitavel = null;
+    private $agencia_codigo = null;
+    private $nosso_numero = null;
+    private $codigo_banco_com_dv = null;
+
     public function __construct($dadosboleto) {
-        $FuncoesGeraisBoleto = new FuncoesGeraisBoleto;
         $codigobanco = '399';
         $parte1 = substr($codigobanco, 0, 3);
-        $codigo_banco_com_dv = $parte1. "-" .modulo_11($parte1);
+        $codigo_banco_com_dv = $parte1 . "-" . modulo_11($parte1);
         $nummoeda = "9";
-        $fator_vencimento = $FuncoesGeraisBoleto->fator_vencimento($dadosboleto["data_vencimento"]);
+        $fator_vencimento = $this->fator_vencimento($dadosboleto["data_vencimento"]);
 
         //valor tem 10 digitos, sem virgula
-        $valor = $FuncoesGeraisBoleto->formata_numero($dadosboleto["valor_boleto"], 10, 0, "valor");
+        $valor = $this->formata_numero($dadosboleto["valor_boleto"], 10, 0, "valor");
         //carteira � CNR
         $carteira = $dadosboleto["carteira"];
         //codigocedente deve possuir 7 caracteres
-        $codigocedente = $FuncoesGeraisBoleto->formata_numero($dadosboleto["codigo_cedente"], 7, 0);
+        $codigocedente = $this->formata_numero($dadosboleto["codigo_cedente"], 7, 0);
 
         $ndoc = $dadosboleto["numero_documento"];
         $vencimento = $dadosboleto["data_vencimento"];
@@ -51,7 +57,7 @@ class FuncoesBoletoHsbc {
         /* $nossonumero = geraNossoNumero($nnum,$codigocedente,$vencimento,'4'); */
         $nossonumero = $dadosboleto["nosso_numero"];
 
-        $vencjuliano = $FuncoesGeraisBoleto->dataJuliano($vencimento);
+        $vencjuliano = $this->dataJuliano($vencimento);
         $app = "1";
 
         $agencia_codigo = $codigocedente;
@@ -60,25 +66,27 @@ class FuncoesBoletoHsbc {
 
         // 43 numeros para o calculo do digito verificador do codigo de barras
         $barra = "$codigobanco$nummoeda$fator_vencimento$valor$nossonumero$numero_agencia$codigocedente$carteira$app";
-        $dv = $FuncoesGeraisBoleto->digitoVerificador_barra($barra, 9, 0);
+        $dv = $this->digitoVerificador_barra($barra, 9, 0);
         // Numero para o codigo de barras com 44 digitos
-        $linha = substr($barra, 0, 4) . $dv . substr($barra, 4);
-        
-        $codigo_barras = $linha;
-        $linha_digitavel = $FuncoesGeraisBoleto->monta_linha_digitavel($linha);
-        $agencia_codigo= $agencia_codigo;
-        $nosso_numero = $nossonumero;
-        $codigo_banco_com_dv = $codigo_banco_com_dv;
-    }
-    
-}
 
-class FuncoesGeraisBoleto {
+        $this->linha = substr($barra, 0, 4) . $dv . substr($barra, 4);
+        $this->codigo_barras = $linha;
+        $this->linha_digitavel = $this->monta_linha_digitavel($linha);
+        $this->agencia_codigo = $agencia_codigo;
+        $this->nosso_numero = $nossonumero;
+        $this->codigo_banco_com_dv = $codigo_banco_com_dv;
+    }
+
+    function pegarAtributos() {
+        return array($this->linha, $this->codigo_barras, $this->linha_digitavel, $this->agencia_codigo, $this->nosso_numero, $this->codigo_banco_com_dv);
+    }
+
     function geraCodigoBanco($numero) {
         $parte1 = substr($numero, 0, 3);
         $parte2 = modulo_11($parte1);
         return $parte1 . "-" . $parte2;
     }
+
     function geraNossoNumero($ndoc, $cedente, $venc, $tipoid) {
         $ndoc = $ndoc . modulo_11_invertido($ndoc) . $tipoid;
         $venc = substr($venc, 0, 2) . substr($venc, 3, 2) . substr($venc, 8, 2);
@@ -174,8 +182,8 @@ class FuncoesGeraisBoleto {
             }
         }
 
-        // Desenho da barra
-        // Guarda inicial 
+// Desenho da barra
+// Guarda inicial 
         ?>
         <img src=imagens/p.png width=<?php echo $fino ?> height=<?php echo $altura ?> border=0><img src=imagens/b.png width=<?php echo $fino ?> height=<?php echo $altura ?> border=0><img src=imagens/p.png width=<?php echo $fino ?> height=<?php echo $altura ?> border=0><img src=imagens/b.png width=<?php echo $fino ?> height=<?php echo $altura ?> border=0><img 
         <?php
@@ -184,12 +192,12 @@ class FuncoesGeraisBoleto {
             $texto = "0" . $texto;
         }
 
-        // Draw dos dados
+// Draw dos dados
         while (strlen($texto) > 0) {
             $i = round(substr($texto, 0, 2));
-            //$texto = direita($texto, strlen($texto) - 2);
+//$texto = direita($texto, strlen($texto) - 2);
             $texto = substr($texto, strlen(strlen($texto) - 2) - 2, strlen($texto) - 2);
-            //substr($entra, strlen($entra) - $comp, $comp);
+//substr($entra, strlen($entra) - $comp, $comp);
             $f = $barcodes[$i];
 
             for ($i = 1; $i < 11; $i+=2) {
@@ -211,7 +219,7 @@ class FuncoesGeraisBoleto {
                     <?php
                 }
             }
-            // Draw guarda final
+// Draw guarda final
             ?>
             src=imagens/p.png width=<?php echo $largo ?> height=<?php echo $altura ?> border=0><img 
             src=imagens/b.png width=<?php echo $fino ?> height=<?php echo $altura ?> border=0><img 
@@ -231,10 +239,13 @@ class FuncoesGeraisBoleto {
 
     function fator_vencimento($data) {
         $ndata = explode("-", $data);
-        $ano = $ndata[2];
-        $mes = $ndata[1];
+        $ano = $mes = null;
+        if (count($ndata) > 1) {
+            $ano = $ndata[2];
+            $mes = $ndata[1];
+        }
         $dia = $ndata[0];
-        
+
         return(abs(($this->_dateToDays("1997", "10", "07")) - ($this->_dateToDays($ano, $mes, $dia))));
     }
 
@@ -262,19 +273,19 @@ class FuncoesGeraisBoleto {
         $numtotal10 = 0;
         $fator = 2;
 
-        // Separacao dos numeros
+// Separacao dos numeros
         for ($i = strlen($num); $i > 0; $i--) {
-            // pega cada numero isoladamente
+// pega cada numero isoladamente
             $numeros[$i] = substr($num, $i - 1, 1);
-            // Efetua multiplicacao do numero pelo (falor 10)
-            // 2002-07-07 01:33:34 Macete para adequar ao Mod10 do Ita�
+// Efetua multiplicacao do numero pelo (falor 10)
+// 2002-07-07 01:33:34 Macete para adequar ao Mod10 do Ita�
             $temp = $numeros[$i] * $fator;
             $temp0 = 0;
             foreach (preg_split('//', $temp, -1, PREG_SPLIT_NO_EMPTY) as $k => $v) {
                 $temp0+=$v;
             }
             $parcial10[$i] = $temp0; //$numeros[$i] * $fator;
-            // monta sequencia para soma dos digitos no (modulo 10)
+// monta sequencia para soma dos digitos no (modulo 10)
             $numtotal10 += $parcial10[$i];
             if ($fator == 2) {
                 $fator = 1;
@@ -283,8 +294,8 @@ class FuncoesGeraisBoleto {
             }
         }
 
-        // v�rias linhas removidas, vide fun��o original
-        // Calculo do modulo 10
+// v�rias linhas removidas, vide fun��o original
+// Calculo do modulo 10
         $resto = $numtotal10 % 10;
         $digito = 10 - $resto;
         if ($resto == 0) {
@@ -315,44 +326,45 @@ class FuncoesGeraisBoleto {
 
     function monta_linha_digitavel($codigo) {
         global $nossonumero, $numero_agencia, $codigocedente, $carteira;
-        // Posi��o 	Conte�do
-        // 1 a 3    N�mero do banco
-        // 4        C�digo da Moeda - 9 para Real
-        // 5        Digito verificador do C�digo de Barras
-        // 6 a 9    Fator de Vencimento
-        // 10 a 19  Valor (8 inteiros e 2 decimais)
-        //          Campo Livre definido por cada banco (25 caracteres)
-        // 20 a 26  C�digo do Cedente
-        // 27 a 39  C�digo do Documento
-        // 40 a 43  Data de Vencimento em Juliano (mmmy)
-        // 44       C�digo do aplicativo CNR = 2
-        // 1. Campo - composto pelo c�digo do banco, c�digo da mo�da, as cinco primeiras posi��es
-        // do campo livre e DV (modulo10) deste campo
+// Posi��o 	Conte�do
+// 1 a 3    N�mero do banco
+// 4        C�digo da Moeda - 9 para Real
+// 5        Digito verificador do C�digo de Barras
+// 6 a 9    Fator de Vencimento
+// 10 a 19  Valor (8 inteiros e 2 decimais)
+//          Campo Livre definido por cada banco (25 caracteres)
+// 20 a 26  C�digo do Cedente
+// 27 a 39  C�digo do Documento
+// 40 a 43  Data de Vencimento em Juliano (mmmy)
+// 44       C�digo do aplicativo CNR = 2
+// 1. Campo - composto pelo c�digo do banco, c�digo da mo�da, as cinco primeiras posi��es
+// do campo livre e DV (modulo10) deste campo
         $campo1 = substr($codigo, 0, 4) . substr($nossonumero, 0, 1);
         $campo1 = $campo1 . substr($nossonumero, 1, 5);
         $campo1 = $campo1 . $this->modulo_10($campo1);
         $campo1 = substr($campo1, 0, 5) . '.' . substr($campo1, 5, 5);
 
-        // 2. Campo - composto pelas posi�oes 6 a 15 do campo livre
-        // e livre e DV (modulo10) deste campo
+// 2. Campo - composto pelas posi�oes 6 a 15 do campo livre
+// e livre e DV (modulo10) deste campo
         $campo2 = substr($nossonumero, 5, 6) . substr($numero_agencia, 0, 4);
         $campo2 = $campo2 . $this->modulo_10($campo2);
         $campo2 = substr($campo2, 0, 5) . '.' . substr($campo2, 5, 6);
 
-        // 3. Campo composto pelas posicoes 16 a 25 do campo livre
-        // e livre e DV (modulo10) deste campo
+// 3. Campo composto pelas posicoes 16 a 25 do campo livre
+// e livre e DV (modulo10) deste campo
         $campo3 = $codigocedente . $carteira . 1;
         $campo3 = $campo3 . $this->modulo_10($campo3);
         $campo3 = substr($campo3, 0, 5) . '.' . substr($campo3, 5, 6);
 
-        // 4. Campo - digito verificador do codigo de barras
+// 4. Campo - digito verificador do codigo de barras
         $campo4 = substr($codigo, 4, 1);
 
-        // 5. Campo composto pelo fator vencimento e valor nominal do documento, sem
-        // indicacao de zeros a esquerda e sem edicao (sem ponto e virgula). Quando se
-        // tratar de valor zerado, a representacao deve ser 000 (tres zeros).
+// 5. Campo composto pelo fator vencimento e valor nominal do documento, sem
+// indicacao de zeros a esquerda e sem edicao (sem ponto e virgula). Quando se
+// tratar de valor zerado, a representacao deve ser 000 (tres zeros).
         $campo5 = substr($codigo, 5, 4) . substr($codigo, 9, 10);
 
         return "$campo1 $campo2 $campo3 $campo4 $campo5";
     }
+
 }

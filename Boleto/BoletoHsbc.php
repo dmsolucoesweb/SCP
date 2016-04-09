@@ -1,11 +1,13 @@
 <?php
+
 require_once '../Ados/BoletoAdo.php';
 require_once 'LayoutBoletoHsbc.php';
 require_once 'FuncoesBoletoHsbc.php';
 ini_set("memory_limit", "-1");
-if(!defined('MPDF_PATH')) {define('MPDF_PATH', 'class/mpdf/');}
+if (!defined('MPDF_PATH')) {
+    define('MPDF_PATH', 'class/mpdf/');
+}
 require_once '../PDF/mpdf/mpdf.php';
-
 
 //include("modulo_11.php");
 
@@ -72,7 +74,7 @@ class BoletoHsbc {
                 $dadosboleto['data_processamento'] = date("d/m/Y"); // Data de processamento do boleto (opcional) <-- SALVAR DATA NO BANCO
                 // CALCULOS
                 $valor_cobrado = str_replace(",", ".", $boletoValor);
-               // $valor_boleto = number_format($valor_cobrado + $taxa_boleto, 2, ',', '');
+                // $valor_boleto = number_format($valor_cobrado + $taxa_boleto, 2, ',', '');
                 $dadosboleto['data_vencimento'] = $boletoDataVencimento + ($dias_de_prazo_para_pagamento * 86400);
                 $dadosboleto['valor_boleto'] = number_format($valor_cobrado + $taxa_boleto, 2, ',', '');
 
@@ -106,11 +108,14 @@ class BoletoHsbc {
                 // FUNÇÕES E LAYOUT DO BOLETO
                 // include("funcoes_hsbc.php");
                 // include("layout_hsbc.php");
-        $dadosboleto["codigo_barras"] = $FuncoesBoletoHsbc::$linha;
-        $dadosboleto["linha_digitavel"] = $FuncoesBoletoHsbc::$linha_digitavel;
-        $dadosboleto["agencia_codigo"] = $FuncoesBoletoHsbc::$agencia_codigo;
-        $dadosboleto["nosso_numero"] = $FuncoesBoletoHsbc::$nosso_numero;
-        $dadosboleto["codigo_banco_com_dv"] = $FuncoesBoletoHsbc::$codigo_banco_com_dv;
+
+                $atributos = $FuncoesBoletoHsbc->pegarAtributos();
+                $dadosboleto['codigo_barras'] = $atributos['0'];
+                $dadosboleto['linha_digitavel'] = $atributos['1'];
+                $dadosboleto['agencia_codigo'] = $atributos['2'];
+                $dadosboleto['nosso_numero'] = $atributos['3'];
+                $dadosboleto['codigo_banco_com_dv'] = $atributos['4'];
+
                 $Html .= $LayoutBoleto->LayoutHsbc($dadosboleto);
                 $mpdf->WriteHTML($Html);
             }
