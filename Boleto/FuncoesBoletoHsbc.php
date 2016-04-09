@@ -69,7 +69,7 @@ class FuncoesBoletoHsbc {
         $dv = $this->digitoVerificador_barra($barra, 9, 0);
         // Numero para o codigo de barras com 44 digitos
 
-        $this->linha = substr($barra, 0, 4) . $dv . substr($barra, 4);
+        $linha = substr($barra, 0, 4) . $dv . substr($barra, 4);
         $this->codigo_barras = $linha;
         $this->linha_digitavel = $this->monta_linha_digitavel($linha);
         $this->agencia_codigo = $agencia_codigo;
