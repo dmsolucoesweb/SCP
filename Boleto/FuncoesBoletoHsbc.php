@@ -61,7 +61,6 @@ class FuncoesBoletoHsbc {
         $app = "1";
 
         $agencia_codigo = $codigocedente;
-
         $numero_agencia = $dadosboleto["agencia"];
 
         // 43 numeros para o calculo do digito verificador do codigo de barras
@@ -70,8 +69,8 @@ class FuncoesBoletoHsbc {
         // Numero para o codigo de barras com 44 digitos
 
         $this->linha = substr($barra, 0, 4) . $dv . substr($barra, 4);
-        $this->codigo_barras = $linha;
-        $this->linha_digitavel = $this->monta_linha_digitavel($linha);
+        $this->codigo_barras = $this->linha;
+        $this->linha_digitavel = $this->monta_linha_digitavel($this->linha);
         $this->agencia_codigo = $agencia_codigo;
         $this->nosso_numero = $nossonumero;
         $this->codigo_banco_com_dv = $codigo_banco_com_dv;

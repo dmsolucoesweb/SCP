@@ -22,6 +22,7 @@ class BoletoHsbc {
         $arrayDeBoletos = $BoletoAdo->consultaArrayDeBoletos($produtoId);
         $mpdf = new mPDF('pt', 'A4', 0, 'arial', 5, 5, 5, 5, 9, 9, 'P');
         $Html = null;
+        
         if (is_array($arrayDeBoletos)) {
             foreach ($arrayDeBoletos as $BoletoModel) {
 
@@ -77,7 +78,6 @@ class BoletoHsbc {
                 // $valor_boleto = number_format($valor_cobrado + $taxa_boleto, 2, ',', '');
                 $dadosboleto['data_vencimento'] = $boletoDataVencimento + ($dias_de_prazo_para_pagamento * 86400);
                 $dadosboleto['valor_boleto'] = number_format($valor_cobrado + $taxa_boleto, 2, ',', '');
-
 
                 // --------------------------------------------------------------------- //
                 // ----------------- DADOS QUE NÃO PODEM SER ALTERADOS ----------------- //

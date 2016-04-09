@@ -3029,6 +3029,9 @@ class mPDF {
             $this->SetFont($family, $style, $size, true, true); // forces write
 
 
+
+
+
             
 //Set colors
         $this->DrawColor = $dc;
@@ -3051,6 +3054,9 @@ class mPDF {
         //Restore font
         if ($family)
             $this->SetFont($family, $style, $size, true, true); // forces write
+
+
+
 
 
             
@@ -19285,6 +19291,7 @@ class mPDF {
                                 break;
                         }
 
+
                         // change to &nbsp; spaces
                         if ($this->usingCoreFont) {
                             $ls = str_repeat(chr(160) . chr(160), ($this->listlvl - 1) * 2) . $blt . ' ';
@@ -26465,6 +26472,9 @@ class mPDF {
 
 
 
+
+
+
             
 // mPDF 5.7.3  inline text-decoration parameters
         $preceeding_fontkey = $this->FontFamily . $this->FontStyle;
@@ -30188,6 +30198,9 @@ class mPDF {
                             $tablefooter[$i][$js]['gradient'] = $cell['gradient']; // *BACKGROUNDS*
                         if (isset($cell['background-image']))
                             $tablefooter[$i][$js]['background-image'] = $cell['background-image']; // *BACKGROUNDS*
+
+
+
 
 
                             
