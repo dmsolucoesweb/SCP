@@ -2,6 +2,7 @@
 
 require_once 'ADO.php';
 require_once '../Classes/cpf.php';
+
 class BoletoAdo extends ADO {
 
     public function consultarUltimoNossoNumero() {
@@ -78,7 +79,7 @@ class BoletoAdo extends ADO {
 
         foreach ($Parcelas as $numeroParcelas) {
             for ($i = 1; $i <= $numeroParcelas; $i++) {
-                
+
                 $nossoNumeroTeste = $this->consultarUltimoNossoNumero();
 
                 if ($nossoNumeroTeste['max(boletoNossoNumero)'] == NULL) {
@@ -104,11 +105,11 @@ class BoletoAdo extends ADO {
                 if ($i == 1) {
                     $dataVencimento = $DatasEHoras->getDataInvertidaComTracos($ParcelasDataVencimento[$contElementos]);
                 } else {
-                    $aumento = $i-1;
+                    $aumento = $i - 1;
                     $dataVencimento = date('Y-m-d', strtotime("+$aumento month", strtotime($DatasEHoras->getDataInvertidaComTracos($ParcelasDataVencimento[$contElementos]))));
                 }
                 $cpf = new CPF;
-                $valorUnitario = number_format($cpf::retiraMascaraRenda($ParcelasValorUnitario[$contElementos]), 2, ".","");
+                $valorUnitario = number_format($cpf::retiraMascaraRenda($ParcelasValorUnitario[$contElementos]), 2, ".", "");
 
                 $query = "insert into Boletos (boletoId, boletoNumeroDocumento, boletoNossoNumero, boletoSacado, boletoRemetido, boletoDataVencimento, boletoNumeroParcela, boletoValor, boletoProdutoId) values (null, '$boletoNumeroDocumento', '$nossoNumeroCompleto','$clienteId', '0', '$dataVencimento', '$contParcela', '$valorUnitario', '$produtoId')";
 
