@@ -505,7 +505,7 @@ class BoletoHsbc {
   <table style="width:666px; border-top:solid; border-top-width:2px; border-top-color:#000000" border="0" cellspacing="0" cellpadding="0">
     <tr>
       <td class="td_7_sb">&nbsp;</td>
-      <td style="width: 417px; height:62px;">[CÓDIGO DE BARRAS]</td>
+      <td style="width: 417px; height:62px;">[  CÓDIGO DE BARRAS  ]</td>
       <td class="td_7_sb">&nbsp;</td>
       <td valign="top"><div class="titulo" style="text-align:left;">Autenticaçao Mecânica / Ficha de Compensação</div></td>
       <td class="td_2">&nbsp;</td>
