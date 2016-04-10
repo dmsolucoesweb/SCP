@@ -21,12 +21,10 @@ class BoletoHsbc {
         $FuncoesBoletoHsbc = new FuncoesBoletoHsbc($dadosboleto);
         $arrayDeBoletos = $BoletoAdo->consultaArrayDeBoletos($produtoId);
         $mpdf = new mPDF('pt', 'A4', 0, 'arial', 5, 5, 5, 5, 9, 9, 'P');
-        $Html = null;
-
         if (is_array($arrayDeBoletos)) {
             $b = count($arrayDeBoletos);
             foreach ($arrayDeBoletos as $BoletoModel) {
-
+            $Html = null;
                 $boletoId = $BoletoModel[0];
                 $boletoNumeroDocumento = $BoletoModel[1];
                 $boletoNossoNumero = $BoletoModel[2];
@@ -48,8 +46,8 @@ class BoletoHsbc {
                 // ------------------------- DADOS DINÂMICOS DO SEU CLIENTE PARA A GERAÇÃO DO BOLETO -------------------- //
                 // DADOS DO BOLETO PARA O SEU CLIENTE
                 // STRING UTILIZADA PARA CALCULAR DATA DE VENCIMENTO, PORÉM A FUNÇÃO FOI RETIRADA 
-                $dias_de_prazo_para_pagamento = 5;
-                $taxa_boleto = 5.00;
+                $dias_de_prazo_para_pagamento = 0;
+                $taxa_boleto = 0;
                 //$data_venc = "20/03/2016";
                 //$valor_cobrado = "2000,00"; // Valor - REGRA: Sem pontos na milhar e tanto faz com "." ou "," ou com 1 ou 2 ou sem casa decimal
                 // NUMERO DOCUMENTO - IDENTIFICAÇÃO DO BOLETO NO SISTEMA PARA DAR BAIXA (3 DIGITOS CLIENTE E 3 DIGITOS DOC. CLIENTE) EX. 001001
@@ -77,7 +75,7 @@ class BoletoHsbc {
                 // CALCULOS
                 $valor_cobrado = str_replace(",", ".", $boletoValor);
                 // $valor_boleto = number_format($valor_cobrado + $taxa_boleto, 2, ',', '');
-                $dadosboleto['data_vencimento'] = $boletoDataVencimento + ($dias_de_prazo_para_pagamento * 86400);
+                $dadosboleto['data_vencimento'] = $boletoDataVencimento; // + ($dias_de_prazo_para_pagamento * 86400);
                 $dadosboleto['valor_boleto'] = number_format($valor_cobrado + $taxa_boleto, 2, ',', '');
 
                 // --------------------------------------------------------------------- //
