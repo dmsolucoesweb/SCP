@@ -64,7 +64,7 @@ class FuncoesBoletoHsbc {
         $numero_agencia = $dadosboleto["agencia"];
 
         // 43 numeros para o calculo do digito verificador do codigo de barras
-        $barra = "$codigobanco$nummoeda$fator_vencimento$valor$nossonumero$numero_agencia$codigocedente$carteira$app";
+        $barra = $codigobanco.$nummoeda.$fator_vencimento.$valor.$nossonumero.$numero_agencia.$codigocedente.$carteira.$app;
         $dv = $this->digitoVerificador_barra($barra, 9, 0);
         // Numero para o codigo de barras com 44 digitos
 
