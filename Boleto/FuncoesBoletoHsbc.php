@@ -77,7 +77,7 @@ class FuncoesBoletoHsbc {
     }
 
     function pegarAtributos() {
-        return array($this->linha, $this->codigo_barras, $this->linha_digitavel, $this->agencia_codigo, $this->nosso_numero, $this->codigo_banco_com_dv);
+        return array($this->codigo_barras, $this->linha_digitavel, $this->agencia_codigo, $this->nosso_numero, $this->codigo_banco_com_dv);
     }
 
     function geraCodigoBanco($numero) {
