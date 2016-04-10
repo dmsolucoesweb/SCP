@@ -24,16 +24,17 @@ class BoletoHsbc {
         if (is_array($arrayDeBoletos)) {
             $b = count($arrayDeBoletos);
             foreach ($arrayDeBoletos as $BoletoModel) {
-            $Html = null;
+                $Html = null;
                 $boletoId = $BoletoModel[0];
                 $boletoNumeroDocumento = $BoletoModel[1];
                 $boletoNossoNumero = $BoletoModel[2];
                 $boletoSacado = $BoletoModel[3];
                 $boletoRemetido = $BoletoModel[4];
                 $boletoDataVencimento = $BoletoModel[5];
-                $boletoNumeroParcela = $BoletoModel[6];
-                $boletoValor = $BoletoModel[7];
-                $boletoProdutoId = $BoletoModel[8];
+                $boletoDataEmissao = $BoletoModel[6];
+                $boletoNumeroParcela = $BoletoModel[7];
+                $boletoValor = $BoletoModel[8];
+                $boletoProdutoId = $BoletoModel[9];
 
                 $Cliente = $ClienteAdo->consultaObjetoPeloId($boletoSacado);
                 $clienteNome = $Cliente->getClienteNome();
@@ -76,7 +77,7 @@ class BoletoHsbc {
                 $valor_cobrado = str_replace(",", ".", $boletoValor);
                 // $valor_boleto = number_format($valor_cobrado + $taxa_boleto, 2, ',', '');
                 $dadosboleto['data_vencimento'] = $boletoDataVencimento; // + ($dias_de_prazo_para_pagamento * 86400);
-                $dadosboleto['valor_boleto'] = number_format($valor_cobrado + $taxa_boleto, 2, ',', '');
+                $dadosboleto['valor_boleto'] = $valor_cobrado;
 
                 // --------------------------------------------------------------------- //
                 // ----------------- DADOS QUE NÃO PODEM SER ALTERADOS ----------------- //
@@ -223,7 +224,7 @@ class BoletoHsbc {
       <td rowspan="2" align="right" valign="bottom" style="width:2px;"></td>
     </tr>
     <tr>
-      <td id="td_banco">'.$dadosboleto['codigo_banco_com_dv'].'</td>
+      <td id="td_banco">' . $dadosboleto['codigo_banco_com_dv'] . '</td>
     </tr>
   </table>
   <table class="tabelas" style="width:666px; border-left:solid; border-left-width:2px; border-left-color:#000000;" border="0" cellspacing="0" cellpadding="0">
@@ -233,16 +234,16 @@ class BoletoHsbc {
       <div class="var pag">Pag&aacute;vel preferencialmente em Canais Eletrônicos ou na rede Bancária, até o vencimento</div></td>
       <td class="td_7_cb">&nbsp;</td>
       <td class="direito"><div class="titulo">Vencimento</div>
-        <div class="var">'.$dadosboleto['data_vencimento'].'</div></td>
+        <div class="var">' . $dadosboleto['data_vencimento'] . '</div></td>
       <td class="td_2">&nbsp;</td>
     </tr>
     <tr>
       <td class="td_7_sb" rowspan="2">&nbsp;</td>
       <td rowspan="2"><div class="titulo">Nome do Beneficiário/CNPJ/Endereço</div>
-      <div class="var endereco">'.$dadosboleto['identificacao'].'  CNPJ - '.$dadosboleto['cpf_cnpj'].'<br>'.$dadosboleto['endereco1'].'<br>'.$dadosboleto['cidade_uf'].'</div></td>
+      <div class="var endereco">' . $dadosboleto['identificacao'] . '  CNPJ - ' . $dadosboleto['cpf_cnpj'] . '<br>' . $dadosboleto['endereco1'] . '<br>' . $dadosboleto['cidade_uf'] . '</div></td>
       <td class="td_7_cb">&nbsp;</td>
       <td class="direito"><div class="titulo">Ag&ecirc;ncia / C&oacute;digo do Beneficiário</div>
-      <div class="var">'.$dadosboleto['agencia'].' / '.$dadosboleto['codigo_cedente'].'</div></td>
+      <div class="var">' . $dadosboleto['agencia'] . ' / ' . $dadosboleto['codigo_cedente'] . '</div></td>
       <td>&nbsp;</td>
     </tr>
 	<tr>
@@ -256,22 +257,22 @@ class BoletoHsbc {
     <tr>
       <td class="td_7_sb">&nbsp;</td>
       <td style="width:103px;"><div class="titulo">Data do Documento</div>
-        <div class="var">'.$dadosboleto['data_documento'].'</div></td>
+        <div class="var">' . $dadosboleto['data_documento'] . '</div></td>
       <td class="td_7_cb">&nbsp;</td>
       <td style="width:133px;"><div class="titulo">N&uacute;mero do Documento</div>
-      <div class="var">'.$dadosboleto['numero_documento'].'</div></td>
+      <div class="var">' . $dadosboleto['numero_documento'] . '</div></td>
       <td class="td_7_cb">&nbsp;</td>
       <td style="width:62px;"><div class="titulo">Esp&eacute;cie DOC</div>
-      <div class="var">'.$dadosboleto['especie_doc'].'</div></td>
+      <div class="var">' . $dadosboleto['especie_doc'] . '</div></td>
       <td class="td_7_cb">&nbsp;</td>
       <td style="width:34px;"><div class="titulo">Aceite</div>
-      <div class="var">'.$dadosboleto['aceite'].'</div></td>
+      <div class="var">' . $dadosboleto['aceite'] . '</div></td>
       <td class="td_7_cb">&nbsp;</td>
       <td style="width:103px;"><div class="titulo">Data Processamento</div>
-      <div class="var">'.$dadosboleto['data_processamento'].'</div></td>
+      <div class="var">' . $dadosboleto['data_processamento'] . '</div></td>
       <td class="td_7_cb">&nbsp;</td>
       <td class="direito"><div class="titulo">Nosso N&uacute;mero</div>
-      <div class="var">'.$dadosboleto['nosso_numero'].'</div></td>
+      <div class="var">' . $dadosboleto['nosso_numero'] . '</div></td>
       <td class="td_2">&nbsp;</td>
     </tr>
   </table>
@@ -282,19 +283,19 @@ class BoletoHsbc {
       <div class="var">&nbsp;</div></td>
       <td class="td_7_cb">&nbsp;</td>
       <td style="width:55px;"><div class="titulo">Carteira</div>
-      <div class="var">'.$dadosboleto['carteira'].'</div></td>
+      <div class="var">' . $dadosboleto['carteira'] . '</div></td>
       <td class="td_7_cb">&nbsp;</td>
       <td style="width:55px;"><div class="titulo">Esp&eacute;cie</div>
-      <div class="var">'.$dadosboleto['especie'].'</div></td>
+      <div class="var">' . $dadosboleto['especie'] . '</div></td>
       <td class="td_7_cb">&nbsp;</td>
       <td style="width:104px;"><div class="titulo">Quantidade da Moeda</div>
-      <div class="var">'.$dadosboleto['quantidade'].'</div></td>
+      <div class="var">' . $dadosboleto['quantidade'] . '</div></td>
       <td class="td_7_cb">&nbsp;</td>
       <td style="width:103px;"><div class="titulo">Valor</div>
-      <div class="var">'.$dadosboleto['valor_unitario'].'</div></td>
+      <div class="var">' . $dadosboleto['valor_unitario'] . '</div></td>
       <td class="td_7_cb">&nbsp;</td>
       <td class="direito"><div class="titulo">(=) Valor do Documento</div>
-      <div class="var">R$ '.$dadosboleto['valor_boleto'].'</div></td>
+      <div class="var">R$ ' . $dadosboleto['valor_boleto'] . '</div></td>
       <td class="td_2">&nbsp;</td>
     </tr>
   </table>
@@ -302,10 +303,10 @@ class BoletoHsbc {
     <tr>
       <td rowspan="5" class="td_7_sb">&nbsp;</td>
       <td rowspan="5" valign="top"><div class="titulo" style="margin-bottom:18px;">Instru&ccedil;&otilde;es de Responsabilidade do Beneficiário</div>
-        <div class="var">'.$dadosboleto['instrucoes1'].'<br />'
-                          .$dadosboleto['instrucoes2'].'<br />'
-                          .$dadosboleto['instrucoes3'].'<br />'
-                          .$dadosboleto['instrucoes4'].'</div>
+        <div class="var">' . $dadosboleto['instrucoes1'] . '<br />'
+                        . $dadosboleto['instrucoes2'] . '<br />'
+                        . $dadosboleto['instrucoes3'] . '<br />'
+                        . $dadosboleto['instrucoes4'] . '</div>
       </td>
       <td class="td_7_cb">&nbsp;</td>
       <td class="direito"><div class="titulo">(-) Desconto / Abatimento</div>
@@ -341,13 +342,13 @@ class BoletoHsbc {
     <tr>
       <td class="td_7_sb">&nbsp;</td>
       <td valign="top"><div class="titulo">Nome Pagador/CPF/CNPJ/Endereço/Cidade/UF/CEP</div>
-        <div class="var" style="margin-bottom:5px; height:auto">'.$dadosboleto['sacado'].'<br />
-        '.$dadosboleto['endereco1'].'<br />
-        '.$dadosboleto['endereco2'].' '.$dadosboleto['estado'].'</div>
+        <div class="var" style="margin-bottom:5px; height:auto">' . $dadosboleto['sacado'] . '<br />
+        ' . $dadosboleto['endereco1'] . '<br />
+        ' . $dadosboleto['endereco2'] . ' ' . $dadosboleto['estado'] . '</div>
         <div class="titulo">Sacador / Avalista</div></td>
       <td class="td_7_sb">&nbsp;</td>
       <td class="direito" valign="top"><div class="titulo">CPF / CNPJ</div>
-        <div class="var" style="text-align:left;">'.$dadosboleto['cpfsacado'].'</div></td>
+        <div class="var" style="text-align:left;">' . $dadosboleto['cpfsacado'] . '</div></td>
       <td class="td_2">&nbsp;</td>
     </tr>
   </table>
@@ -368,11 +369,11 @@ class BoletoHsbc {
       <td rowspan="2" valign="bottom" style="width:150px;"><img src="../Boleto/imagens/logohsbc.jpg" alt="HSBC" title="HSBC" /></td>
       <td align="center" valign="bottom" style="font-size: 9px; border:none;">Banco</td>
       <td rowspan="2" align="right" valign="bottom" style="width:6px;"></td>
-      <td rowspan="2" align="right" valign="bottom" style="font-size: 15px; font-weight:bold; width:445px;"><span class="ld">'.$dadosboleto['linha_digitavel'].'</span></td>
+      <td rowspan="2" align="right" valign="bottom" style="font-size: 15px; font-weight:bold; width:445px;"><span class="ld">' . $dadosboleto['linha_digitavel'] . '</span></td>
       <td rowspan="2" align="right" valign="bottom" style="width:2px;"></td>
     </tr>
     <tr>
-      <td id="td_banco">'.$dadosboleto['codigo_banco_com_dv'].'</td>
+      <td id="td_banco">' . $dadosboleto['codigo_banco_com_dv'] . '</td>
     </tr>
   </table>
   <table class="tabelas" style="width:666px; border-left:solid; border-left-width:2px; border-left-color:#000000;" border="0" cellspacing="0" cellpadding="0">
@@ -382,16 +383,16 @@ class BoletoHsbc {
       <div class="var pag">Pag&aacute;vel preferencialmente em Canais Eletrônicos ou na rede Bancária, até o vencimento</div></td>
       <td class="td_7_cb">&nbsp;</td>
       <td class="direito"><div class="titulo">Vencimento</div>
-        <div class="var">'.$dadosboleto['data_vencimento'].'</div></td>
+        <div class="var">' . $dadosboleto['data_vencimento'] . '</div></td>
       <td class="td_2">&nbsp;</td>
     </tr>
     <tr>
       <td class="td_7_sb" rowspan="2">&nbsp;</td>
       <td rowspan="2"><div class="titulo">Nome do Beneficiário/CNPJ/Endereço</div>
-      <div class="var endereco">'.$dadosboleto['identificacao'].'  CNPJ - '.$dadosboleto['cpf_cnpj'].'<br>'.$dadosboleto['endereco1'].'<br>'.$dadosboleto['cidade_uf'].'</div></td>
+      <div class="var endereco">' . $dadosboleto['identificacao'] . '  CNPJ - ' . $dadosboleto['cpf_cnpj'] . '<br>' . $dadosboleto['endereco1'] . '<br>' . $dadosboleto['cidade_uf'] . '</div></td>
       <td class="td_7_cb">&nbsp;</td>
       <td class="direito"><div class="titulo">Ag&ecirc;ncia / C&oacute;digo do Beneficiário</div>
-      <div class="var">'.$dadosboleto['agencia'].' / '.$dadosboleto['codigo_cedente'].'</div></td>
+      <div class="var">' . $dadosboleto['agencia'] . ' / ' . $dadosboleto['codigo_cedente'] . '</div></td>
       <td>&nbsp;</td>
     </tr>
 	<tr>
@@ -405,22 +406,22 @@ class BoletoHsbc {
     <tr>
       <td class="td_7_sb">&nbsp;</td>
       <td style="width:103px;"><div class="titulo">Data do Documento</div>
-        <div class="var">'.$dadosboleto['data_documento'].'</div></td>
+        <div class="var">' . $dadosboleto['data_documento'] . '</div></td>
       <td class="td_7_cb">&nbsp;</td>
       <td style="width:133px;"><div class="titulo">N&uacute;mero do Documento</div>
-      <div class="var">'.$dadosboleto['numero_documento'].'</div></td>
+      <div class="var">' . $dadosboleto['numero_documento'] . '</div></td>
       <td class="td_7_cb">&nbsp;</td>
       <td style="width:62px;"><div class="titulo">Esp&eacute;cie DOC</div>
-      <div class="var">'.$dadosboleto['especie_doc'].'</div></td>
+      <div class="var">' . $dadosboleto['especie_doc'] . '</div></td>
       <td class="td_7_cb">&nbsp;</td>
       <td style="width:34px;"><div class="titulo">Aceite</div>
-      <div class="var">'.$dadosboleto['aceite'].'</div></td>
+      <div class="var">' . $dadosboleto['aceite'] . '</div></td>
       <td class="td_7_cb">&nbsp;</td>
       <td style="width:103px;"><div class="titulo">Data Processamento</div>
-      <div class="var">'.$dadosboleto['data_processamento'].'</div></td>
+      <div class="var">' . $dadosboleto['data_processamento'] . '</div></td>
       <td class="td_7_cb">&nbsp;</td>
       <td class="direito"><div class="titulo">Nosso N&uacute;mero</div>
-      <div class="var">'.$dadosboleto['nosso_numero'].'</div></td>
+      <div class="var">' . $dadosboleto['nosso_numero'] . '</div></td>
       <td class="td_2">&nbsp;</td>
     </tr>
   </table>
@@ -431,19 +432,19 @@ class BoletoHsbc {
       <div class="var">&nbsp;</div></td>
       <td class="td_7_cb">&nbsp;</td>
       <td style="width:55px;"><div class="titulo">Carteira</div>
-      <div class="var">'.$dadosboleto['carteira'].'</div></td>
+      <div class="var">' . $dadosboleto['carteira'] . '</div></td>
       <td class="td_7_cb">&nbsp;</td>
       <td style="width:55px;"><div class="titulo">Esp&eacute;cie</div>
-      <div class="var">'.$dadosboleto['especie'].'</div></td>
+      <div class="var">' . $dadosboleto['especie'] . '</div></td>
       <td class="td_7_cb">&nbsp;</td>
       <td style="width:104px;"><div class="titulo">Quantidade da Moeda</div>
-      <div class="var">'.$dadosboleto['quantidade'].'</div></td>
+      <div class="var">' . $dadosboleto['quantidade'] . '</div></td>
       <td class="td_7_cb">&nbsp;</td>
       <td style="width:103px;"><div class="titulo">Valor</div>
-      <div class="var">'.$dadosboleto['valor_unitario'].'</div></td>
+      <div class="var">' . $dadosboleto['valor_unitario'] . '</div></td>
       <td class="td_7_cb">&nbsp;</td>
       <td class="direito"><div class="titulo">(=) Valor do Documento</div>
-      <div class="var">R$ '.$dadosboleto['valor_boleto'].'</div></td>
+      <div class="var">R$ ' . $dadosboleto['valor_boleto'] . '</div></td>
       <td class="td_2">&nbsp;</td>
     </tr>
   </table>
@@ -451,10 +452,10 @@ class BoletoHsbc {
     <tr>
       <td rowspan="5" class="td_7_sb">&nbsp;</td>
       <td rowspan="5" valign="top"><div class="titulo" style="margin-bottom:18px;">Instru&ccedil;&otilde;es de Responsabilidade do Beneficiário</div>
-        <div class="var">'.$dadosboleto['instrucoes1'].'<br />'
-                          .$dadosboleto['instrucoes2'].'<br />'
-                          .$dadosboleto['instrucoes3'].'<br />'
-                          .$dadosboleto['instrucoes4'].'</div>
+        <div class="var">' . $dadosboleto['instrucoes1'] . '<br />'
+                        . $dadosboleto['instrucoes2'] . '<br />'
+                        . $dadosboleto['instrucoes3'] . '<br />'
+                        . $dadosboleto['instrucoes4'] . '</div>
       </td>
       <td class="td_7_cb">&nbsp;</td>
       <td class="direito"><div class="titulo">(-) Desconto / Abatimento</div>
@@ -490,20 +491,20 @@ class BoletoHsbc {
     <tr>
       <td class="td_7_sb">&nbsp;</td>
       <td valign="top"><div class="titulo">Nome Pagador/CPF/CNPJ/Endereço/Cidade/UF/CEP</div>
-        <div class="var" style="margin-bottom:5px; height:auto">'.$dadosboleto['sacado'].'<br />
-        '.$dadosboleto['endereco1'].'<br />
-        '.$dadosboleto['endereco2'].' '.$dadosboleto['estado'].'</div>
+        <div class="var" style="margin-bottom:5px; height:auto">' . $dadosboleto['sacado'] . '<br />
+        ' . $dadosboleto['endereco1'] . '<br />
+        ' . $dadosboleto['endereco2'] . ' ' . $dadosboleto['estado'] . '</div>
         <div class="titulo">Sacador / Avalista</div></td>
       <td class="td_7_sb">&nbsp;</td>
       <td class="direito" valign="top"><div class="titulo">CPF / CNPJ</div>
-        <div class="var" style="text-align:left;">'.$dadosboleto['cpfsacado'].'</div></td>
+        <div class="var" style="text-align:left;">' . $dadosboleto['cpfsacado'] . '</div></td>
       <td class="td_2">&nbsp;</td>
     </tr>
   </table>
   <table style="width:666px; border-top:solid; border-top-width:2px; border-top-color:#000000" border="0" cellspacing="0" cellpadding="0">
     <tr>
       <td class="td_7_sb">&nbsp;</td>
-      <td style="width: 417px; height:62px;">[  CÓDIGO DE BARRAS  ]</td>
+      <td style="width: 417px; height:62px;>""</td>
       <td class="td_7_sb">&nbsp;</td>
       <td valign="top"><div class="titulo" style="text-align:left;">Autenticaçao Mecânica / Ficha de Compensação</div></td>
       <td class="td_2">&nbsp;</td>
@@ -512,9 +513,12 @@ class BoletoHsbc {
 </div>';
                 $mpdf->WriteHTML($Html);
                 $b--;
-                if ($b != 0) {$mpdf->AddPage();}
+                if ($b != 0) {
+                    $mpdf->AddPage();
+                }
             }
         }
+
         $arquivo = date("d-m-Y") . "-boleto.pdf";
         $mpdf->Output($arquivo, "I");
         exit();

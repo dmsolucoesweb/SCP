@@ -11,7 +11,7 @@ class RemessaAdo extends ADO {
         $resultado = parent::executaQuery($query);
 
         if ($resultado) {
-//consulta Ok. Continua.s
+            //consulta Ok. Continua.s
         } else {
             parent::setMensagem("Erro no select de consultaBoletosParaRemessa: " . parent::getBdError());
             return false;
@@ -21,7 +21,8 @@ class RemessaAdo extends ADO {
 
         while ($boleto = parent::leTabelaBD()) {
             $boletoDataVencimento = $DatasEHoras->getDataEHorasDesinvertidaComBarras($boleto['boletoDataVencimento']);
-            $BoletoModel = array($boleto['boletoId'], $boleto['boletoNumeroDocumento'], $boleto['boletoNossoNumero'], $boleto['boletoSacado'], $boleto['boletoRemetido'], $boletoDataVencimento, $boleto['boletoNumeroParcela'], $boleto['boletoValor'], $boleto['boletoProdutoId']);
+            $boletoDataEmissao = $DatasEHoras->getDataEHorasDesinvertidaComBarras($boleto['boletoDataEmissao']);
+            $BoletoModel = array($boleto['boletoId'], $boleto['boletoNumeroDocumento'], $boleto['boletoNossoNumero'], $boleto['boletoSacado'], $boleto['boletoRemetido'], $boletoDataVencimento, $boletoDataEmissao, $boleto['boletoNumeroParcela'], $boleto['boletoValor'], $boleto['boletoProdutoId']);
             $BoletosModel[] = $BoletoModel;
         }
 
@@ -34,7 +35,7 @@ class RemessaAdo extends ADO {
         $resultado = parent::executaQuery($query);
 
         if ($resultado) {
-//consulta Ok. Continua.s
+            //consulta Ok. Continua.s
         } else {
             parent::setMensagem("Erro no select de consultaBoletosParaRemessaAnterior: " . parent::getBdError());
             return false;
@@ -44,7 +45,7 @@ class RemessaAdo extends ADO {
 
         while ($boleto = parent::leTabelaBD()) {
             $boletoDataVencimento = $DatasEHoras->getDataEHorasDesinvertidaComBarras($boleto['boletoDataVencimento']);
-            $BoletoModel = array($boleto['boletoId'], $boleto['boletoNumeroDocumento'], $boleto['boletoNossoNumero'], $boleto['boletoSacado'], $boleto['boletoRemetido'], $boletoDataVencimento, $boleto['boletoNumeroParcela'], $boleto['boletoValor'], $boleto['boletoProdutoId']);
+            $BoletoModel = array($boleto['boletoId'], $boleto['boletoNumeroDocumento'], $boleto['boletoNossoNumero'], $boleto['boletoSacado'], $boleto['boletoRemetido'], $boletoDataVencimento, $boletoDataEmissao, $boleto['boletoNumeroParcela'], $boleto['boletoValor'], $boleto['boletoProdutoId']);
             $BoletosModel[] = $BoletoModel;
         }
 

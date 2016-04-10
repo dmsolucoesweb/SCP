@@ -705,9 +705,8 @@ class LayoutBoletoHsbc {
                 </tr>
             </tbody>
         </table></div>";
-       $this->html = $html;
+
+        return $html;
     }
-        function pegaHtml() {
-        return array($this->html);
-    }
+
 }

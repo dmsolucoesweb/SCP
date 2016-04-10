@@ -182,8 +182,8 @@ class FuncoesBoletoHsbc {
             }
         }
 
-// Desenho da barra
-// Guarda inicial 
+        // Desenho da barra
+        // Guarda inicial 
         ?>
         <img src=imagens/p.png width=<?php echo $fino ?> height=<?php echo $altura ?> border=0><img src=imagens/b.png width=<?php echo $fino ?> height=<?php echo $altura ?> border=0><img src=imagens/p.png width=<?php echo $fino ?> height=<?php echo $altura ?> border=0><img src=imagens/b.png width=<?php echo $fino ?> height=<?php echo $altura ?> border=0><img 
         <?php
@@ -192,12 +192,12 @@ class FuncoesBoletoHsbc {
             $texto = "0" . $texto;
         }
 
-// Draw dos dados
+        // Draw dos dados
         while (strlen($texto) > 0) {
             $i = round(substr($texto, 0, 2));
-//$texto = direita($texto, strlen($texto) - 2);
+            //$texto = direita($texto, strlen($texto) - 2);
             $texto = substr($texto, strlen(strlen($texto) - 2) - 2, strlen($texto) - 2);
-//substr($entra, strlen($entra) - $comp, $comp);
+            //substr($entra, strlen($entra) - $comp, $comp);
             $f = $barcodes[$i];
 
             for ($i = 1; $i < 11; $i+=2) {
@@ -219,7 +219,7 @@ class FuncoesBoletoHsbc {
                     <?php
                 }
             }
-// Draw guarda final
+            // Draw guarda final
             ?>
             src=imagens/p.png width=<?php echo $largo ?> height=<?php echo $altura ?> border=0><img 
             src=imagens/b.png width=<?php echo $fino ?> height=<?php echo $altura ?> border=0><img 
