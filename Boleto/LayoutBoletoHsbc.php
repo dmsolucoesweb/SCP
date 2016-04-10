@@ -261,7 +261,7 @@ class LayoutBoletoHsbc {
                             </tr>
                         </tbody>
                     </table>
-                    <table cellspacing='0' cellpadding='0' border='0'>
+                    <table cellspacing=0 cellpadding=0 border=0>
                         <tbody>
                             <tr>
                                 <td class=ct  width=7 height=12></td>
@@ -271,7 +271,8 @@ class LayoutBoletoHsbc {
                                     mecânica</td>
                             </tr>";
 
-        $html .= "<tr>
+        $html .=
+                "<tr>
                     <td  width=7 ></td>
                     <td class=cp width=564 ><span class='campo'>"
                 . $dadosboleto["demonstrativo1"] . "<br>"
@@ -705,9 +706,7 @@ class LayoutBoletoHsbc {
                 </tr>
             </tbody>
         </table></div>";
-       $this->html = $html;
+       return $html;
     }
-        function pegaHtml() {
-        return array($this->html);
-    }
+
 }

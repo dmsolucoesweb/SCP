@@ -94,7 +94,7 @@ class BoletoHsbc {
                 $dadosboleto['carteira'] = "00";  // CÓDIGO DA CARTEIRA (NÃO ALTERE)
                 // DADOS EMISSOR DOS BOLETOS (PARK VILLE)
                 $dadosboleto['identificacao'] = "DM SOLUÇÕES WEB";
-                $dadosboleto['cpf_cnpj'] = "23501469000100";
+                $dadosboleto['cpf_cnpj'] = "19.033.354/0001-60";
                 $dadosboleto['endereco'] = "Rua Cuiabá, 023";
                 $dadosboleto['cidade_uf'] = "INHUMAS / GO";
                 $dadosboleto['cedente'] = "DM SOLUÇÕES WEB";
