@@ -42,14 +42,14 @@ class FuncoesBoletoHsbc {
         $fator_vencimento = $this->calcula_fator($dadosboleto["data_vencimento"]);
 
         //valor tem 10 digitos, sem virgula
-        $valor = $this->formata_numero($dadosboleto["valor_boleto"], 10, 0, "valor");
+        $valor = $this->formata_numero($dadosboleto['valor_boleto'], 10, 0, "valor");
         //carteira � CNR
-        $carteira = $dadosboleto["carteira"];
+        $carteira = $dadosboleto['carteira'];
         //codigocedente deve possuir 7 caracteres
-        $codigocedente = $this->formata_numero($dadosboleto["codigo_cedente"], 7, 0);
+        $codigocedente = $this->formata_numero($dadosboleto['codigo_cedente'], 7, 0);
 
-        $ndoc = $dadosboleto["numero_documento"];
-        $vencimento = $dadosboleto["data_vencimento"];
+        $ndoc = $dadosboleto['numero_documento'];
+        $vencimento = $dadosboleto['data_vencimento'];
 
         // n�mero do documento (sem dvs) � 13 digitos
         $nnum = $dadosboleto["numero_documento"];
@@ -238,8 +238,8 @@ return $FatorVenc1;
             }
         }
 
-// Desenho da barra
-// Guarda inicial 
+        // Desenho da barra
+        // Guarda inicial 
         ?>
         <img src=imagens/p.png width=<?php echo $fino ?> height=<?php echo $altura ?> border=0><img src=imagens/b.png width=<?php echo $fino ?> height=<?php echo $altura ?> border=0><img src=imagens/p.png width=<?php echo $fino ?> height=<?php echo $altura ?> border=0><img src=imagens/b.png width=<?php echo $fino ?> height=<?php echo $altura ?> border=0><img 
         <?php
@@ -248,12 +248,12 @@ return $FatorVenc1;
             $texto = "0" . $texto;
         }
 
-// Draw dos dados
+        // Draw dos dados
         while (strlen($texto) > 0) {
             $i = round(substr($texto, 0, 2));
-//$texto = direita($texto, strlen($texto) - 2);
+            //$texto = direita($texto, strlen($texto) - 2);
             $texto = substr($texto, strlen(strlen($texto) - 2) - 2, strlen($texto) - 2);
-//substr($entra, strlen($entra) - $comp, $comp);
+            //substr($entra, strlen($entra) - $comp, $comp);
             $f = $barcodes[$i];
 
             for ($i = 1; $i < 11; $i+=2) {
@@ -275,7 +275,7 @@ return $FatorVenc1;
                     <?php
                 }
             }
-// Draw guarda final
+            // Draw guarda final
             ?>
             src=imagens/p.png width=<?php echo $largo ?> height=<?php echo $altura ?> border=0><img 
             src=imagens/b.png width=<?php echo $fino ?> height=<?php echo $altura ?> border=0><img 

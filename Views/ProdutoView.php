@@ -182,8 +182,13 @@ class ProdutoView extends HtmlGeral {
         $clienteId = $produtoModel->getClienteId();
         $vendedorId = $produtoModel->getVendedorId();
         $vendedorDataVencimento = $produtoModel->getVendedorDataVencimento();
-        if ($vendedorId == 1) {$vendedorComissao = null;} else {$vendedorComissao = number_format($produtoModel->getVendedorComissao(), 2, ",", "");}
-        
+
+        if ($vendedorId == 1) {
+            $vendedorComissao = null;
+        } else {
+            $vendedorComissao = number_format($produtoModel->getVendedorComissao(), 2, ",", "");
+        }
+
         $vendedorFormaPagamento = $produtoModel->getVendedorFormaPagamento();
         $vendedorObservacao = $produtoModel->getVendedorObservacao();
 
@@ -270,7 +275,9 @@ class ProdutoView extends HtmlGeral {
                 . $comboDeStatus;
 
         $dados .= "<legend>Parcelas</legend>";
-        if ($produtoId == '-1' || $produtoId == NULL) {$dados .= "<p class='text-primary'>Adicione o número de parcelas necessárias para a quitação do apartamento.</p><div class='alert alert-info' id='alerta_parc' role='alert'>Para realizar a venda do apartamento verifique se o valor das parcelas são iguais ao valor integral do apartamento.</div>";}
+        if ($produtoId == '-1' || $produtoId == NULL) {
+            $dados .= "<p class='text-primary'>Adicione o número de parcelas necessárias para a quitação do apartamento.</p><div class='alert alert-info' id='alerta_parc' role='alert'>Para realizar a venda do apartamento verifique se o valor das parcelas são iguais ao valor integral do apartamento.</div>";
+        }
         if ($produtoId == '-1' || $produtoId == NULL) {
             $dados .= "<script>$(document).ready(function () { addCampos(); });
                     </script>"
@@ -380,18 +387,23 @@ class ProdutoView extends HtmlGeral {
                 $desativa = "true";
                 if ($produtoId != '-1' && $produtoId != NULL) {
                     $dados .= "<div class='row'><button name='bt' type='submit' class='btn btn-sm btn-info' value='vbl'><i class='glyphicon glyphicon-asterisk'></i> Validar Boleto</button>
-                <button name='bt' type='submit' class='btn btn-sm btn-info' value='ibl'><i class='glyphicon glyphicon-asterisk'></i> Imprimir Boleto</button></div>";}
+                <button name='bt' type='submit' class='btn btn-sm btn-info' value='ibl'><i class='glyphicon glyphicon-asterisk'></i> Imprimir Boleto</button></div>";
+                }
             }
         }
 
-       if ($produtoId != '-1' && $produtoId != NULL and $vendedorId != 1) {  $dados .= "<div class='dados_int row'><h4>Informações sobre o vendedor</h4>"
-                . $fieldsetDataVenc
-                . $fieldsetValorComissao
-                . $comboDeFPagVendedor
-                . $fieldsetObservacao
-       . "</div>"; }
-$desativa = "disabled = 'true'";
-                if ($produtoId != '-1' && $produtoId != NULL) { $desativa = "";}
+        if ($produtoId != '-1' && $produtoId != NULL and $vendedorId != 1) {
+            $dados .= "<div class='dados_int row'><h4>Informações sobre o vendedor</h4>"
+                    . $fieldsetDataVenc
+                    . $fieldsetValorComissao
+                    . $comboDeFPagVendedor
+                    . $fieldsetObservacao
+                    . "</div>";
+        }
+        $desativa = "disabled = 'true'";
+        if ($produtoId != '-1' && $produtoId != NULL) {
+            $desativa = "";
+        }
         $dados .= "<div class='row'>
                 <button name='bt' type='submit' class='btn btn-info' value='nov'><i class='glyphicon glyphicon-asterisk'></i> Novo</button>
                 <button name='bt' id='inc' type='submit' class='btn btn-success' disabled='true' value='inc' ><i class='glyphicon glyphicon-ok'></i> Incluir</button>

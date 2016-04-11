@@ -39,7 +39,8 @@ class BoletoAdo extends ADO {
 
         while ($boleto = parent::leTabelaBD()) {
             $boletoDataVencimento = $DatasEHoras->getDataEHorasDesinvertidaComBarras($boleto['boletoDataVencimento']);
-            $BoletoModel = array($boleto['boletoId'], $boleto['boletoNumeroDocumento'], $boleto['boletoNossoNumero'], $boleto['boletoSacado'], $boleto['boletoRemetido'], $boletoDataVencimento, $boleto['boletoNumeroParcela'], $boleto['boletoValor'], $boleto['boletoProdutoId']);
+            $boletoDataEmissao = $DatasEHoras->getDataEHorasDesinvertidaComBarras($boleto['boletoDataEmissao']);
+            $BoletoModel = array($boleto['boletoId'], $boleto['boletoNumeroDocumento'], $boleto['boletoNossoNumero'], $boleto['boletoSacado'], $boleto['boletoRemetido'], $boletoDataVencimento, $boletoDataEmissao, $boleto['boletoNumeroParcela'], $boleto['boletoValor'], $boleto['boletoProdutoId']);
             $BoletosModel[] = $BoletoModel;
         }
 
@@ -61,6 +62,7 @@ class BoletoAdo extends ADO {
         $FuncoesBoletoHsbc = new FuncoesBoletoHsbc($dadosboleto);
         $contParcela = $boletoNossoNumero2 = NULL;
         $contElementos = 0;
+        $resultado = True;
 
         $clienteId = $ProdutoModel->getClienteId();
         $Cliente = $ClienteAdo->consultaObjetoPeloId($clienteId);
@@ -75,48 +77,55 @@ class BoletoAdo extends ADO {
         $produtoParcelas = $ProdutoModel->getProdutoParcelas();
         $produtoParcelasDataVencimento = $ProdutoModel->getProdutoParcelasDataVencimento();
         $produtoParcelasValorUnitario = $ProdutoModel->getProdutoParcelasValorUnitario();
+        $produtoParcelasFormaPagamento = $ProdutoModel->getProdutoParcelasFormaPagamento();
 
         $Parcelas = explode(";", $produtoParcelas);
         $ParcelasDataVencimento = explode(";", $produtoParcelasDataVencimento);
         $ParcelasValorUnitario = explode(";", $produtoParcelasValorUnitario);
+        $ParcelasFormaPagamento = explode(";", $produtoParcelasFormaPagamento);
 
         foreach ($Parcelas as $numeroParcelas) {
-            for ($i = 1; $i <= $numeroParcelas; $i++) {
+            if ($ParcelasFormaPagamento[$contElementos] == 2) {
+                for ($i = 1; $i <= $numeroParcelas; $i++) {
 
-                $nossoNumeroTeste = $this->consultarUltimoNossoNumero();
+                    $nossoNumeroTeste = $this->consultarUltimoNossoNumero();
 
-                if ($nossoNumeroTeste['max(boletoNossoNumero)'] == NULL) {
-                    $boletoNossoNumero2 = '00000';
-                } else {
-                    $boletoNossoNumero2 = substr($nossoNumeroTeste['max(boletoNossoNumero)'], 5, 5);
-                    $boletoNossoNumero2 += 1;
-                    $boletoNossoNumero2 = str_pad($boletoNossoNumero2, 5, "0", STR_PAD_LEFT);
+                    if ($nossoNumeroTeste['max(boletoNossoNumero)'] == NULL) {
+                        $boletoNossoNumero2 = '00000';
+                    } else {
+                        $boletoNossoNumero2 = substr($nossoNumeroTeste['max(boletoNossoNumero)'], 5, 5);
+                        $boletoNossoNumero2 += 1;
+                        $boletoNossoNumero2 = str_pad($boletoNossoNumero2, 5, "0", STR_PAD_LEFT);
 
-                    if ($boletoNossoNumero2 >= 99999) {
-                        return false;
+                        if ($boletoNossoNumero2 >= 99999) {
+                            return false;
+                        }
                     }
+
+                    $contParcela += 1;
+                    $boletoContParcela = str_pad($contParcela, 3, "0", STR_PAD_LEFT);
+                    $boletoContParcela = str_pad($contParcela, 3, "0", STR_PAD_LEFT);
+                    $boletoNumeroDocumento = $boletoProdutoId . $boletoContParcela;
+                    $boletoNossoNumero1 = 56410;
+                    $digitoVerificador = modulo_11($boletoNossoNumero1 . $boletoNossoNumero2);
+                    $nossoNumeroCompleto = $boletoNossoNumero1 . $boletoNossoNumero2 . $digitoVerificador;
+
+                    if ($i == 1) {
+                        $dataVencimento = $DatasEHoras->getDataInvertidaComTracos($ParcelasDataVencimento[$contElementos]);
+                    } else {
+                        $aumento = $i - 1;
+                        $dataVencimento = date('Y-m-d', strtotime("+$aumento month", strtotime($DatasEHoras->getDataInvertidaComTracos($ParcelasDataVencimento[$contElementos]))));
+                    }
+
+                    date_default_timezone_set('America/Sao_Paulo');
+                    $dataEmissao = date('Y-m-d-H-i-s');
+
+                    $cpf = new CPF;
+                    $valorUnitario = number_format($cpf::retiraMascaraRenda($ParcelasValorUnitario[$contElementos]), 2, ".", "");
+
+                    $query = "insert into Boletos (boletoId, boletoNumeroDocumento, boletoNossoNumero, boletoSacado, boletoRemetido, boletoDataVencimento, boletoDataEmissao, boletoNumeroParcela, boletoValor, boletoProdutoId) values (null, '$boletoNumeroDocumento', '$nossoNumeroCompleto','$clienteId', '0', '$dataVencimento', '$dataEmissao', '$contParcela', '$valorUnitario', '$produtoId')";
+                    $resultado = parent::executaQuery($query);
                 }
-
-                $contParcela += 1;
-                $boletoContParcela = str_pad($contParcela, 3, "0", STR_PAD_LEFT);
-                $boletoContParcela = str_pad($contParcela, 3, "0", STR_PAD_LEFT);
-                $boletoNumeroDocumento = $boletoProdutoId . $boletoContParcela;
-                $boletoNossoNumero1 = 56410;
-                $digitoVerificador = modulo_11($boletoNossoNumero1 . $boletoNossoNumero2, 7, 0);
-                $nossoNumeroCompleto = $boletoNossoNumero1 . $boletoNossoNumero2 . $digitoVerificador;
-
-                if ($i == 1) {
-                    $dataVencimento = $DatasEHoras->getDataInvertidaComTracos($ParcelasDataVencimento[$contElementos]);
-                } else {
-                    $aumento = $i - 1;
-                    $dataVencimento = date('Y-m-d', strtotime("+$aumento month", strtotime($DatasEHoras->getDataInvertidaComTracos($ParcelasDataVencimento[$contElementos]))));
-                }
-                $cpf = new CPF;
-                $valorUnitario = number_format($cpf::retiraMascaraRenda($ParcelasValorUnitario[$contElementos]), 2, ".", "");
-
-                $query = "insert into Boletos (boletoId, boletoNumeroDocumento, boletoNossoNumero, boletoSacado, boletoRemetido, boletoDataVencimento, boletoNumeroParcela, boletoValor, boletoProdutoId) values (null, '$boletoNumeroDocumento', '$nossoNumeroCompleto','$clienteId', '0', '$dataVencimento', '$contParcela', '$valorUnitario', '$produtoId')";
-
-                $resultado = parent::executaQuery($query);
             }
 
             next($ParcelasDataVencimento);
