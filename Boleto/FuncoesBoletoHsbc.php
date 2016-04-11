@@ -39,7 +39,7 @@ class FuncoesBoletoHsbc {
         $parte1 = substr($codigobanco, 0, 3);
         $codigo_banco_com_dv = $parte1 . "-" . modulo_11($parte1);
         $nummoeda = "9";
-        $fator_vencimento = $this->fator_vencimento($dadosboleto["data_vencimento"]);
+        $fator_vencimento = $this->calcula_fator($dadosboleto["data_vencimento"]);
 
         //valor tem 10 digitos, sem virgula
         $valor = $this->formata_numero($dadosboleto["valor_boleto"], 10, 0, "valor");
@@ -60,18 +60,33 @@ class FuncoesBoletoHsbc {
         $vencjuliano = $this->dataJuliano($vencimento);
         $app = "1";
 
-        $agencia_codigo = $codigocedente;
-        $numero_agencia = $dadosboleto["agencia"];
-
+        $agencia_codigo = $dadosboleto["agencia"];
+        $range = substr($nossonumero, 0, 5);
+        $sequencial = substr($nossonumero, 5, 6);
         // 43 numeros para o calculo do digito verificador do codigo de barras
-        $grupo1 = $codigobanco;
-        $barra = $codigobanco.$nummoeda.$fator_vencimento.$valor.$nossonumero.$numero_agencia.$codigocedente.$carteira.$app;
-        $dv = $this->digitoVerificador_barra($barra, 9, 0);
+        $grupo1 = $codigobanco.$nummoeda.$range;
+        $grupo1dv = $this->modulo_10($grupo1);
+        
+        $grupo2 = $sequencial.$agencia_codigo;
+        $grupo2dv = $this->modulo_10($grupo2);
+        
+        $grupo3 = $codigocedente.$carteira.$app;
+        $grupo3dv = $this->modulo_10($grupo3);
+        
+        // DAC
+        $grupo4 = $codigobanco.$nummoeda.$fator_vencimento.$valor.$nossonumero.$agencia_codigo.$codigocedente.$carteira.$app;//$dac;
+        $dac = $this->digitoVerificador_barra($grupo4, 9, 0);
+        
+        $grupo5 = $fator_vencimento.$valor;
+        
+        $linha = $grupo1.$grupo1dv.$grupo2.$grupo2dv.$grupo3.$grupo3dv.$dac.$grupo5;
+        $barra = $codigobanco.$nummoeda.$dac.$fator_vencimento.$valor.$nossonumero.$agencia_codigo.$codigocedente.$carteira.$app;
+        //$barra, 9, 0);
         // Numero para o codigo de barras com 44 digitos
 
-        $this->linha = substr($barra, 0, 4) . $dv . substr($barra, 4);
-        $this->codigo_barras = $this->linha;
-        $this->linha_digitavel = $this->monta_linha_digitavel($this->linha);
+        $this->linha = $linha;
+        $this->codigo_barras = $barra;
+        $this->linha_digitavel = $this->linha_digitavel($this->linha);
         $this->agencia_codigo = $agencia_codigo;
         $this->nosso_numero = $nossonumero;
         $this->codigo_banco_com_dv = $codigo_banco_com_dv;
@@ -80,7 +95,25 @@ class FuncoesBoletoHsbc {
     function pegarAtributos() {
         return array($this->codigo_barras, $this->linha_digitavel, $this->agencia_codigo, $this->nosso_numero, $this->codigo_banco_com_dv);
     }
-
+// 1 a 3    N�mero do banco
+// 4        C�digo da Moeda - 9 para Real
+// 5 a 9    Numero Range
+// 10       Digito Verificador
+// 11 a 16  Sequencial Nosso Numero
+// 17 a 20  Código da Agência
+// 21       Digito Verificador
+// 22 a 28  Conta da Agencia
+// 29 a 30  Código da carteira "00"
+// 31       Código do aplicativo  = 1
+// 32       Digito Verificador
+// 33       DAC
+// 34 a 37  Fator de vencimento
+// 38 a 47  Valor do título
+    function linha_digitavel($barra) {
+        $novabarra = substr($barra, 0, 5).".".substr($barra, 5,5)." ".substr($barra,10,5).".".substr($barra,15,6)." ".substr($barra,21,5).".".substr($barra,26,6)." ".substr($barra,32,1)." ".substr($barra,33,14);
+        return $novabarra;
+    }
+    
     function geraCodigoBanco($numero) {
         $parte1 = substr($numero, 0, 3);
         $parte2 = modulo_11($parte1);
@@ -124,6 +157,29 @@ class FuncoesBoletoHsbc {
         }
         return $dv;
     }
+    
+    function calcula_fator($data) {
+$DataVenc = explode('/',$data);
+$DiaVenc = $DataVenc[0];
+$MesVenc = $DataVenc[1];
+$AnoVenc = $DataVenc[2];
+
+$DataInic = explode('/','07/10/1997');
+$DiaInic = $DataInic[0];
+$MesInic = $DataInic[1];
+$AnoInic = $DataInic[2];
+        
+$DataInic1 = mktime(0,0,0,$MesInic,$DiaInic,$AnoInic);
+$DataVenc1 = mktime(0,0,0,$MesVenc,$DiaVenc,$AnoVenc);
+
+$FatorVenc = $DataVenc1 - $DataInic1;
+
+$Segundos = 24*60*60; // 24 horas * 60 minutos * 60 segundos
+
+$FatorVenc1 = ceil($FatorVenc/$Segundos);
+return $FatorVenc1;
+    }
+    
 
 // FUN��ES
 // Algumas foram retiradas do Projeto PhpBoleto e modificadas para atender as particularidades de cada banco
@@ -329,14 +385,18 @@ class FuncoesBoletoHsbc {
 // Posi��o 	Conte�do
 // 1 a 3    N�mero do banco
 // 4        C�digo da Moeda - 9 para Real
-// 5        Digito verificador do C�digo de Barras
-// 6 a 9    Fator de Vencimento
-// 10 a 19  Valor (8 inteiros e 2 decimais)
-//          Campo Livre definido por cada banco (25 caracteres)
-// 20 a 26  C�digo do Cedente
-// 27 a 39  C�digo do Documento
-// 40 a 43  Data de Vencimento em Juliano (mmmy)
-// 44       C�digo do aplicativo CNR = 2
+// 5 a 9    Numero Range
+// 10       Digito Verificador
+// 11 a 16  Sequencial Nosso Numero
+// 17 a 20  Código da Agência
+// 21       Digito Verificador
+// 22 a 28  Conta da Agencia
+// 29 a 30  Código da carteira "00"
+// 31       Código do aplicativo  = 1
+// 32       Digito Verificador
+// 33       DAC
+// 34 a 37  Fator de vencimento
+// 38 a 47  Valor do título
 // 1. Campo - composto pelo c�digo do banco, c�digo da mo�da, as cinco primeiras posi��es
 // do campo livre e DV (modulo10) deste campo
         $campo1 = substr($codigo, 0, 4) . substr($nossonumero, 0, 1);

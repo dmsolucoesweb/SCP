@@ -2,6 +2,7 @@
 
 require_once 'ADO.php';
 require_once '../Classes/cpf.php';
+require_once '../Boleto/FuncoesBoletoHsbc.php';
 
 class BoletoAdo extends ADO {
 
@@ -56,6 +57,8 @@ class BoletoAdo extends ADO {
     public function insereObjeto(\Model $ProdutoModel) {
         $ClienteAdo = new ClienteAdo();
         $DatasEHoras = new DatasEHoras();
+        $dadosboleto = null;
+        $FuncoesBoletoHsbc = new FuncoesBoletoHsbc($dadosboleto);
         $contParcela = $boletoNossoNumero2 = NULL;
         $contElementos = 0;
 
@@ -99,7 +102,7 @@ class BoletoAdo extends ADO {
                 $boletoContParcela = str_pad($contParcela, 3, "0", STR_PAD_LEFT);
                 $boletoNumeroDocumento = $boletoProdutoId . $boletoContParcela;
                 $boletoNossoNumero1 = 56410;
-                $digitoVerificador = modulo_11($boletoNossoNumero1 . $boletoNossoNumero2);
+                $digitoVerificador = modulo_11($boletoNossoNumero1 . $boletoNossoNumero2, 7, 0);
                 $nossoNumeroCompleto = $boletoNossoNumero1 . $boletoNossoNumero2 . $digitoVerificador;
 
                 if ($i == 1) {

@@ -32,3 +32,17 @@ function modulo_11($num, $base = 9, $r = 0) {
         return $resto;
     }
 }
+
+    function Modulo11($valor) {
+            $multiplicador = '4329876543298765432987654329876543298765432';
+            for ($i = 0; $i<=42; $i++ ) {
+                 $parcial = $valor[$i] * $multiplicador[$i];
+                         $total += $parcial;
+            }
+            $resultado = 11-($total%11);
+            if (($resultado >= 10)||($resultado == 0)) {
+                 $resultado = 1;
+            }
+
+            return $resultado;
+    }
