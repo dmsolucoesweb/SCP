@@ -39,17 +39,17 @@ class FuncoesBoletoHsbc {
         $parte1 = substr($codigobanco, 0, 3);
         $codigo_banco_com_dv = $parte1 . "-" . modulo_11($parte1);
         $nummoeda = "9";
-        $fator_vencimento = $this->fator_vencimento($dadosboleto["data_vencimento"]);
+        $fator_vencimento = $this->fator_vencimento($dadosboleto['data_vencimento']);
 
         //valor tem 10 digitos, sem virgula
-        $valor = $this->formata_numero($dadosboleto["valor_boleto"], 10, 0, "valor");
+        $valor = $this->formata_numero($dadosboleto['valor_boleto'], 10, 0, "valor");
         //carteira � CNR
-        $carteira = $dadosboleto["carteira"];
+        $carteira = $dadosboleto['carteira'];
         //codigocedente deve possuir 7 caracteres
-        $codigocedente = $this->formata_numero($dadosboleto["codigo_cedente"], 7, 0);
+        $codigocedente = $this->formata_numero($dadosboleto['codigo_cedente'], 7, 0);
 
-        $ndoc = $dadosboleto["numero_documento"];
-        $vencimento = $dadosboleto["data_vencimento"];
+        $ndoc = $dadosboleto['numero_documento'];
+        $vencimento = $dadosboleto['data_vencimento'];
 
         // n�mero do documento (sem dvs) � 13 digitos
         $nnum = $dadosboleto["numero_documento"];
@@ -65,7 +65,7 @@ class FuncoesBoletoHsbc {
 
         // 43 numeros para o calculo do digito verificador do codigo de barras
         $grupo1 = $codigobanco;
-        $barra = $codigobanco.$nummoeda.$fator_vencimento.$valor.$nossonumero.$numero_agencia.$codigocedente.$carteira.$app;
+        $barra = $codigobanco . $nummoeda . $fator_vencimento . $valor . $nossonumero . $numero_agencia . $codigocedente . $carteira . $app;
         $dv = $this->digitoVerificador_barra($barra, 9, 0);
         // Numero para o codigo de barras com 44 digitos
 
