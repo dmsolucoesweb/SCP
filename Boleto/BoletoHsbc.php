@@ -68,15 +68,15 @@ class BoletoHsbc {
                 $dadosboleto['estado'] = $clienteEstado;
 
                 // DISCRIMINAÇÃO DO BOLETO (PAGAMENTO DE PARCELA 1/20 DE TAL TAL ... )
-                $dadosboleto['demonstrativo1'] = "Pagamento de parcela 1/20 do Empreendimento Park Ville";
-                $dadosboleto['demonstrativo2'] = "Apartamento 100 - Box(es) 10 e 15 <br>Taxa bancária - R$ " . number_format($taxa_boleto, 2, ',', '');
-                $dadosboleto['demonstrativo3'] = "TEXTO ADICIONAL";
+//                $dadosboleto['demonstrativo1'] = "Pagamento de parcela 1/20 do Empreendimento Park Ville";
+//                $dadosboleto['demonstrativo2'] = "Apartamento 100 - Box(es) 10 e 15 <br>Taxa bancária - R$ " . number_format($taxa_boleto, 2, ',', '');
+//                $dadosboleto['demonstrativo3'] = "TEXTO ADICIONAL";
 
                 // DATAS DO DOCUMENTO E DE PROCESSAMENTO
-                $dadosboleto['data_documento'] = date("d/m/Y"); // Data de emissão do Boleto <-- SALVAR DATA NO BANCO
-                $dadosboleto['data_processamento'] = date("d/m/Y"); // Data de processamento do boleto (opcional) <-- SALVAR DATA NO BANCO
+                $dadosboleto['data_documento'] = $boletoDataEmissao; // Data de emissão do Boleto <-- SALVAR DATA NO BANCO
+                $dadosboleto['data_processamento'] = $boletoDataEmissao; // Data de processamento do boleto (opcional) <-- SALVAR DATA NO BANCO
                 // CALCULOS
-                $valor_cobrado = number_format($boletoValor, 2, ",", ".");
+                $valor_cobrado = number_format($boletoValor, 2, ",", "");
                 // $valor_boleto = number_format($valor_cobrado + $taxa_boleto, 2, ',', '');
                 $dadosboleto['data_vencimento'] = $boletoDataVencimento; // + ($dias_de_prazo_para_pagamento * 86400);
                 $dadosboleto['valor_boleto'] = $valor_cobrado;
@@ -95,9 +95,9 @@ class BoletoHsbc {
                 $dadosboleto['codigo_cedente'] = "0030310"; // CODIGO CONTRATO COB SEM AGENCIA
                 $dadosboleto['carteira'] = "00";  // CÓDIGO DA CARTEIRA (NÃO ALTERE)
                 // DADOS EMISSOR DOS BOLETOS (PARK VILLE)
-                $dadosboleto['identificacao'] = "DM SOLUÇÕES WEB";
+                $dadosboleto['identificacao'] = "PARK VILLE S LTDA";
                 $dadosboleto['cpf_cnpj'] = "23501469000100";
-                $dadosboleto['endereco'] = "Rua Cuiabá, 023";
+                $dadosboleto['endereco'] = "RUA FRANCISCO SOYER, 714";
                 $dadosboleto['cidade_uf'] = "INHUMAS / GO";
                 $dadosboleto['cedente'] = "DM SOLUÇÕES WEB";
 
@@ -242,7 +242,7 @@ $codigodebarras = new cd_barra($dadosboleto['codigo_barras'],1, '../Boleto/tmpcb
     <tr>
       <td class="td_7_sb" rowspan="2">&nbsp;</td>
       <td rowspan="2"><div class="titulo">Nome do Beneficiário/CNPJ/Endereço</div>
-      <div class="var endereco">' . $dadosboleto['identificacao'] . '  CNPJ - ' . $dadosboleto['cpf_cnpj'] . '<br>' . $dadosboleto['endereco1'] . '<br>' . $dadosboleto['cidade_uf'] . '</div></td>
+      <div class="var endereco">' . $dadosboleto['identificacao'] . '      CNPJ - ' . $dadosboleto['cpf_cnpj'] . '<br>' . $dadosboleto['endereco1'] . '<br>' . $dadosboleto['cidade_uf'] . '</div></td>
       <td class="td_7_cb">&nbsp;</td>
       <td class="direito"><div class="titulo">Ag&ecirc;ncia / C&oacute;digo do Beneficiário</div>
       <div class="var">' . $dadosboleto['agencia'] . ' / ' . $dadosboleto['codigo_cedente'] . '</div></td>
@@ -343,7 +343,7 @@ $codigodebarras = new cd_barra($dadosboleto['codigo_barras'],1, '../Boleto/tmpcb
   <table class="tabelas" style="width:666px; height:65px; border-left:solid; border-left-width:2px; border-left-color:#000000;" border="0" cellspacing="0" cellpadding="0">
     <tr>
       <td class="td_7_sb">&nbsp;</td>
-      <td valign="top"><div class="titulo">Nome Pagador/CPF/CNPJ/Endereço/Cidade/UF/CEP</div>
+      <td valign="top"><div class="titulo">Nome Pagador/Endereço/Cidade/UF/CEP</div>
         <div class="var" style="margin-bottom:5px; height:auto">' . $dadosboleto['sacado'] . '<br />
         ' . $dadosboleto['endereco1'] . '<br />
         ' . $dadosboleto['endereco2'] . ' ' . $dadosboleto['estado'] . '</div>

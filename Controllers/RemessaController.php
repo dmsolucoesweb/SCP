@@ -88,9 +88,11 @@ class RemessaController {
 
                 $boletoRemetido = $BoletoModel['4'];
                 $boletoDataVencimento = $DatasEHoras->getDataInvertidaComTracos($BoletoModel['5']);
+                $boletoDataEmissao = $DatasEHoras->getDataInvertidaComTracos($BoletoModel['6']);
+                $dataemissao = date("dmy", strtotime($boletoDataVencimento));
                 $datavenc = date("dmy", strtotime($boletoDataVencimento));
-                $boletoNumeroParcela = $BoletoModel['6'];
-                $boletoValor = number_format($BoletoModel['7'], 2, "", "");
+                //$boletoNumeroParcela = $BoletoModel['7'];
+                $boletoValor = number_format($BoletoModel['8'], 2, "", "");
 
 
                 $ncpf = $CPF::retiraMascaraCPF($clienteCPF);
@@ -129,7 +131,7 @@ class RemessaController {
                         . "00000"
                         . "98"
                         . "N"
-                        . "100416"
+                        . $dataemissao
                         . "00"
                         . "00"
                         . str_pad("", 13, " ", STR_PAD_RIGHT)
