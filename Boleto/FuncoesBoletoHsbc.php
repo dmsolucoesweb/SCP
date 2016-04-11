@@ -160,14 +160,14 @@ class FuncoesBoletoHsbc {
     
     function calcula_fator($data) {
 $DataVenc = explode('/',$data);
-$DiaVenc = $DataVenc[0];
-$MesVenc = $DataVenc[1];
-$AnoVenc = $DataVenc[2];
+$DiaVenc = $DataVenc['0'];
+$MesVenc = $DataVenc['1'];
+$AnoVenc = $DataVenc['2'];
 
 $DataInic = explode('/','07/10/1997');
-$DiaInic = $DataInic[0];
-$MesInic = $DataInic[1];
-$AnoInic = $DataInic[2];
+$DiaInic = $DataInic['0'];
+$MesInic = $DataInic['1'];
+$AnoInic = $DataInic['2'];
         
 $DataInic1 = mktime(0,0,0,$MesInic,$DiaInic,$AnoInic);
 $DataVenc1 = mktime(0,0,0,$MesVenc,$DiaVenc,$AnoVenc);

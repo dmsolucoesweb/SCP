@@ -76,7 +76,7 @@ class BoletoHsbc {
                 $dadosboleto['data_documento'] = date("d/m/Y"); // Data de emissão do Boleto <-- SALVAR DATA NO BANCO
                 $dadosboleto['data_processamento'] = date("d/m/Y"); // Data de processamento do boleto (opcional) <-- SALVAR DATA NO BANCO
                 // CALCULOS
-                $valor_cobrado = str_replace(",", ".", $boletoValor);
+                $valor_cobrado = number_format($boletoValor, 2, ",", ".");
                 // $valor_boleto = number_format($valor_cobrado + $taxa_boleto, 2, ',', '');
                 $dadosboleto['data_vencimento'] = $boletoDataVencimento; // + ($dias_de_prazo_para_pagamento * 86400);
                 $dadosboleto['valor_boleto'] = $valor_cobrado;
