@@ -22,7 +22,7 @@ class BoletoHsbc {
         $arrayDeBoletos = $BoletoAdo->consultaArrayDeBoletos($produtoId);
         $mpdf = new mPDF('pt', 'A4', 0, 'arial', 5, 5, 5, 5, 9, 9, 'P');
         $mpdf->packTableData = false;
-        $mpdf->useSubstitutions=false; 
+        $mpdf->useSubstitutions = false;
         if (is_array($arrayDeBoletos)) {
             $b = count($arrayDeBoletos);
             foreach ($arrayDeBoletos as $BoletoModel) {
@@ -110,14 +110,14 @@ class BoletoHsbc {
                 // FUNÇÕES E LAYOUT DO BOLETO
                 // include("funcoes_hsbc.php");
                 // include("layout_hsbc.php");
-$FuncoesBoletoHsbc = new FuncoesBoletoHsbc($dadosboleto);
+                $FuncoesBoletoHsbc = new FuncoesBoletoHsbc($dadosboleto);
                 $atributos = $FuncoesBoletoHsbc->pegarAtributos();
                 $dadosboleto['codigo_barras'] = $atributos['0'];
                 $dadosboleto['linha_digitavel'] = $atributos['1'];
                 $dadosboleto['agencia_codigo'] = $atributos['2'];
                 $dadosboleto['nosso_numero'] = $atributos['3'];
                 $dadosboleto['codigo_banco_com_dv'] = $atributos['4'];
-$codigodebarras = new cd_barra($dadosboleto['codigo_barras'],1, '../Boleto/tmpcb/'.$dadosboleto['numero_documento'].'.gif');
+                $codigodebarras = new cd_barra($dadosboleto['codigo_barras'], 1, '../Boleto/tmpcb/' . $dadosboleto['numero_documento'] . '.gif');
                 $Html .= '<style type="text/css">
 #boleto_parceiro {
 	height: 85px;
@@ -506,7 +506,7 @@ $codigodebarras = new cd_barra($dadosboleto['codigo_barras'],1, '../Boleto/tmpcb
   <table style="width:666px; border-top:solid; border-top-width:2px; border-top-color:#000000" border="0" cellspacing="0" cellpadding="0">
     <tr>
       <td class="td_7_sb">&nbsp;</td>
-      <td style="width: 417px; height:62px;"><img src="../Boleto/tmpcb/'.$dadosboleto['numero_documento'].'.gif" /></td>
+      <td style="width: 417px; height:62px;"><img src="../Boleto/tmpcb/' . $dadosboleto['numero_documento'] . '.gif" /></td>
       <td class="td_7_sb">&nbsp;</td>
       <td valign="top"><div class="titulo" style="text-align:left;">Autenticaçao Mecânica / Ficha de Compensação</div></td>
       <td class="td_2">&nbsp;</td>
@@ -515,8 +515,10 @@ $codigodebarras = new cd_barra($dadosboleto['codigo_barras'],1, '../Boleto/tmpcb
 </div>';
                 $mpdf->WriteHTML($Html);
                 $b--;
-                if ($b != 0) {$mpdf->AddPage();}
-                unlink('../Boleto/tmpcb/'.$dadosboleto['numero_documento'].'.gif');
+                if ($b != 0) {
+                    $mpdf->AddPage();
+                }
+                unlink('../Boleto/tmpcb/' . $dadosboleto['numero_documento'] . '.gif');
             }
         }
 
