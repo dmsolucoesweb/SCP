@@ -105,7 +105,7 @@ class FuncoesBoletoHsbc {
 // 21       Digito Verificador
 // 22 a 28  Conta da Agencia
 // 29 a 30  Código da carteira "00"
-// 31       Código do aplicativo  = 1
+// 31       Código do aplicativo  = 1                                                                       
 // 32       Digito Verificador
 // 33       DAC
 // 34 a 37  Fator de vencimento

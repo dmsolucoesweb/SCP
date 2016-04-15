@@ -59,7 +59,6 @@ class BoletoAdo extends ADO {
         $ClienteAdo = new ClienteAdo();
         $DatasEHoras = new DatasEHoras();
         $dadosboleto = null;
-        $FuncoesBoletoHsbc = new FuncoesBoletoHsbc($dadosboleto);
         $contParcela = $boletoNossoNumero2 = NULL;
         $contElementos = 0;
         $resultado = True;
