@@ -63,11 +63,16 @@ class IndiceController {
         if ($this->IndiceModel->checaAtributos()) {
             if ($this->IndiceAdo->insereObjeto($this->IndiceModel)) {
                 $indiceId = $indiceAdo->consultaIdPelaData($indiceData);
-                $this->IndiceAdo->adicionaIndice($indiceInccValor, $indiceIgpmValor, $indiceId, $indiceData);
-                $this->IndiceView->adicionaMensagemSucesso("Índices aplicados com sucesso! ");
-                $this->IndiceModel = new IndiceModel();
+                if ($this->IndiceAdo->adicionaIndice($indiceInccValor, $indiceIgpmValor, $indiceId, $indiceData)) {
+                    $this->IndiceView->adicionaMensagemSucesso("Índices aplicados com sucesso! ");
+                    $this->IndiceModel = new IndiceModel();
+                } else {
+                    $this->IndiceAdo->excluiIndicePorSeguranca($indiceId);
+                    $this->IndiceView->adicionaMensagemErro("Erro ao aplicar Índice!");
+                    $this->IndiceModel = new IndiceModel();
+                }
             } else {
-                $this->IndiceView->adicionaMensagemErro("Erro ao aplicar índice!");
+                $this->IndiceView->adicionaMensagemErro("Erro ao aplicar Índice!");
                 //$this->indiceView->adicionaMensagemErro($this->indiceAdo->getMensagem());
             }
         } else {
@@ -79,7 +84,7 @@ class IndiceController {
         $indiceId = $this->IndiceView->getIdConsulta();
 
         if ($indiceId == '-1') {
-            $this->IndiceView->adicionaMensagemAlerta("Escolha um indice para consulta");
+            $this->IndiceView->adicionaMensagemAlerta("Escolha um Índice para consulta");
             return;
         }
 
