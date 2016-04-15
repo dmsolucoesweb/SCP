@@ -4,8 +4,8 @@ require_once '../Ados/BoletoAdo.php';
 require_once 'LayoutBoletoHsbc.php';
 require_once 'FuncoesBoletoHsbc.php';
 ini_set("memory_limit", "-1");
-if (!defined('MPDF_PATH')) {
-    define('MPDF_PATH', 'class/mpdf/');
+if (!defined('_MPDF_PATH')) {
+   define('_MPDF_PATH', '../PDF/mpdf/');
 }
 require_once 'geracodigobarras.php';
 require_once '../PDF/mpdf/mpdf.php';
@@ -102,10 +102,10 @@ class BoletoHsbc {
                 $dadosboleto['cedente'] = "DM SOLUÇÕES WEB";
 
                 // INSTRUÇÕES IGUAIS PARA TODOS OS CLIENTES
-                $dadosboleto['instrucoes1'] = "- Sr. Caixa, cobrar multa de 2% após o vencimento";
-                $dadosboleto['instrucoes2'] = "- Receber até 10 dias após o vencimento";
-                $dadosboleto['instrucoes3'] = "- Em caso de dúvidas entre em contato conosco: contato@seusite.com.br";
-                $dadosboleto['instrucoes4'] = "PARA MAIS INSTRUCOES, PREENCHA AQUI";
+                $dadosboleto['instrucoes1'] = "- Sr. Caixa, cobrar multa de 10% após o vencimento";
+                $dadosboleto['instrucoes2'] = "- Juros de Mora de 0,03% por dia de atraso";
+                $dadosboleto['instrucoes3'] = "Em caso de dúvidas entre em contato em nosso escritório.";
+                $dadosboleto['instrucoes4'] = "";
 
                 // FUNÇÕES E LAYOUT DO BOLETO
                 // include("funcoes_hsbc.php");
@@ -517,6 +517,7 @@ $codigodebarras = new cd_barra($dadosboleto['codigo_barras'],1, '../Boleto/tmpcb
                 $b--;
                 if ($b != 0) {$mpdf->AddPage();}
                 unlink('../Boleto/tmpcb/'.$dadosboleto['numero_documento'].'.gif');
+                set_time_limit(20);
             }
         }
 

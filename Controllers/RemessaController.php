@@ -39,7 +39,7 @@ class RemessaController {
         $arrayBoletoRemessa = $this->RemessaAdo->consultaBoletosParaRemessa();
         $ClienteAdo = new ClienteAdo();
         $data = date("dmy");
-        $narquivo = date("dmyHi");
+        $narquivo = date("dmy");
         $textCompleto = $text = null;
 
         $nomeDoArquivo = "R_" . $narquivo . "";
@@ -108,23 +108,23 @@ class RemessaController {
                     }
                 }
                 // 01 CPF // 02 CNPJ // 98 NÃO TEM // 99 OUTROS                                                                                   DESCONTO_DATA              VALOR                                                                                                  CARTEIRA.OC
-                $text .= "1"
-                        . "02"
-                        . "23501469000100"
-                        . "0"
-                        . "0501"
-                        . "55"
-                        . "05010030310"
-                        . "  "
-                        . str_pad("", 25, " ", STR_PAD_RIGHT)
-                        . $boletoNossoNumero
-                        . str_pad("", 6, " ", STR_PAD_RIGHT)
-                        . str_pad("", 11, " ", STR_PAD_RIGHT)
-                        . str_pad("", 6, " ", STR_PAD_RIGHT)
-                        . str_pad("", 11, " ", STR_PAD_RIGHT)
-                        . "0"
-                        . "00"
-                        . str_pad($boletoNumeroDocumento, 10, " ", STR_PAD_RIGHT)
+                $text .= "1"                                                        //POSIÇÃO 01 DE 01
+                        . "02"                                                      //
+                        . "23501469000100"                                          //
+                        . "0"                                                       //
+                        . "0501"                                                    //
+                        . "55"                                                      //
+                        . "05010030310"                                             //
+                        . "  "                                                      //
+                        . str_pad("", 25, " ", STR_PAD_RIGHT)                       //
+                        . $boletoNossoNumero                                        //
+                        . str_pad("", 6, " ", STR_PAD_RIGHT)                        //
+                        . str_pad("", 11, " ", STR_PAD_RIGHT)                       //
+                        . str_pad("", 6, " ", STR_PAD_RIGHT)                        //
+                        . str_pad("", 11, " ", STR_PAD_RIGHT)                       //
+                        . "1"                                                       // POSIÇÃO 108 DE 108 - TIPO CARTEIRA 1 - C0BRANÇA SIMPLES
+                        . "01"                                                      // POSIÇÃO 109 DE 110 OCORRÊNCIA - REMESSA 01 
+                        . str_pad($boletoNumeroDocumento, 10, " ",  STR_PAD_RIGHT)  //
                         . $datavenc
                         . str_pad($boletoValor, 13, "0", STR_PAD_LEFT)
                         . "399"
@@ -132,13 +132,13 @@ class RemessaController {
                         . "98"
                         . "N"
                         . $dataemissao
+                        . "15"                                                                                  // POSICAO 157 A 158 * INSTRUCAO 01
                         . "00"
-                        . "00"
-                        . str_pad("", 13, " ", STR_PAD_RIGHT)
-                        . "000000"
-                        . str_pad("", 13, "0", STR_PAD_LEFT)
-                        . str_pad("", 13, "0", STR_PAD_LEFT)
-                        . str_pad("", 13, "0", STR_PAD_LEFT)
+                        . str_pad("", 8, " ", STR_PAD_LEFT)."T"."0003" //POSIÇÃO 161 A 173 JUROS DE MORA
+                        . "000000"                                     //POSIÇÃO 174 A 179 DATA DESCONTO
+                        . str_pad("", 13, "0", STR_PAD_LEFT)           //POSIÇÃO 180 A 192 VALOR DO DESCONTO
+                        . str_pad("", 13, "0", STR_PAD_LEFT)           //POSIÇÃO 193 A 205 VALOR DO IOF
+                        . $datavenc."1000".str_pad("", 3, " ", STR_PAD_LEFT)           //POSIÇÃO 206 A 218 VALOR DA MULTA
                         . $cod
                         . str_pad($ncpf, 14, "0", STR_PAD_LEFT)
                         . strtoupper(str_pad($CPF->retiraAcentos($clienteNome), 40, " ", STR_PAD_RIGHT))

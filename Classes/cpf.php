@@ -9,7 +9,7 @@ final class CPF {
             , "A", "A", "A", "A", "A", "E", "E", "E", "E", "I", "I", "I", "I", "O", "O", "O", "O", "O", "U", "U", "U", "U", "C");
         $texto = str_replace($array1, $array2, $texto);
         $texto = preg_replace("/[^a-z0-9\s\-]/i", "", $texto);
-        $texto = preg_replace("/\s/", "_", $texto);
+     //   $texto = preg_replace("/\s/", "_", $texto); Coloca underline onde deve haver espaços, por isso foi comentada.
 
         return $texto;
     }

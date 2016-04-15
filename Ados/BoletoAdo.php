@@ -58,6 +58,7 @@ class BoletoAdo extends ADO {
     public function insereObjeto(\Model $ProdutoModel) {
         $ClienteAdo = new ClienteAdo();
         $DatasEHoras = new DatasEHoras();
+        
         $contParcela = $boletoNossoNumero2 = NULL;
         $contElementos = 0;
         $resultado = True;
@@ -105,7 +106,7 @@ class BoletoAdo extends ADO {
                     $boletoContParcela = str_pad($contParcela, 3, "0", STR_PAD_LEFT);
                     $boletoNumeroDocumento = $boletoProdutoId . $boletoContParcela;
                     $boletoNossoNumero1 = 56410;
-                    $digitoVerificador = modulo_11($boletoNossoNumero1 . $boletoNossoNumero2);
+                    $digitoVerificador = modulo_11($boletoNossoNumero1 . $boletoNossoNumero2, 7);
                     $nossoNumeroCompleto = $boletoNossoNumero1 . $boletoNossoNumero2 . $digitoVerificador;
 
                     if ($i == 1) {
@@ -145,6 +146,17 @@ class BoletoAdo extends ADO {
 
     public function excluiObjeto(\Model $objetoModelo) {
         
+    }
+    
+      function digitoVerificador_nossonumero($numero) {
+        $resto2 = modulo_11($numero, 9, 1);
+        $digito = 11 - $resto2;
+        if ($digito == 10 || $digito == 11) {
+            $dv = 0;
+        } else {
+            $dv = $digito;
+        }
+        return $dv;
     }
 
 }
