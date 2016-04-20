@@ -39,11 +39,21 @@ class RemessaController {
         $arrayBoletoRemessa = $this->RemessaAdo->consultaBoletosParaRemessa();
         $ClienteAdo = new ClienteAdo();
         $data = date("dmy");
-        $narquivo = date("dmy");
+        //$narquivo = date("dmy");
+        date_default_timezone_set('America/Sao_Paulo');
+        $codArquivo = date("dmy");
+        $numeroArquivo = '00';
+        $extensaoArquivo = ".seq";
         $textCompleto = $text = null;
 
-        $nomeDoArquivo = "R_" . $narquivo . "";
-        $fp = fopen("C:\Remessas\\" . $nomeDoArquivo . ".seq", "w");
+        $nomeDoArquivo = $numeroArquivo . $codArquivo . $extensaoArquivo;
+
+        for ($numeroArquivo; is_readable("C:\Remessas\\" . $nomeDoArquivo); $numeroArquivo++) {
+            $numeroArquivo = str_pad($numeroArquivo, 2, "0", STR_PAD_LEFT);
+            $nomeDoArquivo = $numeroArquivo . $codArquivo . $extensaoArquivo;
+        }
+
+        $fp = fopen("C:\Remessas\\" . $nomeDoArquivo, "w");
         //$data1 = explode("-", $data);
         $text .= "0"
                 . "1"
@@ -124,7 +134,7 @@ class RemessaController {
                         . str_pad("", 11, " ", STR_PAD_RIGHT)                       //
                         . "1"                                                       // POSIÇÃO 108 DE 108 - TIPO CARTEIRA 1 - C0BRANÇA SIMPLES
                         . "01"                                                      // POSIÇÃO 109 DE 110 OCORRÊNCIA - REMESSA 01 
-                        . str_pad($boletoNumeroDocumento, 10, " ",  STR_PAD_RIGHT)  //
+                        . str_pad($boletoNumeroDocumento, 10, " ", STR_PAD_RIGHT)  //
                         . $datavenc
                         . str_pad($boletoValor, 13, "0", STR_PAD_LEFT)
                         . "399"
@@ -134,11 +144,11 @@ class RemessaController {
                         . $dataemissao
                         . "15"                                                                                  // POSICAO 157 A 158 * INSTRUCAO 01
                         . "00"
-                        . str_pad("", 8, " ", STR_PAD_LEFT)."T"."0003" //POSIÇÃO 161 A 173 JUROS DE MORA
+                        . str_pad("", 8, " ", STR_PAD_LEFT) . "T" . "0003" //POSIÇÃO 161 A 173 JUROS DE MORA
                         . "000000"                                     //POSIÇÃO 174 A 179 DATA DESCONTO
                         . str_pad("", 13, "0", STR_PAD_LEFT)           //POSIÇÃO 180 A 192 VALOR DO DESCONTO
                         . str_pad("", 13, "0", STR_PAD_LEFT)           //POSIÇÃO 193 A 205 VALOR DO IOF
-                        . $datavenc."1000".str_pad("", 3, " ", STR_PAD_LEFT)           //POSIÇÃO 206 A 218 VALOR DA MULTA
+                        . $datavenc . "1000" . str_pad("", 3, " ", STR_PAD_LEFT)           //POSIÇÃO 206 A 218 VALOR DA MULTA
                         . $cod
                         . str_pad($ncpf, 14, "0", STR_PAD_LEFT)
                         . strtoupper(str_pad($CPF->retiraAcentos($clienteNome), 40, " ", STR_PAD_RIGHT))
@@ -179,11 +189,21 @@ class RemessaController {
         $arrayBoletoRemessa = $this->RemessaAdo->consultaBoletosParaRemessaAnterior();
         $ClienteAdo = new ClienteAdo();
         $data = date("dmy");
-        $narquivo = date("dmyHi");
+        //$narquivo = date("dmy");
+        date_default_timezone_set('America/Sao_Paulo');
+        $codArquivo = date("dmy");
+        $numeroArquivo = '00';
+        $extensaoArquivo = ".seq";
         $textCompleto = $text = null;
 
-        $nomeDoArquivo = "R_" . $narquivo . "";
-        $fp = fopen("C:\Remessas\\" . $nomeDoArquivo . ".seq", "w");
+        $nomeDoArquivo = $numeroArquivo . $codArquivo . $extensaoArquivo;
+
+        for ($numeroArquivo; is_readable("C:\Remessas-Anteriores\\" . $nomeDoArquivo); $numeroArquivo++) {
+            $numeroArquivo = str_pad($numeroArquivo, 2, "0", STR_PAD_LEFT);
+            $nomeDoArquivo = $numeroArquivo . $codArquivo . $extensaoArquivo;
+        }
+
+        $fp = fopen("C:\Remessas-Anteriores\\" . $nomeDoArquivo, "w");
         //$data1 = explode("-", $data);
         $text .= "0"
                 . "1"
