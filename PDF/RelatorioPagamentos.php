@@ -33,7 +33,6 @@ class RelatorioPagamentos {
 
         $arrayDePagamentos = $pagamentoAdo->consultaArrayDeObjeto();
 
-
         if (is_array($arrayDePagamentos)) {
             foreach ($arrayDePagamentos as $pagamentoModel) {
 
