@@ -19,6 +19,7 @@ class RelatorioPagamentos {
         $mpdf->useSubstitutions = false;
         $mpdf->SetHTMLHeader('<table class="header"><tbody><tr><td rowspan="3" class="logo"><img src="../IMG/logo89x50.png" /></td><td class="nopad_top">PARK VILLE INCORPORAÇÃO SPE LTDA - 23.501.469/0001-00</td></tr><tr><td class="nopad_top">Rua Francisco Soyer, nº 714, Centro, Inhumas/GO</td></tr><tr><td class="nopad_top"></td></tr><tr><td class="titulo_relatorio center" colspan="2">Demonstrativo de pagamentos</td></tr></tbody></table>');
         $Html1 = "<table class='proposta center'><thead><tr><td class='secao'>Apartamento</td>"
+                . "<td class='secao'>Data da Venda</td>"
                 . "<td class='secao'>Cliente</td>"
                 . "<td class='secao'>Valor da Venda (R$)</td>"
                 . "<td class='secao'>Recebidos (R$)</td>"
@@ -33,7 +34,6 @@ class RelatorioPagamentos {
 
         $arrayDePagamentos = $pagamentoAdo->consultaArrayDeObjeto();
 
-
         if (is_array($arrayDePagamentos)) {
             foreach ($arrayDePagamentos as $pagamentoModel) {
 
@@ -43,6 +43,7 @@ class RelatorioPagamentos {
                 $produtoId = $pagamentoModel->getProdutoId();
                 $Produto = $ProdutoAdo->consultaObjetoPeloId($produtoId);
                 $produtoApartamento = $Produto->getProdutoApartamento();
+                $produtoDataVenda = $Produto->getProdutoData;
                 $pagamentoValorTotal = $pagamentoModel->getPagamentoValorTotal();
                 $pagamentoValorParcela = $pagamentoModel->getPagamentoValorParcela();
                 $arrayValorParcelas = explode(";", $pagamentoValorParcela);
@@ -61,10 +62,10 @@ class RelatorioPagamentos {
                 $T_Pagtos += $Recebidos;
                 $T_AReceber += $TotalReceber;
                 $T_indices += $TotalIndice;
-                $Html1 .= "<tr class='center'><td>$produtoApartamento</td><td>$clienteNome</td><td>" . number_format($pagamentoValorTotal, 2, ',', '.') . "</td><td>" . number_format($Recebidos, 2, ',', '.') . "</td><td>" . number_format($TotalIndice, 2, ',', '.') . "</td><td>" . number_format($TotalReceber, 2, ',', '.') . "</td></tr>";
+                $Html1 .= "<tr class='center'><td>$produtoApartamento</td><td>$produtoDataVenda</td><td>$clienteNome</td><td>" . number_format($pagamentoValorTotal, 2, ',', '.') . "</td><td>" . number_format($Recebidos, 2, ',', '.') . "</td><td>" . number_format($TotalIndice, 2, ',', '.') . "</td><td>" . number_format($TotalReceber, 2, ',', '.') . "</td></tr>";
                 $HistPagamento = $TotalReceber = null;
             }
-            $Html1 .= "<tr class='center'><td class='secao' colspan='2'>TOTAL GERAL</td><td>" . number_format($T_vendas, 2, ',', '.') . "</td><td>" . number_format($T_Pagtos, 2, ',', '.') . "</td><td>" . number_format($T_indices, 2, ',', '.') . "</td><td>" . number_format($T_AReceber, 2, ',', '.') . "</td></tr>";
+            $Html1 .= "<tr class='center'><td class='secao' colspan='3'>TOTAL GERAL</td><td>" . number_format($T_vendas, 2, ',', '.') . "</td><td>" . number_format($T_Pagtos, 2, ',', '.') . "</td><td>" . number_format($T_indices, 2, ',', '.') . "</td><td>" . number_format($T_AReceber, 2, ',', '.') . "</td></tr>";
             $Html1 .= "</tbody></table>";
         }
 
@@ -90,22 +91,6 @@ class RelatorioPagamentos {
                 . "<td class='secao'>Saídas (R$)</td>"
                 . "<td class='secao'>Saldo (R$)</td>"
                 . "</tr></thead><tbody>";
-
-        $mpdf = new mPDF('pt', 'A4', 0, 'arial', 20, 20, 35, 20, 9, 9, 'P');
-        $stylesheet = file_get_contents('../PDF/pdf_sistema.css');
-        $mpdf->WriteHTML($stylesheet, 1);
-        $mpdf->debug = true;
-        $mpdf->simpleTables = true;
-        $mpdf->useSubstitutions = false;
-        $mpdf->SetHTMLHeader('<table class="header"><tbody><tr><td rowspan="3" class="logo"><img src="../IMG/logo89x50.png" /></td><td class="nopad_top">PARK VILLE INCORPORAÇÃO SPE LTDA</td></tr><tr><td class="nopad_top">Rua Cuiabá, Quadra 01-A, Lote 03, Vale das Goiabeiras, Inhumas/GO</td></tr><tr><td class="nopad_top">Telefone: (62) 8553-2638</td></tr><tr><td class="titulo_relatorio center" colspan="2">Demonstrativo de pagamentos</td></tr></tbody></table>');
-        $Html1 = "<table class='proposta center'><thead><tr><td class='secao'>Apartamento</td>"
-                . "<td class='secao'>Cliente</td>"
-                . "<td class='secao'>Valor da Venda (R$)</td>"
-                . "<td class='secao'>Recebidos (R$)</td>"
-                . "<td class='secao'>Atualização monetária (R$)</td>"
-                . "<td class='secao'>A Receber (R$)</td>"
-                . "</tr></thead><tbody>";
-
         $PagamentoAdo = new PagamentoAdo();
         $CPF = new CPF();
         $ClienteAdo = new ClienteAdo();
@@ -133,10 +118,10 @@ class RelatorioPagamentos {
         if (is_array($arrayGeral)) {
             foreach ($arrayGeral as $historicoGeral) {
                 $id = $historicoGeral['0'];
-                $pagamentoId = $historicoGeral['1'];
+                // $pagamentoId = $historicoGeral['1'];
                 $pagamentoValorTotalIncc = $historicoGeral['2'];
                 $pagamentoValorUnitarioIgpm = $historicoGeral['3'];
-                $Data = $historicoGeral['4'];
+                $Data = $historicoGeral['1'];
 
                 $timestamp = strtotime($Data);
                 $mes = date('M', $timestamp);
@@ -159,10 +144,10 @@ class RelatorioPagamentos {
 
                     foreach ($arrayDeIndices as $indice) {
                         $indiceId = $indice['0'];
-                        $indiceInccValor = $indice['1'];
-                        $indiceIgpmValor = $indice['2'];
-                        $indiceData = $indice['3'];
-                        $usuarioId = $indice['4'];
+                        $indiceInccValor = $indice['2'];
+                        $indiceIgpmValor = $indice['3'];
+                        $indiceData = $indice['4'];
+                       // $usuarioId = $indice['4'];
 
                         if ($indiceInccValor != null) {
                             $indiceValor = $pagamentoValorRestante * $indiceInccValor;

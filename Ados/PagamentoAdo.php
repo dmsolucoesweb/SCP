@@ -51,7 +51,7 @@ class PagamentoAdo extends ADO {
      */
 
     public function consultaGeralHistorico($pagamentoId) {
-        $query = "select historicoPgId as 'Id', historicoPgPagamentoData as 'Data', historicoPgPagamentoValorParcela as 'pagamentoValorParcela/INCC', historicoPgPagamentoValorParcelaUnitario as 'pagamentoValorParcelaUnitario/IGPM' from Historicos_Pagamentos where historicoPgPagamentoId = '{$pagamentoId}' UNION ALL SELECT historicoInId, historicoInIndiceData, historicoInIndiceInccValor, historicoInIndiceIgpmValor from Historicos_Indices order by Data";
+        $query = "select historicoPgId as 'Id', historicoPgPagamentoData as 'Data', historicoPgPagamentoValorParcela as 'pagamentoValorParcela/INCC', historicoPgPagamentoValorParcelaUnitario as 'pagamentoValorParcelaUnitario/IGPM' from Historicos_Pagamentos where historicoPgPagamentoId = '{$pagamentoId}' UNION ALL SELECT historicoInId, historicoInIndiceData, historicoInIndiceInccValor, historicoInIndiceIgpmValor from Historicos_Indices where historicoInPagamentoId = '{$pagamentoId}' order by Data";
 
         $resultado = parent::executaQuery($query);
         if ($resultado) {
