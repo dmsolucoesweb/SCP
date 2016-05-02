@@ -5,7 +5,7 @@ require_once 'LayoutBoletoHsbc.php';
 require_once 'FuncoesBoletoHsbc.php';
 ini_set("memory_limit", "-1");
 if (!defined('_MPDF_PATH')) {
-    define('_MPDF_PATH', '../PDF/mpdf/');
+   define('_MPDF_PATH', '../PDF/mpdf/');
 }
 require_once 'geracodigobarras.php';
 require_once '../PDF/mpdf/mpdf.php';
@@ -22,7 +22,7 @@ class BoletoHsbc {
         $arrayDeBoletos = $BoletoAdo->consultaArrayDeBoletos($produtoId);
         $mpdf = new mPDF('pt', 'A4', 0, 'arial', 5, 5, 5, 5, 9, 9, 'P');
         $mpdf->packTableData = false;
-        $mpdf->useSubstitutions = false;
+        $mpdf->useSubstitutions=false; 
         if (is_array($arrayDeBoletos)) {
             $b = count($arrayDeBoletos);
             foreach ($arrayDeBoletos as $BoletoModel) {
@@ -71,6 +71,7 @@ class BoletoHsbc {
 //                $dadosboleto['demonstrativo1'] = "Pagamento de parcela 1/20 do Empreendimento Park Ville";
 //                $dadosboleto['demonstrativo2'] = "Apartamento 100 - Box(es) 10 e 15 <br>Taxa bancária - R$ " . number_format($taxa_boleto, 2, ',', '');
 //                $dadosboleto['demonstrativo3'] = "TEXTO ADICIONAL";
+
                 // DATAS DO DOCUMENTO E DE PROCESSAMENTO
                 $dadosboleto['data_documento'] = $boletoDataEmissao; // Data de emissão do Boleto <-- SALVAR DATA NO BANCO
                 $dadosboleto['data_processamento'] = $boletoDataEmissao; // Data de processamento do boleto (opcional) <-- SALVAR DATA NO BANCO
@@ -109,14 +110,14 @@ class BoletoHsbc {
                 // FUNÇÕES E LAYOUT DO BOLETO
                 // include("funcoes_hsbc.php");
                 // include("layout_hsbc.php");
-                $FuncoesBoletoHsbc = new FuncoesBoletoHsbc($dadosboleto);
+$FuncoesBoletoHsbc = new FuncoesBoletoHsbc($dadosboleto);
                 $atributos = $FuncoesBoletoHsbc->pegarAtributos();
                 $dadosboleto['codigo_barras'] = $atributos['0'];
                 $dadosboleto['linha_digitavel'] = $atributos['1'];
                 $dadosboleto['agencia_codigo'] = $atributos['2'];
                 $dadosboleto['nosso_numero'] = $atributos['3'];
                 $dadosboleto['codigo_banco_com_dv'] = $atributos['4'];
-                $codigodebarras = new cd_barra($dadosboleto['codigo_barras'], 1, '../Boleto/tmpcb/' . $dadosboleto['numero_documento'] . '.gif');
+$codigodebarras = new cd_barra($dadosboleto['codigo_barras'],1, '../Boleto/tmpcb/'.$dadosboleto['numero_documento'].'.gif');
                 $Html .= '<style type="text/css">
 #boleto_parceiro {
 	height: 85px;
@@ -505,7 +506,7 @@ class BoletoHsbc {
   <table style="width:666px; border-top:solid; border-top-width:2px; border-top-color:#000000" border="0" cellspacing="0" cellpadding="0">
     <tr>
       <td class="td_7_sb">&nbsp;</td>
-      <td style="width: 417px; height:62px;"><img src="../Boleto/tmpcb/' . $dadosboleto['numero_documento'] . '.gif" /></td>
+      <td style="width: 417px; height:62px;"><img src="../Boleto/tmpcb/'.$dadosboleto['numero_documento'].'.gif" /></td>
       <td class="td_7_sb">&nbsp;</td>
       <td valign="top"><div class="titulo" style="text-align:left;">Autenticaçao Mecânica / Ficha de Compensação</div></td>
       <td class="td_2">&nbsp;</td>
@@ -514,10 +515,8 @@ class BoletoHsbc {
 </div>';
                 $mpdf->WriteHTML($Html);
                 $b--;
-                if ($b != 0) {
-                    $mpdf->AddPage();
-                }
-                unlink('../Boleto/tmpcb/' . $dadosboleto['numero_documento'] . '.gif');
+                if ($b != 0) {$mpdf->AddPage();}
+                unlink('../Boleto/tmpcb/'.$dadosboleto['numero_documento'].'.gif');
                 set_time_limit(20);
             }
         }
