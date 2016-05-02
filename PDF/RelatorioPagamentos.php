@@ -97,7 +97,7 @@ class RelatorioPagamentos {
         $mpdf->simpleTables = true;
         $mpdf->useSubstitutions = false;
         $mpdf->SetHTMLHeader('<table class="header"><tbody><tr><td rowspan="3" class="logo"><img src="../IMG/logo89x50.png" /></td><td class="nopad_top">PARK VILLE INCORPORAÇÃO SPE LTDA</td></tr><tr><td class="nopad_top">Rua Cuiabá, Quadra 01-A, Lote 03, Vale das Goiabeiras, Inhumas/GO</td></tr><tr><td class="nopad_top">Telefone: (62) 8553-2638</td></tr><tr><td class="titulo_relatorio center" colspan="2">Demonstrativo de pagamentos</td></tr></tbody></table>');
-        $Html = "<table class='proposta center'><thead><tr><td class='secao'>Apartamento</td>"
+        $Html1 = "<table class='proposta center'><thead><tr><td class='secao'>Apartamento</td>"
                 . "<td class='secao'>Cliente</td>"
                 . "<td class='secao'>Valor da Venda (R$)</td>"
                 . "<td class='secao'>Recebidos (R$)</td>"
@@ -109,9 +109,9 @@ class RelatorioPagamentos {
         $CPF = new CPF();
         $ClienteAdo = new ClienteAdo();
         $ProdutoAdo = new ProdutoAdo();
+        $IndiceAdo = new IndiceAdo();
 
-        $arrayDePagamentos = $PagamentoAdo->consultaArrayDeObjeto();
-        $Html1 = null;
+        $pagamentoModel = $PagamentoAdo->consultaObjetoPeloId($pagamentoId);
 
         $clienteId = $pagamentoModel->getClienteId();
         $produtoId = $pagamentoModel->getProdutoId();
@@ -132,9 +132,11 @@ class RelatorioPagamentos {
         if (is_array($arrayGeral)) {
             foreach ($arrayGeral as $historicoGeral) {
                 $id = $historicoGeral['0'];
-                $Data = $historicoGeral['1'];
+                $pagamentoId = $historicoGeral['1'];
                 $pagamentoValorTotalIncc = $historicoGeral['2'];
                 $pagamentoValorUnitarioIgpm = $historicoGeral['3'];
+                $Data = $historicoGeral['4'];
+
                 $timestamp = strtotime($Data);
                 $mes = date('M', $timestamp);
                 $ano = date('Y', $timestamp);
@@ -153,6 +155,7 @@ class RelatorioPagamentos {
 
                 if ($pagamentoValorTotalIncc == 0 || $pagamentoValorUnitarioIgpm == 0) {
                     $arrayDeIndices = $IndiceAdo->consultaHistoricoPeloId($id);
+
                     foreach ($arrayDeIndices as $indice) {
                         $indiceId = $indice['0'];
                         $indiceInccValor = $indice['1'];
@@ -223,6 +226,7 @@ class RelatorioPagamentos {
                 }
             }
         }
+
         $Html1 .= "</tbody></table>";
         $mpdf->WriteHTML($Html1);
         $arquivo = date("d-m-Y") . "-extrato.pdf";

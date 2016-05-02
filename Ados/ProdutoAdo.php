@@ -1,6 +1,8 @@
 <?php
 
 require_once 'ADO.php';
+require_once '../Models/ProdutoModel.php';
+require_once '../Boleto/FuncoesBoletoHsbc.php';
 
 class ProdutoAdo extends ADO {
     /* Função: consultaApartamentoEBoxPeloId
@@ -30,7 +32,7 @@ class ProdutoAdo extends ADO {
 
     public function consultaProdutoPeloCliente($clienteId) {
         $produtoModel = null;
-        $query = "select * from Produtos where clienteId = $clienteId";
+        $query = "select * from Produtos where clienteId = '{$clienteId}' ";
 
         $resultado = parent::executaQuery($query);
         if ($resultado) {
@@ -40,8 +42,8 @@ class ProdutoAdo extends ADO {
             return false;
         }
 
-        $produtosModel = null;
         $DatasEHoras = new DatasEHoras();
+        $produtosModel = null;
 
         while ($produto = parent::leTabelaBD()) {
             $produtoDataVenda = $DatasEHoras->getDataEHorasDesinvertidaComBarras($produto['produtoDataVenda']);

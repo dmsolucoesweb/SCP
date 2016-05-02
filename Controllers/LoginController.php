@@ -37,7 +37,7 @@ class LoginController {
         $usuario = $LoginModel->getLogin();
         $senha = $LoginModel->getSenha();
 
-        $query = "select usuarioLoginSenha from UsuariosLogin where usuarioLoginLogin = '{$usuario}'";
+        $query = "select usuarioLoginSenha from usuarios_login where usuarioLoginLogin = '{$usuario}'";
         $ConexaoBancoDeDados->executaQuery($query);
         $senhasBd = $ConexaoBancoDeDados->leTabelaBD();
 
@@ -45,13 +45,13 @@ class LoginController {
         $senhas = sha1($senha);
 
         if ($senhas === $senhasBd['usuarioLoginSenha']) {
-            $query2 = "select usuarioLoginId, usuarioLoginLogin, usuarioLoginNome, usuarioLoginTipo from UsuariosLogin where usuarioLoginLogin = '{$usuario}' and usuarioLoginSenha = '{$senhas}'";
+            $query2 = "select usuarioLoginId, usuarioLoginLogin, usuarioLoginNome, usuarioLoginTipo from usuarios_login where usuarioLoginLogin = '{$usuario}' and usuarioLoginSenha = '{$senhas}'";
             $ConexaoBancoDeDados->executaQuery($query2);
             $usuarios = $ConexaoBancoDeDados->leTabelaBD();
         }
 
         if ($usuarios == null) {
-            $this->LoginView->adicionaMensagemErro("Usuário e/ou a senha digitados não existem.");
+            $this->LoginView->adicionaMensagemErro("Usuário e/ou a senha digitados incorretamente.");
         } else {
             // Se a sessão não existir, inicia uma
             if (!isset($_SESSION)) {

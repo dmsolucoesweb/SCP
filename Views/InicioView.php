@@ -51,7 +51,8 @@ echo "
 if ($_SESSION['usuarioLoginTipo'] == 1) {
     echo "
             <li> <a href='" . URL_SITE . "Modulos/Indice.php'><i class='glyphicon glyphicon-check'></i> Atualizar &Iacute;ndices </a> </li>
-            <li> <a href='" . URL_SITE . "Modulos/Pagamento.php'><i class='glyphicon glyphicon-piggy-bank'></i> Pagamento </a> </li>";
+            <li> <a href='" . URL_SITE . "Modulos/Pagamento.php'><i class='glyphicon glyphicon-piggy-bank'></i> Pagamento </a> </li>;
+            <li> <a href='" . URL_SITE . "Modulos/Remessa.php'><i class='glyphicon glyphicon-piggy-bank'></i> Remessa </a> </li>";
 }
 echo "</ul>
     <ul class='nav navbar-nav navbar-right'>      

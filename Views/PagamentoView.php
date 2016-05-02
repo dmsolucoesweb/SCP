@@ -128,25 +128,25 @@ class PagamentoView extends HtmlGeral {
         return $opcoesDeProdutos;
     }
 
-    public function montaDados($pagamentoModel) {
+    public function montaDados($PagamentoModel) {
         $dados = null;
         $MontaHtml = new MontaHTML();
         $PagamentoAdo = new PagamentoAdo();
         $ClienteAdo = new ClienteAdo();
         $ProdutoAdo = new ProdutoAdo();
 
-        $pagamentoId = $pagamentoModel->getPagamentoId();
-        $clienteId = $pagamentoModel->getClienteId();
+        $pagamentoId = $PagamentoModel->getPagamentoId();
+        $clienteId = $PagamentoModel->getClienteId();
         $Cliente = $ClienteAdo->consultaObjetoPeloId($clienteId);
         $clienteNome = $Cliente->getClienteNome();
-        $produtoId = $pagamentoModel->getProdutoId();
+        $produtoId = $PagamentoModel->getProdutoId();
         $Produto = $ProdutoAdo->consultaObjetoPeloId($produtoId);
         $produtoApartamento = $Produto->getProdutoApartamento();
-        $pagamentoStatusProduto = $pagamentoModel->getPagamentoStatusProduto();
-        $pagamentoValorTotal = $pagamentoModel->getPagamentoValorTotal();
-        $pagamentoParcela = $pagamentoModel->getPagamentoParcela();
-        $pagamentoValorParcela = $pagamentoModel->getPagamentoValorParcela();
-        $pagamentoValorParcelaUnitario = $pagamentoModel->getPagamentoValorParcelaUnitario();
+        $pagamentoStatusProduto = $PagamentoModel->getPagamentoStatusProduto();
+        $pagamentoValorTotal = $PagamentoModel->getPagamentoValorTotal();
+        $pagamentoParcela = $PagamentoModel->getPagamentoParcela();
+        $pagamentoValorParcela = $PagamentoModel->getPagamentoValorParcela();
+        $pagamentoValorParcelaUnitario = $PagamentoModel->getPagamentoValorParcelaUnitario();
         $arredondaParcelas = $ParcelasUnitario = $pagValorParcela = $ValorParcelasUnitario = null;
 
         if ($pagamentoId != '-1' && $pagamentoId != NULL) {
@@ -183,8 +183,8 @@ class PagamentoView extends HtmlGeral {
             $this->adicionaMensagemSucesso("O Produto já foi quitado!");
         }
 
-        $pagamentoData = $pagamentoModel->getPagamentoData();
-        $pagamentoValor = number_format($pagamentoModel->getPagamentoValor(), 2, ",", ".");
+        $pagamentoData = $PagamentoModel->getPagamentoData();
+        $pagamentoValor = number_format($PagamentoModel->getPagamentoValor(), 2, ",", ".");
 
         $htmlComboPagamentos = array("label" => "Produtos", "name" => "idConsulta", "options" => $this->montaOpcoesDePagamento($pagamentoId));
         $comboDePagamentos = $MontaHtml->montaCombobox($htmlComboPagamentos, $textoPadrao = 'Escolha um Pagamento...', $onChange = null, $disabled = false);

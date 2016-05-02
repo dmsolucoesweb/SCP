@@ -70,10 +70,10 @@ class PagamentoController {
         if ($this->PagamentoModel->checaAtributos()) {
 
             if ($this->PagamentoAdo->alteraPagamento($this->PagamentoModel, $PagamentoModel) && $this->PagamentoAdo->insereHistoricoDePagamento($this->PagamentoModel)) {
-                $this->PagamentoView->adicionaMensagemSucesso("O Pagamento do Cliente: " . $pagamentoClienteNome . "foi efetuado com sucesso! ");
+                $this->PagamentoView->adicionaMensagemSucesso("O pagamento do cliente " . $pagamentoClienteNome . " foi efetuado com sucesso!");
                 $this->PagamentoModel = new PagamentoModel();
             } else {
-                $this->PagamentoView->adicionaMensagemErro("O Pagamento do Cliente: " . $pagamentoClienteNome . " não foi efetuado com sucesso! ");
+                $this->PagamentoView->adicionaMensagemErro("Erro ao efetuar pagamento do cliente " . $pagamentoClienteNome . "!");
             }
         } else {
             $this->PagamentoView->adicionaMensagemAlerta($this->PagamentoModel->getMensagem(), "Erro");
@@ -84,7 +84,7 @@ class PagamentoController {
         $pagamentoId = $this->PagamentoView->getIdConsulta();
 
         if ($pagamentoId == '-1') {
-            $this->PagamentoView->adicionaMensagemAlerta("Escolha um pagamento para consulta.");
+            $this->PagamentoView->adicionaMensagemAlerta("Escolha um pagamento para consulta");
             return;
         }
 

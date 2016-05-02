@@ -3,6 +3,7 @@
 require_once 'ADO.php';
 require_once 'PagamentoAdo.php';
 require_once 'ProdutoAdo.php';
+require_once '../Classes/datasehoras.php';
 
 class IndiceAdo extends ADO {
     /* Função: consultaIdPelaData
@@ -31,7 +32,7 @@ class IndiceAdo extends ADO {
      */
 
     public function consultaHistoricoPeloId($historicoIndiceId) {
-        $query = "select * from Historicos_Indices where historicoIndiceId = '{$historicoIndiceId}'";
+        $query = "select * from Historicos_Indices where historicoInId = '{$historicoIndiceId}'";
 
         $resultado = parent::executaQuery($query);
         if ($resultado) {
@@ -45,8 +46,8 @@ class IndiceAdo extends ADO {
         $DatasEHoras = new DatasEHoras();
 
         while ($historicoIndice = parent::leTabelaBD()) {
-            $indiceData = $DatasEHoras->getDataEHorasDesinvertidaComBarras($historicoIndice['indiceData']);
-            $historicoIndiceModel = array($historicoIndice['indiceId'], $historicoIndice['indiceInccValor'], $historicoIndice['indiceIgpmValor'], $indiceData, $historicoIndice['usuarioId']);
+            $indiceData = $DatasEHoras->getDataEHorasDesinvertidaComBarras($historicoIndice['historicoInIndiceData']);
+            $historicoIndiceModel = array($historicoIndice['historicoInId'], $historicoIndice['historicoInPagamentoId'], $historicoIndice['historicoInIndiceInccValor'], $historicoIndice['historicoInIndiceIgpmValor'], $indiceData);
             $historicoIndicesModel[] = $historicoIndiceModel;
         }
 
@@ -126,24 +127,27 @@ class IndiceAdo extends ADO {
     }
 
     public function adicionaIndice($IndiceIncc, $IndiceIgpm, $indiceId, $indiceData) {
-        $pagamentoAdo = new PagamentoAdo();
-        $arrayDePagamentos = $pagamentoAdo->consultaArrayDeObjeto();
-        $ValorParcelas = $ValorParcelasUnitarias = $parcelasIrreajustavel = $Irreajustavel = null;
+        $PagamentoAdo = new PagamentoAdo();
+        $arrayDePagamentos = $PagamentoAdo->consultaArrayDeObjeto();
+        $valorParcelas = $ValorParcelasUnitarias = $parcelasIrreajustavel = $Irreajustavel = null;
         $ProdutoAdo = new ProdutoAdo();
         $CPF = new CPF();
+        $DateTime = new DateTime();
+        $DatasEHoras = new DatasEHoras();
 
         if (is_array($arrayDePagamentos)) {
-            foreach ($arrayDePagamentos as $pagamentoModel) {
+            foreach ($arrayDePagamentos as $PagamentoModel) {
                 $incc = $IndiceIncc / 100;
                 $igpm = ($IndiceIgpm + 1) / 100;
 
-                $pagamentoId = $pagamentoModel->getPagamentoId();
-                $produtoId = $pagamentoModel->getProdutoId();
-                $pagamentoStatusProduto = $pagamentoModel->getPagamentoStatusProduto();
+                $pagamentoId = $PagamentoModel->getPagamentoId();
+                $produtoId = $PagamentoModel->getProdutoId();
                 $Produto = $ProdutoAdo->consultaObjetoPeloId($produtoId);
+                $produtoDataVenda = $Produto->getProdutoDataVenda();
+                $pagamentoStatusProduto = $PagamentoModel->getPagamentoStatusProduto();
                 $pagamentoAtualizacaoMonetaria = $Produto->getProdutoParcelasAtualizacaoMonetaria();
-                $pagamentoValorParcela = $pagamentoModel->getPagamentoValorParcela();
-                $pagamentoValorParcelaUnitario = $pagamentoModel->getPagamentoValorParcelaUnitario();
+                $pagamentoValorParcela = $PagamentoModel->getPagamentoValorParcela();
+                $pagamentoValorParcelaUnitario = $PagamentoModel->getPagamentoValorParcelaUnitario();
 
                 $arrayValorParcelas = explode(";", $pagamentoValorParcela);
                 $arrayValorParcelasUnitario = explode(";", $pagamentoValorParcelaUnitario);
@@ -159,10 +163,10 @@ class IndiceAdo extends ADO {
 
                 for ($i = 0; $i < $ultimo; $i++) {
                     if ($i == $ultimo) {
-                        $ValorParcelas .= $arrayValorParcelas[$i];
+                        $valorParcelas .= $arrayValorParcelas[$i];
                         $ValorParcelasUnitarias .= $arrayValorParcelasUnitario[$i];
                     } else {
-                        $ValorParcelas .= $arrayValorParcelas[$i] . ";";
+                        $valorParcelas .= $arrayValorParcelas[$i] . ";";
                         $ValorParcelasUnitarias .= $arrayValorParcelasUnitario[$i] . ";";
                     }
 
@@ -175,31 +179,57 @@ class IndiceAdo extends ADO {
                     }
                 }
 
-                if ($pagamentoStatusProduto == 1) {
-                    $ValorExcedidoAux = (($parcelasIrreajustavel + $ultimaPosicaoParcelas) * $incc);
-                    $valorExcedido = $ultimaPosicaoParcelas + $ValorExcedidoAux;
-                    $valorExcedido2 = $ultimaPosicaoParcelasUnitarias + $ValorExcedidoAux;
-                    $ValorIndice = number_format($valorExcedido, 2, ",", ".");
-                    $ValorIndice2 = number_format($valorExcedido2, 2, ",", ".");
-                    $igpm = null;
+                $datetime1 = new DateTime($DatasEHoras->getDataEHorasInvertidaComTracos($produtoDataVenda));
+                $datetime2 = new DateTime($indiceData);
+                $interval = $datetime1->diff($datetime2);
+                $intervaloData = $interval->format('%a');
+
+                if ($intervaloData >= 30) {
+                    $incc = ($incc / 30) * $intervaloData;
+                    $igpm = ($igpm / 30) * $intervaloData;
+
+                    if ($pagamentoStatusProduto == 1) {
+                        $ValorExcedidoAux = (($parcelasIrreajustavel + $ultimaPosicaoParcelas) * $incc);
+                        $valorExcedido = $ultimaPosicaoParcelas + $ValorExcedidoAux;
+                        $valorExcedido2 = $ultimaPosicaoParcelasUnitarias + $ValorExcedidoAux;
+                        $ValorIndice = number_format($valorExcedido, 2, ",", ".");
+                        $ValorIndice2 = number_format($valorExcedido2, 2, ",", ".");
+                        $igpm = null;
+                    } else {
+                        $ValorExcedidoAux = (($parcelasIrreajustavel + $ultimaPosicaoParcelas) * $igpm);
+                        $valorExcedido = $ultimaPosicaoParcelas + $ValorExcedidoAux;
+                        $valorExcedido2 = $ultimaPosicaoParcelasUnitarias + $ValorExcedidoAux;
+                        $ValorIndice = number_format($valorExcedido, 2, ",", ".");
+                        $ValorIndice2 = number_format($valorExcedido2, 2, ",", ".");
+                        $incc = null;
+                    }
                 } else {
-                    $ValorExcedidoAux = (($parcelasIrreajustavel + $ultimaPosicaoParcelas) * $igpm);
-                    $valorExcedido = $ultimaPosicaoParcelas + $ValorExcedidoAux;
-                    $valorExcedido2 = $ultimaPosicaoParcelasUnitarias + $ValorExcedidoAux;
-                    $ValorIndice = number_format($valorExcedido, 2, ",", ".");
-                    $ValorIndice2 = number_format($valorExcedido2, 2, ",", ".");
-                    $incc = null;
+                    if ($pagamentoStatusProduto == 1) {
+                        $ValorExcedidoAux = (($parcelasIrreajustavel + $ultimaPosicaoParcelas) * $incc);
+                        $valorExcedido = $ultimaPosicaoParcelas + $ValorExcedidoAux;
+                        $valorExcedido2 = $ultimaPosicaoParcelasUnitarias + $ValorExcedidoAux;
+                        $ValorIndice = number_format($valorExcedido, 2, ",", ".");
+                        $ValorIndice2 = number_format($valorExcedido2, 2, ",", ".");
+                        $igpm = null;
+                    } else {
+                        $ValorExcedidoAux = (($parcelasIrreajustavel + $ultimaPosicaoParcelas) * $igpm);
+                        $valorExcedido = $ultimaPosicaoParcelas + $ValorExcedidoAux;
+                        $valorExcedido2 = $ultimaPosicaoParcelasUnitarias + $ValorExcedidoAux;
+                        $ValorIndice = number_format($valorExcedido, 2, ",", ".");
+                        $ValorIndice2 = number_format($valorExcedido2, 2, ",", ".");
+                        $incc = null;
+                    }
                 }
 
-                $VP = $ValorParcelas . $ValorIndice;
+                $VP = $valorParcelas . $ValorIndice;
                 $VPU = $ValorParcelasUnitarias . $ValorIndice2;
 
                 $query = "update Pagamentos set pagamentoValorParcela = '{$VP}',"
                         . " pagamentoValorParcelaUnitario = '{$VPU}'"
                         . " where pagamentoId = '{$pagamentoId}'";
 
-                $query2 = "insert into Historicos_Indices (historicoIndiceId, pagamentoId, indiceId, indiceInccValor, indiceIgpmValor, indiceData) values (null, '$pagamentoId', '$indiceId', '$incc', '$igpm', '$indiceData')";
-                $ValorParcelas = $ValorParcelasUnitarias = $parcelasIrreajustavel = null;
+                $query2 = "insert into Historicos_Indices(historicoInId, historicoInPagamentoId, historicoInIndiceId, historicoInIndiceInccValor, historicoInIndiceIgpmValor, historicoInIndiceData) values (null, '$pagamentoId', '$indiceId', '$incc', '$igpm', '$indiceData')";
+                $valorParcelas = $ValorParcelasUnitarias = $parcelasIrreajustavel = null;
 
                 $resultado = parent::executaQuery($query);
                 $resultado2 = parent::executaQuery($query2);
@@ -209,7 +239,7 @@ class IndiceAdo extends ADO {
         if ($resultado && $resultado2) {
             return true;
         } else {
-            parent::setMensagem("Erro no update do adicionaIndice: " . parent::getBdError());
+            parent::setMensagem("Erro no insert do adicionaIndice: " . parent::getBdError());
             return false;
         }
     }
@@ -228,6 +258,19 @@ class IndiceAdo extends ADO {
             return true;
         } else {
             parent::setMensagem("Erro no delete de excluiObjeto: " . parent::getBdError());
+            return false;
+        }
+    }
+
+    public function excluiIndicePorSeguranca($indiceId) {
+        $query = "delete from Indices "
+                . "where indiceId = {$indiceId}";
+
+        $resultado = parent::executaQuery($query);
+        if ($resultado) {
+            return true;
+        } else {
+            parent::setMensagem("Erro no delete de excluiIndicePorSeguranca: " . parent::getBdError());
             return false;
         }
     }

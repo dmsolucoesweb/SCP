@@ -57,7 +57,7 @@ class UsuarioLoginController {
         $usuarioLoginId = $this->UsuarioLoginView->getIdConsulta();
 
         if ($usuarioLoginId == '-1') {
-            $this->UsuarioLoginView->adicionaMensagemAlerta("Escolha um Usuario para consulta.");
+            $this->UsuarioLoginView->adicionaMensagemAlerta("Escolha um usuário para consulta");
             return;
         }
 
@@ -75,10 +75,10 @@ class UsuarioLoginController {
 
         if ($this->UsuarioLoginModel->checaAtributos()) {
             if ($this->UsuarioLoginAdo->insereObjeto($this->UsuarioLoginModel)) {
-                $this->UsuarioLoginView->adicionaMensagemSucesso("O Usuario: " . $this->UsuarioLoginModel->getUsuarioLoginNome() . " foi inserido com sucesso!");
+                $this->UsuarioLoginView->adicionaMensagemSucesso("O usuário " . $this->UsuarioLoginModel->getUsuarioLoginNome() . " foi cadastrado com sucesso!");
                 $this->UsuarioLoginModel = new UsuarioLoginModel();
             } else {
-                $this->UsuarioLoginView->adicionaMensagemErro("O Usuario: " . $this->UsuarioLoginModel->getUsuarioLoginNome() . " não foi inserido! ");
+                $this->UsuarioLoginView->adicionaMensagemErro("Erro ao cadastrar usuário " . $this->UsuarioLoginModel->getUsuarioLoginNome() . "!");
             }
         } else {
             $this->UsuarioLoginView->adicionaMensagemAlerta($this->UsuarioLoginModel->getMensagem(), "Erro");
@@ -90,10 +90,10 @@ class UsuarioLoginController {
 
         if ($this->UsuarioLoginModel->checaAtributos()) {
             if ($this->UsuarioLoginAdo->alteraObjeto($this->UsuarioLoginModel)) {
-                $this->UsuarioLoginView->adicionaMensagemSucesso("O Usuário: " . $this->UsuarioLoginModel->getUsuarioLoginNome() . " foi alterado com sucesso! ");
+                $this->UsuarioLoginView->adicionaMensagemSucesso("O usuário " . $this->UsuarioLoginModel->getUsuarioLoginNome() . " foi alterado com sucesso! ");
                 $this->UsuarioLoginModel = new UsuarioLoginModel();
             } else {
-                $this->UsuarioLoginView->adicionaMensagemErro("O Usuário: " . $this->UsuarioLoginModel->getUsuarioLoginNome() . " não foi alterado! ");
+                $this->UsuarioLoginView->adicionaMensagemErro("Erro ao alterar usuário " . $this->UsuarioLoginModel->getUsuarioLoginNome() . "!");
             }
         } else {
             $this->UsuarioLoginView->adicionaMensagemAlerta($this->UsuarioLoginModel->getMensagem(), "Erro");
@@ -104,10 +104,10 @@ class UsuarioLoginController {
         $this->UsuarioLoginModel = $this->UsuarioLoginView->getDadosEntrada();
 
         if ($this->UsuarioLoginAdo->excluiObjeto($this->UsuarioLoginModel)) {
-            $this->UsuarioLoginView->adicionaMensagemSucesso("O Usuário: " . $this->UsuarioLoginModel->getUsuarioLoginNome() . " foi exclu&iacute;do com sucesso! ");
+            $this->UsuarioLoginView->adicionaMensagemSucesso("O usuário " . $this->UsuarioLoginModel->getUsuarioLoginNome() . " foi excluído com sucesso!");
             $this->UsuarioLoginModel = new UsuarioLoginModel();
         } else {
-            $this->UsuarioLoginView->adicionaMensagemErro("O Usuário: " . $this->UsuarioLoginModel->getUsuarioLoginNome() . " não foi exclu&iacute;do! ");
+            $this->UsuarioLoginView->adicionaMensagemErro("Erro ao excluir usuário " . $this->UsuarioLoginModel->getUsuarioLoginNome() . "!");
         }
     }
 

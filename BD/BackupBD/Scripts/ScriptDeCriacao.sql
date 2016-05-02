@@ -194,10 +194,10 @@ CREATE TABLE IF NOT EXISTS `produtos` (
 -- --------------------------------------------------------
 
 --
--- Estrutura da tabela `usuarioslogin`
+-- Estrutura da tabela `Usuarios_Login`
 --
 
-CREATE TABLE IF NOT EXISTS `usuarioslogin` (
+CREATE TABLE IF NOT EXISTS `Usuarios_Login` (
   `usuarioLoginId` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `usuarioLoginNome` varchar(45) NOT NULL,
   `usuarioLoginEmail` varchar(45) NOT NULL,

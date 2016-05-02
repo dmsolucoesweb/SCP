@@ -42,111 +42,27 @@ abstract class HtmlGeral extends ViewAbstract {
                         <meta charset='UTF-8'>
                         <title>Sistema de Controle de Pagamento</title>
                         
-                        <link rel='stylesheet' href='../CSS/estilo.css'>
-                        <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.1/css/select2.min.css'> 
-                        <link rel='stylesheet' href='../CSS/bootstrap.min.css'>
-                        <link rel='stylesheet' href='../CSS/bootstrap-theme.min.css'>  
-                        <link rel='stylesheet' href='../CSS/bootstrap-datepicker3.standalone.min.css'>
-                        <link rel='stylesheet' href='../CSS/sweet-alert.css'>
+                        <link rel='stylesheet' href='" . URL_SITE . "CSS/estilo.css'>
+                        <link rel='stylesheet' href='" . URL_SITE . "CSS/select2.min.css'> 
+                        <link rel='stylesheet' href='" . URL_SITE . "CSS/bootstrap.min.css'>
+                        <link rel='stylesheet' href='" . URL_SITE . "CSS/bootstrap-theme.min.css'>  
+                        <link rel='stylesheet' href='" . URL_SITE . "CSS/bootstrap-datepicker3.standalone.min.css'>
+                        <link rel='stylesheet' href='" . URL_SITE . "CSS/sweet-alert.css'>
                         <script src='" . URL_SITE . "JS/sweet-alert.js'></script>
                         <script src='" . URL_SITE . "JS/jquery-1.11.0.js' ></script>
                         <script src='" . URL_SITE . "JS/jquery-migrate-1.2.1.js' ></script>    
                         <script src='" . URL_SITE . "JS/bootstrap.min.js' ></script>
                         <script src='" . URL_SITE . "JS/MontaMascaraCPF.js' ></script>
-                        <script src='https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.1/js/select2.min.js'></script>
-                        <script src='https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.1/js/i18n/pt-BR.js'></script>
+                        <script src='" . URL_SITE . "JS/select2.min.js'></script>
+                        <script src='" . URL_SITE . "JS/select2_pt-BR.js'></script>
                         <script src='" . URL_SITE . "JS/bootstrap-datepicker.min.js'></script>
                         <script src='" . URL_SITE . "JS/jquery.maskedinput.min.js'></script>
                         <script src='" . URL_SITE . "JS/jquery.maskMoney.js'></script>
                         <script src='" . URL_SITE . "JS/NumberFormat.js'></script>
-                            <script src='" . URL_SITE . "JS/funcoes_js.js'></script>
+                        <script src='" . URL_SITE . "JS/funcoes_js.js'></script>
                         <script src='" . URL_SITE . "JS/bootstrap-datepicker.pt-BR.min.js'></script>
-                                         
                     </head>
-                    
                     <body>
-               
-<script>
-                $(document).ready(function () {
-    $('.input-group.date').datepicker({
-        format: 'dd/mm/yyyy',
-        todayBtn: 'linked',
-        clearBtn: true,
-        language: 'pt-BR',
-        multidate: false
-    });
- $('select').select2({
-    language: 'pt-BR'});
-    $('.vendedor_produto').change(function () { 
-    if ($('.vendedor_produto').val() == 1) {
-    $('.dados_int').hide( 'fast', 'linear' );
-} else { $('.dados_int').show( 'fast', 'linear' );}
-});
-$('input[name=\"clienteCppStatus\"]').change(function () {
-    var status = $('input[name=\"clienteCppStatus\"]:checked').val();
-    if (status == 'N') { $('.spp' ).hide( 'fast', 'linear' ); 
-    } else { $('.spp' ).show( 'fast', 'linear' ); } });
-     $('select[name=\"clienteEstadoCivil\"]').change(function () {
-        var status_estado = $('select[name=\"clienteEstadoCivil\"]').val();
-        if ( status_estado == '1' ) {
-        $('select[name=\"clienteRegimeComunhao\"]').prop('disabled', 'disabled'); 
-        $('select[name=\"clienteRegimeComunhao\"]').val() = -1;
-} 
-        else if ( status_estado == '3' ) {
-        $('select[name=\"clienteRegimeComunhao\"]').prop('disabled', 'disabled'); 
-        $('select[name=\"clienteRegimeComunhao\"]').val() = -1;
-} 
-        else if ( status_estado == '4' ) {
-        $('select[name=\"clienteRegimeComunhao\"]').prop('disabled', 'disabled'); 
-        $('select[name=\"clienteRegimeComunhao\"]').val() = -1;
-}
-        else { $('select[name=\"clienteRegimeComunhao\"]').prop('disabled', ''); }
-    });
-    
-         $('select[name=\"vendedorEstadoCivil\"]').change(function () {
-        var status_estado = $('select[name=\"vendedorEstadoCivil\"]').val();
-        if ( status_estado == '1' ) {
-        $('select[name=\"vendedorRegimeComunhao\"]').prop('disabled', 'disabled'); 
-        $('select[name=\"vendedorRegimeComunhao\"]').val() = -1;
-} 
-        else if ( status_estado == '3' ) {
-        $('select[name=\"vendedorRegimeComunhao\"]').prop('disabled', 'disabled'); 
-        $('select[name=\"vendedorRegimeComunhao\"]').val() = -1;
-} 
-        else if ( status_estado == '4' ) {
-        $('select[name=\"vendedorRegimeComunhao\"]').prop('disabled', 'disabled'); 
-        $('select[name=\"vendedorRegimeComunhao\"]').val() = -1;
-}
-        else { $('select[name=\"vendedorRegimeComunhao\"]').prop('disabled', ''); }
-    });
-    
-    $('select[name=\"clienteCppEstadoCivil\"]').change(function () {
-        var status_estado = $('select[name=\"clienteCppEstadoCivil\"]').val();
-        if ( status_estado == '1' ) {
-        $('select[name=\"clienteCppRegimeComunhao\"]').prop('disabled', 'disabled'); 
-        $('select[name=\"clienteCppRegimeComunhao\"]').val() = -1;
-} 
-        else if ( status_estado == '3' ) {
-        $('select[name=\"clienteCppRegimeComunhao\"]').prop('disabled', 'disabled'); 
-        $('select[name=\"clienteCppRegimeComunhao\"]').val() = -1;        
-} 
-        else if ( status_estado == '4' ) {
-        $('select[name=\"clienteCppRegimeComunhao\"]').prop('disabled', 'disabled'); 
-        $('select[name=\"clienteCppRegimeComunhao\"]').val() = -1;
-}
-        else { $('select[name=\"clienteCppRegimeComunhao\"]').prop('disabled', ''); }
-    });
-    });
-    
-jQuery(function($){
-$('.moeda').maskMoney({symbol:'R$ ',decimal:',',thousands:'.',showSymbol : false});
-   $('.fone').mask('(99) 9999-9999');
-   $('.cpf').mask('999.999.999-99');
-   $('.cep').mask('99.999-999');
-   $('.indice').mask('0.0000');
-});
-</script>
-
                 <div class='container'>
                 <header id='topo'>
                     <figure class='logo'>
@@ -178,7 +94,8 @@ $('.moeda').maskMoney({symbol:'R$ ',decimal:',',thousands:'.',showSymbol : false
         if ($_SESSION['usuarioLoginTipo'] == 1) {
             $this->html1 .= "
             <li> <a href='" . URL_SITE . "Modulos/Indice.php'><i class='glyphicon glyphicon-check'></i> Atualizar &Iacute;ndices </a> </li>
-            <li> <a href='" . URL_SITE . "Modulos/Pagamento.php'><i class='glyphicon glyphicon-piggy-bank'></i> Pagamento </a> </li>";
+            <li> <a href='" . URL_SITE . "Modulos/Pagamento.php'><i class='glyphicon glyphicon-piggy-bank'></i> Pagamento </a> </li>;
+            <li> <a href='" . URL_SITE . "Modulos/Remessa.php'><i class='glyphicon glyphicon-piggy-bank'></i> Remessa </a> </li>";
         }
         $this->html1 .= "</ul>
     <ul class='nav navbar-nav navbar-right'>      

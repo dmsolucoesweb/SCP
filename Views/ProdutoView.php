@@ -182,7 +182,13 @@ class ProdutoView extends HtmlGeral {
         $clienteId = $produtoModel->getClienteId();
         $vendedorId = $produtoModel->getVendedorId();
         $vendedorDataVencimento = $produtoModel->getVendedorDataVencimento();
-        $vendedorComissao = number_format($produtoModel->getVendedorComissao(), 2, ",", ".");
+
+        if ($vendedorId == 1) {
+            $vendedorComissao = null;
+        } else {
+            $vendedorComissao = number_format($produtoModel->getVendedorComissao(), 2, ",", "");
+        }
+
         $vendedorFormaPagamento = $produtoModel->getVendedorFormaPagamento();
         $vendedorObservacao = $produtoModel->getVendedorObservacao();
 
@@ -268,18 +274,19 @@ class ProdutoView extends HtmlGeral {
                 . $fieldsetValor
                 . $comboDeStatus;
 
-        $dados .= "<h4>Parcelas</h4><p class='text-primary'>Adicione o número de parcelas necessárias para a quitação do apartamento.</p><div class='alert alert-info' id='alerta_parc' role='alert'>Para incluir ou alterar o produto, clique em verificar as parcelas para ter certeza de que a soma delas é igual ao valor do apartamento.</div>";
+        $dados .= "<legend>Parcelas</legend>";
+        if ($produtoId == '-1' || $produtoId == NULL) {
+            $dados .= "<p class='text-primary'>Adicione o número de parcelas necessárias para a quitação do apartamento.</p><div class='alert alert-info' id='alerta_parc' role='alert'>Para realizar a venda do apartamento verifique se o valor das parcelas são iguais ao valor integral do apartamento.</div>";
+        }
         if ($produtoId == '-1' || $produtoId == NULL) {
             $dados .= "<script>$(document).ready(function () { addCampos(); });
                     </script>"
                     . "<div id='campoPai'> </div><div class='parc'>"
-                    . "<button type=\"button\" class=\"btn btn-default btn-sm\" onClick=\"addCampos()\"><span class='text-success'><i class=\"glyphicon glyphicon-plus-sign\"></i> Adicionar parcela</span></button>";
-            //. "<button type=\"button\" class=\"btn btn-default btn-sm\" onClick=\"calcula_parc()\"><span class='text-info'><i class=\"glyphicon glyphicon-flash\"></i> Verificar parcelas</span></button></div>";
+                    . "<button type=\"button\" class=\"btn btn-default btn-sm\" onClick=\"addCampos()\"><span class='text-success'><i class=\"glyphicon glyphicon-plus-sign\"></i> Adicionar parcela</span></button></div>";
         }
 
         if ($produtoId != '-1' && $produtoId != NULL) {
             if ($produtoParcelas != 0) {
-                echo 'aqui';
                 $Parcelas = explode(";", $produtoParcelas);
                 $ParcelasPeriodicidade = explode(";", $produtoParcelasPeriodicidade);
                 $ParcelasDataVencimento = explode(";", $produtoParcelasDataVencimento);
@@ -289,7 +296,7 @@ class ProdutoView extends HtmlGeral {
                 $ParcelasFormaPagamento = explode(";", $produtoParcelasFormaPagamento);
                 $ParcelasObservacoes = explode(";", $produtoParcelasObservacoes);
                 $ultimo = count($Parcelas);
-                $ultimo--;
+                //$ultimo--;
                 $dados .= "<div id='campoPai'>";
 
                 for ($i = 0; $i < $ultimo; $i++) {
@@ -317,12 +324,12 @@ class ProdutoView extends HtmlGeral {
                             break;
                     }
 
-                    $htmlComboPeriodicidade = array("label" => "Periodicidade", "classefg" => "form-group col-md-2", "name" => "produtoParcelasPeriodicidade",
+                    $htmlComboPeriodicidade = array("label" => "Periodicidade", "classefg" => "form-group col-md-2", "name" => "produtoParcelasPeriodicidade[$i]",
                         "options" => array(array("value" => "1", "selected" => $selectedp, "text" => "Única"),
                             array("value" => "2", "selected" => $selectedp2, "text" => "Mensal")));
                     $comboDePeriodicidade = $montahtml->montaCombobox($htmlComboPeriodicidade, $textoPadrao = 'Periodicidade');
 
-                    $htmlFieldsetDataVencimento = array("label" => "Data de Vencimento", "type" => "text", "classefg" => "form-group col-md-3", "name" => "produtoParcelasDataVencimento", "value" => $DataVencimento, "placeholder" => null, "disabled" => $disabled);
+                    $htmlFieldsetDataVencimento = array("label" => "Data de Vencimento", "type" => "text", "classefg" => "form-group col-md-3", "name" => "produtoParcelasDataVencimento[$i]", "value" => $DataVencimento, "placeholder" => null, "disabled" => $disabled);
                     $fieldsetDataVencimento = $montahtml->montaInput($htmlFieldsetDataVencimento);
 
                     $htmlFieldsetValorUnitario = array("label" => "Valor Unitario", "type" => "text", "classefg" => "form-group col-md-3", "name" => "produtoParcelasValorUnitario[$i]", "value" => $ValorUnitario, "placeholder" => null, "disabled" => $disabled);
@@ -372,23 +379,37 @@ class ProdutoView extends HtmlGeral {
                             . $fieldsetValorTotal
                             . $comboDeAtMonetaria
                             . $comboDeFormaPagamento
-                            . $fieldsetObservacoes . "</div>";
+                            . $fieldsetObservacoes
+                            . "</div>";
                 }
+
                 $dados .= "</div>";
+                $desativa = "true";
+                if ($produtoId != '-1' && $produtoId != NULL) {
+                    $dados .= "<div class='row'><button name='bt' type='submit' class='btn btn-sm btn-info' value='vbl'><i class='glyphicon glyphicon-asterisk'></i> Validar Boleto</button>
+                <button name='bt' type='submit' class='btn btn-sm btn-info' value='ibl'><i class='glyphicon glyphicon-asterisk'></i> Imprimir Boleto</button></div>";
+                }
             }
         }
-        $dados .= "<div class='dados_int row'><h4>Informações sobre o vendedor</h4>"
-                . $fieldsetDataVenc
-                . $fieldsetValorComissao
-                . $comboDeFPagVendedor
-                . $fieldsetObservacao
-                . "</div>";
+
+        if ($produtoId != '-1' && $produtoId != NULL and $vendedorId != 1) {
+            $dados .= "<div class='dados_int row'><h4>Informações sobre o vendedor</h4>"
+                    . $fieldsetDataVenc
+                    . $fieldsetValorComissao
+                    . $comboDeFPagVendedor
+                    . $fieldsetObservacao
+                    . "</div>";
+        }
+        $desativa = "disabled = 'true'";
+        if ($produtoId != '-1' && $produtoId != NULL) {
+            $desativa = "";
+        }
         $dados .= "<div class='row'>
                 <button name='bt' type='submit' class='btn btn-info' value='nov'><i class='glyphicon glyphicon-asterisk'></i> Novo</button>
                 <button name='bt' id='inc' type='submit' class='btn btn-success' disabled='true' value='inc' ><i class='glyphicon glyphicon-ok'></i> Incluir</button>
-                <button name='bt' id='alt' type='submit' class='btn btn-warning' disabled='true' value='alt'><i class='glyphicon glyphicon-refresh'></i> Alterar</button>
+                <button name='bt' id='alt' type='submit' class='btn btn-warning' {$desativa} value='alt'><i class='glyphicon glyphicon-refresh'></i> Alterar</button>
                 <button name='bt' type='submit' class='btn btn-danger' value='exc'><i class='glyphicon glyphicon-trash'></i> Excluir</button></div>
-                </form></div>";
+</form></div>";
 
         $this->setDados($dados);
     }

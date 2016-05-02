@@ -51,7 +51,7 @@ class PagamentoAdo extends ADO {
      */
 
     public function consultaGeralHistorico($pagamentoId) {
-        $query = "select historicoPagamentoId as 'Id', pagamentoData as 'Data', pagamentoValorParcela as 'pagamentoValorParcela/INCC', pagamentoValorParcelaUnitario as 'pagamentoValorParcelaUnitario/IGPM' from Historicos_Pagamentos where pagamentoId = '{$pagamentoId}' UNION ALL SELECT historicoIndiceId, indiceData, indiceInccValor, indiceIgpmValor from Historicos_Indices order by Data";
+        $query = "select historicoPgId as 'Id', historicoPgPagamentoData as 'Data', historicoPgPagamentoValorParcela as 'pagamentoValorParcela/INCC', historicoPgPagamentoValorParcelaUnitario as 'pagamentoValorParcelaUnitario/IGPM' from Historicos_Pagamentos where historicoPgPagamentoId = '{$pagamentoId}' UNION ALL SELECT historicoInId, historicoInIndiceData, historicoInIndiceInccValor, historicoInIndiceIgpmValor from Historicos_Indices order by Data";
 
         $resultado = parent::executaQuery($query);
         if ($resultado) {
@@ -89,9 +89,9 @@ class PagamentoAdo extends ADO {
         return new PagamentoModel($pagamento['pagamentoId'], $pagamento['clienteId'], $pagamento['produtoId'], $pagamento['pagamentoStatusProduto'], $pagamento['pagamentoValorTotal'], $pagamento['pagamentoParcela'], $pagamento['pagamentoValorParcela'], $pagamento['pagamentoValorParcelaUnitario'], $pagamentoData, $pagamento['pagamentoValor']);
     }
 
-    public function consultaHistoricoPagamentoPorData($historicoPagamentoId) {
-        $pagamentoModel = null;
-        $query = "select * from Historicos_Pagamentos where historicoPagamentoId = '{$historicoPagamentoId}' ORDER BY pagamentoData";
+    public function consultaHistoricoPagamentoPorData($historicoPgId) {
+        $PagamentoModel = null;
+        $query = "select * from Historicos_Pagamentos where historicoPgId = '{$historicoPgId}' ORDER BY historicoPgPagamentoData";
 
         $resultado = parent::executaQuery($query);
         if ($resultado) {
@@ -101,16 +101,16 @@ class PagamentoAdo extends ADO {
             return false;
         }
 
-        $pagamentosModel = null;
+        $PagamentosModel = null;
         $DatasEHoras = new DatasEHoras();
 
         while ($pagamento = parent::leTabelaBD()) {
-            $pagamentoData = $DatasEHoras->getDataEHorasDesinvertidaComBarras($pagamento['pagamentoData']);
-            $pagamentoModel = array($pagamento['historicoPagamentoId'], $pagamento['clienteId'], $pagamento['produtoId'], $pagamento['pagamentoStatusProduto'], $pagamento['pagamentoValorTotal'], $pagamento['pagamentoParcela'], $pagamento['pagamentoValorParcela'], $pagamento['pagamentoValorParcelaUnitario'], $pagamentoData, $pagamento['pagamentoValor']);
-            $pagamentosModel[] = $pagamentoModel;
+            $pagamentoData = $DatasEHoras->getDataEHorasDesinvertidaComBarras($pagamento['historicoPgPagamentoData']);
+            $PagamentoModel = array($pagamento['historicoPgId'], $pagamento['historicoPgClienteId'], $pagamento['historicoPgProdutoId'], $pagamento['historicoPgPagamentoStatusProduto'], $pagamento['historicoPgPagamentoValorTotal'], $pagamento['historicoPgPagamentoParcela'], $pagamento['historicoPgPagamentoValorParcela'], $pagamento['historicoPgPagamentoValorParcelaUnitario'], $pagamentoData, $pagamento['historicoPgPagamentoValor']);
+            $PagamentosModel[] = $PagamentoModel;
         }
 
-        return $pagamentosModel;
+        return $PagamentosModel;
     }
 
     public function consultaArrayDeObjeto() {
@@ -182,7 +182,7 @@ class PagamentoAdo extends ADO {
         $pagamentoValor = $PagamentoModel->getPagamentoValor();
         $pagamentoId = $PagamentoModel->getPagamentoId();
 
-        $query = "insert into Historicos_Pagamentos (historicoPagamentoId, clienteId, produtoId, pagamentoStatusProduto, pagamentoValorTotal, pagamentoParcela, pagamentoValorParcela, pagamentoValorParcelaUnitario, pagamentoData, pagamentoValor, pagamentoId) values (null, '$clienteId', '$produtoId', '$pagamentoStatusProduto', '$pagamentoValorTotal', '$pagamentoParcela', '$pagamentoValorParcela', '$pagamentoValorParcelaUnitario', '$pagamentoData', '$pagamentoValor', '$pagamentoId')";
+        $query = "insert into Historicos_Pagamentos (historicoPgId, historicoPgClienteId, historicoPgProdutoId, historicoPgPagamentoStatusProduto, historicoPgPagamentoValorTotal, historicoPgPagamentoParcela, historicoPgPagamentoValorParcela, historicoPgPagamentoValorParcelaUnitario, historicoPgPagamentoData, historicoPgPagamentoValor, historicoPgPagamentoId) values (null, '$clienteId', '$produtoId', '$pagamentoStatusProduto', '$pagamentoValorTotal', '$pagamentoParcela', '$pagamentoValorParcela', '$pagamentoValorParcelaUnitario', '$pagamentoData', '$pagamentoValor', '$pagamentoId')";
 
         $resultado = parent::executaQuery($query);
         if ($resultado) {
@@ -297,10 +297,10 @@ class PagamentoAdo extends ADO {
         }
 
         $query = "delete from Historicos_Pagamentos "
-                . "where produtoId = {$produtoId}";
+                . "where historicoPgProdutoId = {$produtoId}";
 
         $query2 = "delete from Historicos_Indices "
-                . "where pagamentoId = {$pagamentoId}";
+                . "where historicoInPagamentoId = {$pagamentoId}";
 
         $resultado = parent::executaQuery($query);
         $resultado2 = parent::executaQuery($query2);
