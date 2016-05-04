@@ -20,9 +20,10 @@ class RemessaView extends HtmlGeral {
         $boletoDataEmissao = $this->getValorOuNull('boletoDataEmissao');
         $boletoValor = $this->getValorOuNull('boletoValor');
         $boletoProdutoId = $this->getValorOuNull('boletoProdutoId');
-        
+
         return new ProdutoModel($boletoId, $boletoNumeroDocumento, $boletoNossoNumero, $boletoRemetido, $boletoSacado, $boletoDataVencimento, $boletoDataEmissao, $boletoValor, $boletoProdutoId);
     }
+
     public function montaOpcoesDeProduto($produtoSelected) {
         $opcoesDeProdutos = null;
 
@@ -85,7 +86,7 @@ class RemessaView extends HtmlGeral {
         }
         return $opcoesDeClientes;
     }
-    
+
     public function montaDados($boletoModelo) {
         $montahtml = new MontaHTML;
         $boletoModel = new RemessaModel;
@@ -98,7 +99,7 @@ class RemessaView extends HtmlGeral {
         $boletoDataEmissao = $boletoModel->getBoletoDataEmissao();
         $boletoValor = number_format($boletoModel->getBoletoValor(), 2, ",", ".");
         $boletoProdutoId = $boletoModel->getBoletoProdutoId();
-        
+
         $dados = null;
 
         $dados .= "<form action='Remessa.php' method='post'>
@@ -110,34 +111,34 @@ class RemessaView extends HtmlGeral {
         $dados .= $comboDeProdutos;
         $dados .= "<button name='bt' type='submit' class='btn btn-info' value='con'><i class='glyphicon glyphicon-search'></i> Consultar</button></div>
                    <legend>Dados do Boleto</legend>";
-        
+
         $dadosfieldsetHidden = array("name" => "boletoId", "value" => $boletoId);
         $hiddenId = $montahtml->montaInputHidden($dadosfieldsetHidden);
-        
+
         $htmlFieldsetND = array("label" => "Numero Documento", "type" => "text", "name" => "boletoNumeroDocumento", "classefg" => "col-md-2", "value" => $boletoNumeroDocumento, "placeholder" => null, "disabled" => false);
         $fieldsetND = $montahtml->montaInput($htmlFieldsetND);
-        
+
         $htmlFieldsetNN = array("label" => "Nosso Número", "type" => "text", "name" => "boletoNossoNumero", "classefg" => "col-md-2", "value" => $boletoNossoNumero, "placeholder" => null, "disabled" => false);
         $fieldsetNN = $montahtml->montaInput($htmlFieldsetNN);
-        
+
         $htmlFieldsetRemetido = array("label" => "Remetido?", "type" => "text", "name" => "boletoRemetido", "classefg" => "col-md-2", "value" => $boletoRemetido, "placeholder" => null, "disabled" => false);
         $fieldsetRe = $montahtml->montaInput($htmlFieldsetRemetido);
 
         $htmlSacado = array("label" => "Pagador", "name" => "idConsulta", "options" => $this->montaOpcoesDeCliente($boletoSacado));
         $comboDeSacado = $montahtml->montaCombobox($htmlSacado, $textoPadrao = 'Escolha um Cliente', $onChange = null, $disabled = false);
-        
+
         $htmlFieldsetDataVencimento = array("label" => "Data de vencimento", "type" => "text", "name" => "boletoDataVencimento", "classefg" => "col-md-2", "value" => $boletoDataVencimento, "placeholder" => null, "disabled" => false);
         $fieldsetDV = $montahtml->montaInput($htmlFieldsetDataVencimento);
-        
+
         $htmlFieldsetDataEmissao = array("label" => "Data de emissão", "type" => "text", "name" => "boletoDataEmissao", "classefg" => "col-md-2", "value" => $boletoDataEmissao, "placeholder" => null, "disabled" => false);
         $fieldsetDE = $montahtml->montaInput($htmlFieldsetDataEmissao);
-        
+
         $htmlFieldsetVa = array("label" => "Valor", "type" => "text", "name" => "boletoValor", "classefg" => "col-md-2", "value" => $boletoValor, "placeholder" => null, "disabled" => false);
         $fieldsetVa = $montahtml->montaInput($htmlFieldsetVa);
-        
+
         $htmlFieldsetPr = array("label" => "Apartamento", "type" => "text", "name" => "boletoProdutoId", "classefg" => "col-md-2", "value" => $boletoProdutoId, "placeholder" => null, "disabled" => false);
         $fieldsetPr = $montahtml->montaInput($htmlFieldsetPr);
-        
+
         $dados .= $hiddenId
                 . $fieldsetND
                 . $fieldsetNN

@@ -26,7 +26,7 @@ class RemessaController {
             case 'gbo':
                 $this->gerarBoleto();
                 break;
-            
+
             case 'grm':
                 $this->gerarRemessas();
                 break;
@@ -132,7 +132,7 @@ class RemessaController {
                         . str_pad("", 11, " ", STR_PAD_RIGHT)                       //
                         . "1"                                                       // POSIÇÃO 108 DE 108 - TIPO CARTEIRA 1 - C0BRANÇA SIMPLES
                         . "01"                                                      // POSIÇÃO 109 DE 110 OCORRÊNCIA - REMESSA 01 
-                        . str_pad($boletoNumeroDocumento, 10, " ",  STR_PAD_RIGHT)  //
+                        . str_pad($boletoNumeroDocumento, 10, " ", STR_PAD_RIGHT)  //
                         . $datavenc
                         . str_pad($boletoValor, 13, "0", STR_PAD_LEFT)
                         . "399"
@@ -142,11 +142,11 @@ class RemessaController {
                         . $dataemissao
                         . "15"                                                                                  // POSICAO 157 A 158 * INSTRUCAO 01
                         . "00"
-                        . str_pad("", 8, " ", STR_PAD_LEFT)."T"."0003" //POSIÇÃO 161 A 173 JUROS DE MORA
+                        . str_pad("", 8, " ", STR_PAD_LEFT) . "T" . "0003" //POSIÇÃO 161 A 173 JUROS DE MORA
                         . "000000"                                     //POSIÇÃO 174 A 179 DATA DESCONTO
                         . str_pad("", 13, "0", STR_PAD_LEFT)           //POSIÇÃO 180 A 192 VALOR DO DESCONTO
                         . str_pad("", 13, "0", STR_PAD_LEFT)           //POSIÇÃO 193 A 205 VALOR DO IOF
-                        . $datavenc."1000".str_pad("", 3, " ", STR_PAD_LEFT)           //POSIÇÃO 206 A 218 VALOR DA MULTA
+                        . $datavenc . "1000" . str_pad("", 3, " ", STR_PAD_LEFT)           //POSIÇÃO 206 A 218 VALOR DA MULTA
                         . $cod
                         . str_pad($ncpf, 14, "0", STR_PAD_LEFT)
                         . strtoupper(str_pad($CPF->retiraAcentos($clienteNome), 40, " ", STR_PAD_RIGHT))
@@ -319,8 +319,8 @@ class RemessaController {
             fclose($fp);
         }
     }
-    
-     function incluiBoleto() {
+
+    function incluiBoleto() {
         $this->RemessaModel = $this->RemessaView->getDadosEntrada();
 
         $boletoId = $this->RemessaModel->getboletoId();
