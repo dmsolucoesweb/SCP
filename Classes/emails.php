@@ -12,7 +12,7 @@ class Emails extends PHPMailer {
         $this->Port = 465;
         $this->SMTPAuth = true; // Caso o servidor SMTP precise de autenticação
         $this->Username = "dmsolucoesweb2@gmail.com"; // Usuário ou E-mail para autenticação no SMTP
-        $this->Password = "Cadu$9719!sn"; // Senha do E-mail
+        $this->Password = "Dmsolucoesweb2"; // Senha do E-mail
         $this->IsHTML(false); // Enviar como HTML
         $this->FromName = "DM Solucoes"; // Nome do Remetente
     }

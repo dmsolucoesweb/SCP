@@ -6,19 +6,27 @@ require_once '../Classes/datasehoras.php';
 require_once '../Ados/RemessaAdo.php';
 require_once '../Ados/ClienteAdo.php';
 require_once '../Ados/RemessaAdo.php';
+require_once '../Ados/BoletoAdo.php';
+require_once '../Models/RemessaModel.php';
 
 class RemessaController {
 
     private $RemessaView = null;
     private $RemessaAdo = null;
+    private $RemessaModel = null;
 
     public function __construct() {
         $this->RemessaView = new RemessaView();
         $this->RemessaAdo = new RemessaAdo();
+        $this->RemessaModel = new RemessaModel();
 
         $acao = $this->RemessaView->getAcao();
 
         switch ($acao) {
+            case 'gbo':
+                $this->gerarBoleto();
+                break;
+            
             case 'grm':
                 $this->gerarRemessas();
                 break;
@@ -309,6 +317,33 @@ class RemessaController {
             $RemessaAdo = new RemessaAdo();
             $RemessaAdo->alteraRemetido();
             fclose($fp);
+        }
+    }
+    
+     function incluiBoleto() {
+        $this->RemessaModel = $this->RemessaView->getDadosEntrada();
+
+        $boletoId = $this->RemessaModel->getboletoId();
+        $boletoNumeroDocumento = $this->RemessaModel->getboletoNumeroDocumento();
+        $boletoNossoNumero = $this->RemessaModel->getboletoNossoNumero();
+        $boletoRemetido = $this->RemessaModel->getboletoRemetido();
+        $boletoSacado = $this->RemessaModel->getboletoSacado();
+        $boletoDataVencimento = $this->RemessaModel->getboletoDataVencimento();
+        $boletoDataEmissao = $this->RemessaModel->getboletoDataEmissao();
+        $boletoValor = $this->RemessaModel->getboletoValor();
+        $boletoProdutoId = $this->RemessaModel->getboletoProdutoId();
+
+        if ($this->RemessaModel->checaAtributos()) {
+            if ($this->RemessaAdo->insereObjeto($this->RemessaModel)) {
+                $this->RemessaView->adicionaMensagemSucesso("Venda do apartamento " . $this->RemessaModel->getboletoNumeroDocumento() . " realizada com sucesso! ");
+
+                $this->RemessaModel = new RemessaModel();
+            } else {
+                $this->RemessaView->adicionaMensagemErro("Erro ao realizar a venda do apartamento " . $this->RemessaModel->getboletoNumeroDocumento() . "!");
+                $this->RemessaView->adicionaMensagemErro($this->RemessaAdo->getMensagem());
+            }
+        } else {
+            $this->ProdutoView->adicionaMensagemAlerta($this->RemessaModel->getMensagem(), "Erro");
         }
     }
 

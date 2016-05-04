@@ -81,8 +81,26 @@ class RemessaAdo extends ADO {
         
     }
 
-    public function insereObjeto(\Model $objetoModelo) {
-        
+    public function insereObjeto(Model $boletoModel) {
+        $boletoId = $boletoModel->getboletoId();
+        $boletoNumeroDocumento = $boletoModel->getboletoNumeroDocumento();
+        $boletoNossoNumero = $boletoModel->getboletoNossoNumero();
+        $boletoRemetido = $boletoModel->getboletoRemetido();
+        $boletoSacado = $boletoModel->getboletoSacado();
+        $boletoDataVencimento = $boletoModel->getboletoDataVencimento();
+        $boletoDataEmissao = $boletoModel->getboletoDataEmissao();
+        $boletoValor = number_format($boletoModel->getboletoValor(), 2, ".", "");
+        $boletoProdutoId = $boletoModel->getboletoProdutoId();
+
+        $query = "insert into Boletos (boletoId, boletoNumeroDocumento, boletoNossoNumero, boletoSacado, boletoRemetido, boletoDataVencimento, boletoDataEmissao, boletoNumeroParcela, boletoValor, boletoProdutoId) values (null, '$boletoNumeroDocumento', '$boletoNossoNumero','$boletoSacado', '$boletoRemetido', '$boletoDataVencimento', '$boletoDataEmissao', '$boletoNumeroDocumento', '$boletoValor', '$boletoProdutoId')";
+
+        $resultado = parent::executaQuery($query);
+        if ($resultado) {
+            return true;
+        } else {
+            parent::setMensagem("Erro no insert de insereObjeto: " . parent::getBdError());
+            return false;
+        }
     }
 
 }
