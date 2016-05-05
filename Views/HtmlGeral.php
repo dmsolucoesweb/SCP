@@ -95,7 +95,7 @@ abstract class HtmlGeral extends ViewAbstract {
             $this->html1 .= "
             <li> <a href='" . URL_SITE . "Modulos/Indice.php'><i class='glyphicon glyphicon-check'></i> Atualizar &Iacute;ndices </a> </li>
             <li> <a href='" . URL_SITE . "Modulos/Pagamento.php'><i class='glyphicon glyphicon-piggy-bank'></i> Pagamento </a> </li>;
-            <li> <a href='" . URL_SITE . "Modulos/Remessa.php'><i class='glyphicon glyphicon-piggy-bank'></i> Remessa </a> </li>";
+            <li> <a href='" . URL_SITE . "Modulos/Boleto.php'><i class='glyphicon glyphicon-piggy-bank'></i> Boleto </a> </li>";
         }
         $this->html1 .= "</ul>
     <ul class='nav navbar-nav navbar-right'>      

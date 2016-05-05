@@ -99,9 +99,7 @@ class RemessaController {
                 $boletoDataEmissao = $DatasEHoras->getDataInvertidaComTracos($BoletoModel['6']);
                 $dataemissao = date("dmy", strtotime($boletoDataVencimento));
                 $datavenc = date("dmy", strtotime($boletoDataVencimento));
-                //$boletoNumeroParcela = $BoletoModel['7'];
                 $boletoValor = number_format($BoletoModel['8'], 2, "", "");
-
 
                 $ncpf = $CPF::retiraMascaraCPF($clienteCPF);
                 if (is_null($ncpf)) {

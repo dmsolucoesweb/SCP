@@ -161,36 +161,36 @@ class ProdutoView extends HtmlGeral {
         return $opcoesDeClientes;
     }
 
-    public function montaDados($produtoModel) {
+    public function montaDados($ProdutoModel) {
         $dados = null;
         $montahtml = new MontaHTML();
-
-        $produtoId = $produtoModel->getProdutoId();
-        $produtoApartamento = $produtoModel->getProdutoApartamento();
-        $produtoBox = $produtoModel->getProdutoBox();
-        $produtoValor = number_format($produtoModel->getProdutoValor(), 2, ",", ".");
-        $produtoDataVenda = $produtoModel->getProdutoDataVenda();
-        $produtoStatus = $produtoModel->getProdutoStatus();
-        $produtoParcelas = $produtoModel->getProdutoParcelas();
-        $produtoParcelasPeriodicidade = $produtoModel->getProdutoParcelasPeriodicidade();
-        $produtoParcelasDataVencimento = $produtoModel->getProdutoParcelasDataVencimento();
-        $produtoParcelasValorUnitario = $produtoModel->getProdutoParcelasValorUnitario();
-        $produtoParcelasValorTotal = $produtoModel->getProdutoParcelasValorTotal();
-        $produtoParcelasAtualizacaoMonetaria = $produtoModel->getProdutoParcelasAtualizacaoMonetaria();
-        $produtoParcelasFormaPagamento = $produtoModel->getProdutoParcelasFormaPagamento();
-        $produtoParcelasObservacoes = $produtoModel->getProdutoParcelasObservacoes();
-        $clienteId = $produtoModel->getClienteId();
-        $vendedorId = $produtoModel->getVendedorId();
-        $vendedorDataVencimento = $produtoModel->getVendedorDataVencimento();
+        
+        $produtoId = $ProdutoModel->getProdutoId();
+        $produtoApartamento = $ProdutoModel->getProdutoApartamento();
+        $produtoBox = $ProdutoModel->getProdutoBox();
+        $produtoValor = number_format($ProdutoModel->getProdutoValor(), 2, ",", ".");
+        $produtoDataVenda = $ProdutoModel->getProdutoDataVenda();
+        $produtoStatus = $ProdutoModel->getProdutoStatus();
+        $produtoParcelas = $ProdutoModel->getProdutoParcelas();
+        $produtoParcelasPeriodicidade = $ProdutoModel->getProdutoParcelasPeriodicidade();
+        $produtoParcelasDataVencimento = $ProdutoModel->getProdutoParcelasDataVencimento();
+        $produtoParcelasValorUnitario = $ProdutoModel->getProdutoParcelasValorUnitario();
+        $produtoParcelasValorTotal = $ProdutoModel->getProdutoParcelasValorTotal();
+        $produtoParcelasAtualizacaoMonetaria = $ProdutoModel->getProdutoParcelasAtualizacaoMonetaria();
+        $produtoParcelasFormaPagamento = $ProdutoModel->getProdutoParcelasFormaPagamento();
+        $produtoParcelasObservacoes = $ProdutoModel->getProdutoParcelasObservacoes();
+        $clienteId = $ProdutoModel->getClienteId();
+        $vendedorId = $ProdutoModel->getVendedorId();
+        $vendedorDataVencimento = $ProdutoModel->getVendedorDataVencimento();
 
         if ($vendedorId == 1) {
             $vendedorComissao = null;
         } else {
-            $vendedorComissao = number_format($produtoModel->getVendedorComissao(), 2, ",", "");
+            $vendedorComissao = number_format($ProdutoModel->getVendedorComissao(), 2, ",", "");
         }
 
-        $vendedorFormaPagamento = $produtoModel->getVendedorFormaPagamento();
-        $vendedorObservacao = $produtoModel->getVendedorObservacao();
+        $vendedorFormaPagamento = $ProdutoModel->getVendedorFormaPagamento();
+        $vendedorObservacao = $ProdutoModel->getVendedorObservacao();
 
         $dados .= "<form action='Produto.php' method='post'>
                         <h1>Cadastro de Vendas</h1>

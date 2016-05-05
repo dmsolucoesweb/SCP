@@ -3,19 +3,19 @@
 require_once 'Model.php';
 require_once '../Classes/cpf.php';
 
-class RemessaModel extends Model {
+class BoletoModel extends Model {
+
     private $boletoId = null;
     private $boletoNumeroDocumento = null;
     private $boletoNossoNumero = null;
-    private $boletoRemetido = null;
     private $boletoSacado = null;
+    private $boletoRemetido = null;
     private $boletoDataVencimento = null;
     private $boletoDataEmissao = null;
     private $boletoValor = null;
     private $boletoProdutoId = null;
-    
 
-    function __construct($boletoId = null, $boletoNumeroDocumento = null, $boletoNossoNumero = null, $boletoRemetido = null, $boletoSacado = null, $boletoDataVencimento = null, $boletoDataEmissao = null, $boletoValor = null, $boletoProdutoId = null) {
+    function __construct($boletoId = null, $boletoNumeroDocumento = null, $boletoNossoNumero = null, $boletoSacado = null, $boletoRemetido = null, $boletoDataVencimento = null, $boletoDataEmissao = null, $boletoValor = null, $boletoProdutoId = null) {
         $this->boletoId = $boletoId;
         $this->boletoNumeroDocumento = $boletoNumeroDocumento;
         $this->boletoNossoNumero = $boletoNossoNumero;
@@ -25,7 +25,6 @@ class RemessaModel extends Model {
         $this->boletoDataEmissao = $boletoDataEmissao;
         $this->boletoValor = $boletoValor;
         $this->boletoProdutoId = $boletoProdutoId;
-        
     }
 
     function getBoletoId() {
@@ -103,30 +102,11 @@ class RemessaModel extends Model {
     public function checaAtributos() {
         $atributosValidos = TRUE;
 
-        if (is_null($this->boletoNumeroDocumento)) {
-            $atributosValidos = FALSE;
-            $this->adicionaMensagem("O Número do Documento está vazio.");
-        }
-
-        if (is_null($this->boletoNossoNumero)) {
-            $atributosValidos = FALSE;
-            $this->adicionaMensagem("O Nosso Número está vazio.");
-        }
-
-        if (is_null($this->boletoSacado)) {
-            $atributosValidos = FALSE;
-            $this->adicionaMensagem("O Sacado está vazio.");
-        }
-
-        if (is_null($this->boletoDataVencimento) AND $this->boletoDataVencimento == "0000-00-00") {
+        if (is_null($this->boletoDataVencimento) && ($this->boletoDataVencimento == "0000-00-00")) {
             $atributosValidos = FALSE;
             $this->adicionaMensagem("A data de vencimento está incorreta.");
         }
 
-        if (is_null($this->boletoDataEmissao) AND $this->boletoDataEmissao == "0000-00-00") {
-            $atributosValidos = FALSE;
-            $this->adicionaMensagem("A data de emissão está incorreta.");
-        }
 
         if (is_null($this->boletoValor)) {
             $atributosValidos = FALSE;
@@ -137,7 +117,7 @@ class RemessaModel extends Model {
             $atributosValidos = FALSE;
             $this->adicionaMensagem("Nenhum produto selecionado para geração do boleto.");
         }
-       
+
         return $atributosValidos;
     }
 
