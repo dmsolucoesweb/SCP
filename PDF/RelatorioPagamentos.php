@@ -83,14 +83,8 @@ class RelatorioPagamentos {
         $mpdf->debug = true;
         $mpdf->simpleTables = true;
         $mpdf->useSubstitutions = false;
-        $mpdf->SetHTMLHeader('<table class="header"><tbody><tr><td rowspan="3" class="logo"><img src="../IMG/logo89x50.png" /></td><td class="nopad_top">PARK VILLE INCORPORAÇÃO SPE LTDA - 23.501.469/0001-00</td></tr><tr><td class="nopad_top">Rua Francisco Soyer, nº 714, Centro, Inhumas/GO</td></tr><tr><td class="nopad_top"></td></tr><tr><td class="titulo_relatorio center" colspan="2">Extrato do Cliente</td></tr></tbody></table>');
-        $Html1 = "<table class='proposta center'><thead><tr>"
-                . "<td class='secao'>Data</td>"
-                . "<td class='secao'>Descrição</td>"
-                . "<td class='secao'>Entradas (R$)</td>"
-                . "<td class='secao'>Saídas (R$)</td>"
-                . "<td class='secao'>Saldo (R$)</td>"
-                . "</tr></thead><tbody>";
+        $mpdf->SetHTMLHeader('<table class="header"><tbody><tr><td rowspan="3" class="logo"><img src="../IMG/logo89x50.png" /></td><td class="nopad_top">PARK VILLE INCORPORAÇÃO SPE LTDA - 23.501.469/0001-00</td></tr><tr><td class="nopad_top">Rua Francisco Soyer, nº 714, Centro, Inhumas/GO</td></tr><tr><td class="nopad_top"></td></tr><tr><td class="titulo_relatorio center" colspan="2">Extrato do Cliente</td></tr></tbody></table>'); 
+        
         $PagamentoAdo = new PagamentoAdo();
         $CPF = new CPF();
         $ClienteAdo = new ClienteAdo();
@@ -100,7 +94,19 @@ class RelatorioPagamentos {
         $pagamentoModel = $PagamentoAdo->consultaObjetoPeloId($pagamentoId);
 
         $clienteId = $pagamentoModel->getClienteId();
+        $clienteModel = $ClienteAdo->consultaObjetoPeloId($clienteId);
+        $nomeCliente = $clienteModel->getClienteNome();
         $produtoId = $pagamentoModel->getProdutoId();
+        $produtoModel = $ProdutoAdo->consultaObjetoPeloId($produtoId);
+        $numeroApto = $produtoModel->getProdutoApartamento();
+        $Html1 = "<div>Cliente: $nomeCliente<br/>Apto: $numeroApto <br /><br /></div>"
+                . "<table class='proposta center'><thead><tr>"
+                . "<td class='secao'>Data</td>"
+                . "<td class='secao'>Descrição</td>"
+                . "<td class='secao'>Entradas (R$)</td>"
+                . "<td class='secao'>Saídas (R$)</td>"
+                . "<td class='secao'>Saldo (R$)</td>"
+                . "</tr></thead><tbody>";
         $pagamentoStatusProduto = $pagamentoModel->getPagamentoStatusProduto();
         $pagamentoValorTotal = $pagamentoModel->getPagamentoValorTotal();
         $pagamentoParcela = $pagamentoModel->getPagamentoParcela();
@@ -151,11 +157,11 @@ class RelatorioPagamentos {
 
                         if ($indiceInccValor != null) {
                             $indiceValor = $pagamentoValorRestante * $indiceInccValor;
-                            $indicep = $indiceInccValor;
+                            $indicep = number_format($indiceInccValor, 4, '.', ',');
                             $indice = "INCC";
                         } else {
                             $indiceValor = $pagamentoValorRestante * $indiceIgpmValor;
-                            $indicep = $indiceIgpmValor;
+                            $indicep = number_format($indiceIgpmValor, 4, '.', ',');
                             $indice = "IGP-M +1";
                         }
 
@@ -213,7 +219,8 @@ class RelatorioPagamentos {
             }
         }
 
-        $Html1 .= "</tbody></table>";
+        $Html1 .= "</tbody></table>"
+                . "<div style='font-size: 5pt;'>* Alguns valores de índices foram calculados proporcionalmente, por isso, diferem do valor do índice oficial.</div>";
         $mpdf->WriteHTML($Html1);
         $arquivo = date("d-m-Y") . "-extrato.pdf";
         //$mpdf->debug = true;
