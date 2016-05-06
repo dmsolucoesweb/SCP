@@ -134,7 +134,24 @@ class IndiceAdo extends ADO {
         $CPF = new CPF();
         $DateTime = new DateTime();
         $DatasEHoras = new DatasEHoras();
+                // Cria uma função que retorna o timestamp de uma data no formato AAAA-MM-DD
+    function geraTimestamp($data = NULL) {
+        $partes = explode('-', $data);
+        return mktime(0, 0, 0, $partes['1'], $partes['2'], $partes['0']);
+    }
 
+    // Calcula a diferença entre duas datas
+    function diferenca_datas($data1 = NULL, $data2 = NULL) {
+    // Usa a função criada e pega o timestamp das duas datas:
+        $time_inicial = geraTimestamp($data1);
+        $time_final = geraTimestamp($data2);
+    // Calcula a diferença de segundos entre as duas datas:
+        $diferenca = $time_final - $time_inicial; 
+    // Calcula a diferença de dias
+        $dias = (int)floor($diferenca/(60 * 60 * 24)); 
+        return $dias;
+    }
+        
         if (is_array($arrayDePagamentos)) {
             foreach ($arrayDePagamentos as $PagamentoModel) {
                 $incc = $IndiceIncc / 100;
@@ -179,12 +196,12 @@ class IndiceAdo extends ADO {
                     }
                 }
 
-                $datetime1 = new DateTime($DatasEHoras->getDataEHorasInvertidaComTracos($produtoDataVenda));
-                $datetime2 = new DateTime($indiceData);
-                $interval = $datetime1->diff($datetime2);
-                $intervaloData = $interval->format('%a');
-
-                if ($intervaloData >= 30) {
+                $data1 = $DatasEHoras->getDataEHorasInvertidaComTracos($produtoDataVenda);
+                $data2 = $indiceData;
+                $intervaloData = diferenca_datas($data1, $data2);
+                if ($data1 > $data2) { var_dump($intervaloData.'teste');} 
+                else { var_dump('teste'.$intervaloData);
+                if ($intervaloData < 30) {
                     $incc = ($incc / 30) * $intervaloData;
                     $igpm = ($igpm / 30) * $intervaloData;
 
@@ -234,6 +251,7 @@ class IndiceAdo extends ADO {
                 $resultado = parent::executaQuery($query);
                 $resultado2 = parent::executaQuery($query2);
             }
+        }
         }
 
         if ($resultado && $resultado2) {

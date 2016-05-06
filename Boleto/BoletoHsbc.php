@@ -19,8 +19,9 @@ class BoletoHsbc {
         $BoletoAdo = new BoletoAdo();
         $ClienteAdo = new ClienteAdo();
         $LayoutBoleto = new LayoutBoletoHsbc();
-        $arrayDeBoletos = $BoletoAdo->consultaObjetoPeloId($produtoId);
-        $mpdf = new mPDF('pt', 'A4', 0, 'arial', 5, 5, 5, 5, 9, 9, 'P');
+        $arrayDeBoletos = $BoletoAdo->consultaArrayDeBoletos($produtoId);
+        $mpdf = new mPDF('pt', 'A4', 0, 'arial', 10, 10, 10, 10, 9, 9, 'P');
+        $mpdf->debug = true;
         $mpdf->packTableData = false;
         $mpdf->useSubstitutions = false;
         if (is_array($arrayDeBoletos)) {
@@ -94,10 +95,10 @@ class BoletoHsbc {
                 $dadosboleto['codigo_cedente'] = "0030310"; // CODIGO CONTRATO COB SEM AGENCIA
                 $dadosboleto['carteira'] = "00";  // CÓDIGO DA CARTEIRA (NÃO ALTERE)
                 // DADOS EMISSOR DOS BOLETOS (PARK VILLE)
-                $dadosboleto['identificacao'] = "PARK VILLE S LTDA";
-                $dadosboleto['cpf_cnpj'] = "23501469000100";
-                $dadosboleto['endereco'] = "RUA FRANCISCO SOYER, 714";
-                $dadosboleto['cidade_uf'] = "INHUMAS / GO";
+                $dadosboleto['identificacao'] = "PARK VILLE INCORPORACAO S LTDA";
+                $dadosboleto['cpf_cnpj'] = "23.501.469/0001-00";
+                $dadosboleto['endereco'] = "RUA FRANCISCO SOYER, 714, CENTRO";
+                $dadosboleto['cidade_uf'] = "74.501-000 | INHUMAS  GO";
                 $dadosboleto['cedente'] = "DM SOLUÇÕES WEB";
 
                 // INSTRUÇÕES IGUAIS PARA TODOS OS CLIENTES
@@ -215,6 +216,7 @@ class BoletoHsbc {
 .endereco {font-size:10px;}
 </style>';
 // GERA RECIBO DO PAGADOR
+
                 $Html .= '<div id="boleto">
   <table border="0" cellpadding="0" cellspacing="0" id="tb_logo">
     <tr>
@@ -241,7 +243,7 @@ class BoletoHsbc {
     <tr>
       <td class="td_7_sb" rowspan="2">&nbsp;</td>
       <td rowspan="2"><div class="titulo">Nome do Beneficiário/CNPJ/Endereço</div>
-      <div class="var endereco">' . $dadosboleto['identificacao'] . '      CNPJ - ' . $dadosboleto['cpf_cnpj'] . '<br>' . $dadosboleto['endereco1'] . '<br>' . $dadosboleto['cidade_uf'] . '</div></td>
+      <div class="var endereco">' . $dadosboleto['identificacao'] . '      CNPJ - ' . $dadosboleto['cpf_cnpj'] . '<br>' . $dadosboleto['endereco'] . '<br>' . $dadosboleto['cidade_uf'] . '</div></td>
       <td class="td_7_cb">&nbsp;</td>
       <td class="direito"><div class="titulo">Ag&ecirc;ncia / C&oacute;digo do Beneficiário</div>
       <div class="var">' . $dadosboleto['agencia'] . ' / ' . $dadosboleto['codigo_cedente'] . '</div></td>
@@ -269,7 +271,7 @@ class BoletoHsbc {
       <td style="width:34px;"><div class="titulo">Aceite</div>
       <div class="var">' . $dadosboleto['aceite'] . '</div></td>
       <td class="td_7_cb">&nbsp;</td>
-      <td style="width:103px;"><div class="titulo">Data Processamento</div>
+      <td style="width:107px;"><div class="titulo">Data Processamento</div>
       <div class="var">' . $dadosboleto['data_processamento'] . '</div></td>
       <td class="td_7_cb">&nbsp;</td>
       <td class="direito"><div class="titulo">Nosso N&uacute;mero</div>
@@ -292,7 +294,7 @@ class BoletoHsbc {
       <td style="width:104px;"><div class="titulo">Quantidade da Moeda</div>
       <div class="var">' . $dadosboleto['quantidade'] . '</div></td>
       <td class="td_7_cb">&nbsp;</td>
-      <td style="width:103px;"><div class="titulo">Valor</div>
+      <td style="width:111px;"><div class="titulo">Valor</div>
       <div class="var">' . $dadosboleto['valor_unitario'] . '</div></td>
       <td class="td_7_cb">&nbsp;</td>
       <td class="direito"><div class="titulo">(=) Valor do Documento</div>
@@ -363,7 +365,7 @@ class BoletoHsbc {
     </tr>
   </table>
 </div>';
-                // GERA FICHA DE COMPENSAÇÃO
+//                 GERA FICHA DE COMPENSAÇÃO
                 $Html .= '<div id="boleto">
   <table border="0" cellpadding="0" cellspacing="0" id="tb_logo">
     <tr>
@@ -390,7 +392,7 @@ class BoletoHsbc {
     <tr>
       <td class="td_7_sb" rowspan="2">&nbsp;</td>
       <td rowspan="2"><div class="titulo">Nome do Beneficiário/CNPJ/Endereço</div>
-      <div class="var endereco">' . $dadosboleto['identificacao'] . '  CNPJ - ' . $dadosboleto['cpf_cnpj'] . '<br>' . $dadosboleto['endereco1'] . '<br>' . $dadosboleto['cidade_uf'] . '</div></td>
+      <div class="var endereco">' . $dadosboleto['identificacao'] . '  CNPJ - ' . $dadosboleto['cpf_cnpj'] . '<br>' . $dadosboleto['endereco'] . '<br>' . $dadosboleto['cidade_uf'] . '</div></td>
       <td class="td_7_cb">&nbsp;</td>
       <td class="direito"><div class="titulo">Ag&ecirc;ncia / C&oacute;digo do Beneficiário</div>
       <div class="var">' . $dadosboleto['agencia'] . ' / ' . $dadosboleto['codigo_cedente'] . '</div></td>
@@ -418,7 +420,7 @@ class BoletoHsbc {
       <td style="width:34px;"><div class="titulo">Aceite</div>
       <div class="var">' . $dadosboleto['aceite'] . '</div></td>
       <td class="td_7_cb">&nbsp;</td>
-      <td style="width:103px;"><div class="titulo">Data Processamento</div>
+      <td style="width:107px;"><div class="titulo">Data Processamento</div>
       <div class="var">' . $dadosboleto['data_processamento'] . '</div></td>
       <td class="td_7_cb">&nbsp;</td>
       <td class="direito"><div class="titulo">Nosso N&uacute;mero</div>
@@ -441,7 +443,7 @@ class BoletoHsbc {
       <td style="width:104px;"><div class="titulo">Quantidade da Moeda</div>
       <div class="var">' . $dadosboleto['quantidade'] . '</div></td>
       <td class="td_7_cb">&nbsp;</td>
-      <td style="width:103px;"><div class="titulo">Valor</div>
+      <td style="width:111px;"><div class="titulo">Valor</div>
       <div class="var">' . $dadosboleto['valor_unitario'] . '</div></td>
       <td class="td_7_cb">&nbsp;</td>
       <td class="direito"><div class="titulo">(=) Valor do Documento</div>
@@ -520,8 +522,11 @@ class BoletoHsbc {
                 unlink('../Boleto/tmpcb/' . $dadosboleto['numero_documento'] . '.gif');
                 set_time_limit(20);
             }
+        } else {
+            $Html .= "É permitido apenas gerar um boleto por vez!";
+            $mpdf->WriteHTML($Html);
         }
-
+        
         $arquivo = date("d-m-Y") . "-boleto.pdf";
         $mpdf->Output($arquivo, "I");
         exit();

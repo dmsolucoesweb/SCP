@@ -121,17 +121,42 @@ class BoletoAdo extends ADO {
 
         return $BoletosModel;
     }
+    
+    public function consultaArrayDeBoletos($produtoId) {
+        $BoletoModel = null;
+        $query = "select * from Boletos where boletoId = '{$produtoId}' ";
+
+        $resultado = parent::executaQuery($query);
+        if ($resultado) {
+            //consulta Ok. Continua.
+        } else {
+            parent::setMensagem("Erro no select de consultaArrayDeObjeto: " . parent::getBdError());
+            return false;
+        }
+
+        $DatasEHoras = new DatasEHoras();
+
+        while ($boleto = parent::leTabelaBD()) {
+            $boletoDataVencimento = $DatasEHoras->getDataEHorasDesinvertidaComBarras($boleto['boletoDataVencimento']);
+            $boletoDataEmissao = $DatasEHoras->getDataEHorasDesinvertidaComBarras($boleto['boletoDataEmissao']);
+            $BoletoModel = array($boleto['boletoId'], $boleto['boletoNumeroDocumento'], $boleto['boletoNossoNumero'], $boleto['boletoSacado'], $boleto['boletoRemetido'], $boletoDataVencimento, $boletoDataEmissao, $boleto['boletoNumeroParcela'], $boleto['boletoValor'], $boleto['boletoProdutoId']);
+            $BoletosModel[] = $BoletoModel;
+        }
+
+        return $BoletosModel;
+    }
 
     public function insereObjeto(\Model $BoletoModel) {
         $ProdutoAdo = new ProdutoAdo();
         $numeroDocumento = null;
+        $DatasEHoras = new DatasEHoras();
 
         $boletoId = $BoletoModel->getBoletoId();
         $boletoNumeroDocumento = $BoletoModel->getBoletoNumeroDocumento();
         $boletoNossoNumero = $BoletoModel->getBoletoNossoNumero();
         $boletoRemetido = $BoletoModel->getBoletoRemetido();
         $boletoSacado = $BoletoModel->getBoletoSacado();
-        $boletoDataVencimento = $BoletoModel->getBoletoDataVencimento();
+        $boletoDataVencimento = $DatasEHoras->getDataEHorasInvertidaComTracos($BoletoModel->getBoletoDataVencimento());
         $boletoDataEmissao = $BoletoModel->getBoletoDataEmissao();
         $boletoValor = $BoletoModel->getBoletoValor();
         $boletoProdutoId = $BoletoModel->getBoletoProdutoId();

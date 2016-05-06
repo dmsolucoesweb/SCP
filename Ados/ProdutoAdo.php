@@ -77,7 +77,7 @@ class ProdutoAdo extends ADO {
 
     public function consultaArrayDeObjeto() {
         $produtoModel = null;
-        $query = "select * from Produtos order by produtoApartamento";
+        $query = "select * from Produtos ORDER BY produtoApartamento";
 
         $resultado = parent::executaQuery($query);
         if ($resultado) {

@@ -394,6 +394,5 @@ Class DatasEHoras {
         return date('Y - H:i:s');
     }
 
+        
 }
-
-?>

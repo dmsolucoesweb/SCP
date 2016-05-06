@@ -11,6 +11,7 @@ require_once '../Ados/ClienteAdo.php';
 class BoletoView extends HtmlGeral {
 
     public function getDadosEntrada() {
+        $CPF = new CPF();
         $boletoId = $this->getValorOuNull('boletoId');
         $boletoNumeroDocumento = $this->getValorOuNull('boletoNumeroDocumento');
         $boletoNossoNumero = $this->getValorOuNull('boletoNossoNumero');
@@ -18,7 +19,7 @@ class BoletoView extends HtmlGeral {
         $boletoRemetido = $this->getValorOuNull('boletoRemetido');
         $boletoDataVencimento = $this->getValorOuNull('boletoDataVencimento');
         $boletoDataEmissao = $this->getValorOuNull('boletoDataEmissao');
-        $boletoValor = $this->getValorOuNull('boletoValor');
+        $boletoValor = $CPF->retiraMascaraRenda($this->getValorOuNull('boletoValor'));
         $boletoProdutoId = $this->getValorOuNull('boletoProdutoId');
 
         return new BoletoModel($boletoId, $boletoNumeroDocumento, $boletoNossoNumero, $boletoSacado, $boletoRemetido, $boletoDataVencimento, $boletoDataEmissao, $boletoValor, $boletoProdutoId);
@@ -73,7 +74,7 @@ class BoletoView extends HtmlGeral {
 
                 $boletoId = $BoletoModel->getBoletoId();
                 $boletoNumeroDocumento = $BoletoModel->getBoletoNumeroDocumento();
-                $boletoValor = $BoletoModel->getBoletoValor();
+                $boletoValor = number_format($BoletoModel->getBoletoValor(), 2, ",", ".");
 
                 $text = 'NUMERO DOCUMENTO: ' . $boletoNumeroDocumento . ' | VALOR: R$' . $boletoValor;
 
@@ -127,24 +128,45 @@ class BoletoView extends HtmlGeral {
         $boletoRemetido = $BoletoModel->getBoletoRemetido();
         $boletoDataVencimento = $BoletoModel->getBoletoDataVencimento();
         $boletoDataEmissao = $BoletoModel->getBoletoDataEmissao();
-        $boletoValor = $BoletoModel->getBoletoValor();
+        $boletoValor = number_format($BoletoModel->getBoletoValor(), 2, ",", ".");
         $boletoProdutoId = $BoletoModel->getBoletoProdutoId();
 
         $dados = null;
-
+// JAVASCRIPT POPULAR TABELA
+        $dados .= "
+<script>
+		$(function(){
+			$('.apto_vb').change(function(){
+				if( $(this).val() ) {
+					$('.lista_boleto').hide();
+					$('.carregando').show();
+					$.getJSON('../Boleto/BuscaBoleto.php?',{idp: $(this).val(), ajax: 'true'}, function(j){
+						var options = '<option value=\"-1\">----</option>';	
+						for (var i = 0; i < j.length; i++) {
+							options += '<option value=\"' + j[i].boletoId + '\">' + j[i].titulo + '</option>';
+						}	
+						$('.lista_boleto').html(options).show();
+						$('.carregando').hide();
+					});
+				} else {
+					$('.lista_boleto').html('<option value=\"\">----</option>');
+				}
+			});
+		});
+		</script>";
         $dados .= "<form action='Boleto.php' method='post'>
-                    <h1>Boleto(s)</h1>";
+                    <h1>Boletos</h1>";
         $dados .= "<div class='well'><legend>Consulta</legend>";
-
-        $htmlComboProdutos = array("label" => "Apartamentos vendidos", "name" => "boletoProdutoId", "options" => $this->montaOpcoesDeProduto($boletoProdutoId));
+        
+        $htmlComboProdutos = array("label" => "Apartamentos vendidos", "classefg" => "col-md-6", "classecampo" => "apto_vb", "name" => "boletoProdutoId", "options" => $this->montaOpcoesDeProduto($boletoProdutoId));
         $comboDeProdutos = $montahtml->montaCombobox($htmlComboProdutos, $textoPadrao = 'Escolha um Apartamento', $onChange = null, $disabled = false);
-
-        $htmlComboBoletos = array("label" => "Boletos", "name" => "idConsulta", "options" => $this->montaOpcoesDeBoletos($boletoId));
-        $comboDeBoletos = $montahtml->montaCombobox($htmlComboBoletos, $textoPadrao = 'Escolha um Apartamento', $onChange = null, $disabled = false);
-
+        
+        $htmlComboBoletos = array("label" => "Boletos emitidos", "name" => "idConsulta", "options" => null, "classefg" => "col-md-5" ,"classecampo" => "lista_boleto",);
+        $comboDeBoletos = $montahtml->montaCombobox($htmlComboBoletos, $textoPadrao = '----', $onChange = null, $disabled = false);
+        $dados .= "<div class='row'>";
         $dados .= $comboDeProdutos;
-        $dados .= $comboDeBoletos;
-
+        $dados .= $comboDeBoletos."<div class='carregando col-md-1' style='display:none;'><img src='../IMG/ajax-loader.gif' /></div>";
+        $dados .= "</div>";
         $dados .= "<button name='bt' type='submit' class='btn btn-info' value='bbo'><i class='glyphicon glyphicon-search'></i> Consultar</button></div>
                    <legend>Dados do Boleto</legend>";
 
@@ -160,13 +182,13 @@ class BoletoView extends HtmlGeral {
 //        $htmlSacado = array("label" => "Pagador", "name" => "idConsulta", "options" => $this->montaOpcoesDeCliente($boletoSacado));
 //        $comboDeSacado = $montahtml->montaCombobox($htmlSacado, $textoPadrao = 'Escolha um Cliente', $onChange = null, $disabled = false);
 
-        $htmlFieldsetDataVencimento = array("label" => "Data de vencimento", "type" => "text", "name" => "boletoDataVencimento", "classefg" => "col-md-2", "value" => $boletoDataVencimento, "placeholder" => null, "disabled" => false);
-        $fieldsetDV = $montahtml->montaInput($htmlFieldsetDataVencimento);
-
+        $htmlFieldsetDataVencimento = array("label" => "Data de Vencimento", "obg" => true, "classefg" => "col-md-3", "name" => "boletoDataVencimento", "value" => $boletoDataVencimento, "disabled" => false);
+        $fieldsetDV = $montahtml->montaInputDeData($htmlFieldsetDataVencimento);
+        
 //        $htmlFieldsetDataEmissao = array("label" => "Data de emissão", "type" => "text", "name" => "boletoDataEmissao", "classefg" => "col-md-2", "value" => $boletoDataEmissao, "placeholder" => null, "disabled" => false);
 //        $fieldsetDE = $montahtml->montaInput($htmlFieldsetDataEmissao);
 
-        $htmlFieldsetVa = array("label" => "Valor", "type" => "text", "name" => "boletoValor", "classefg" => "col-md-2", "value" => $boletoValor, "placeholder" => null, "disabled" => false);
+        $htmlFieldsetVa = array("label" => "Valor", "type" => "text", "name" => "boletoValor", "obg" => true, "classefg" => "col-md-3", "classecampo" => "moeda", "value" => $boletoValor, "placeholder" => null, "disabled" => false);
         $fieldsetVa = $montahtml->montaInput($htmlFieldsetVa);
 
 //        $htmlFieldsetPr = array("label" => "Apartamento", "type" => "text", "name" => "boletoProdutoId", "classefg" => "col-md-2", "value" => $boletoProdutoId, "placeholder" => null, "disabled" => false);
@@ -185,11 +207,11 @@ class BoletoView extends HtmlGeral {
         ;
 
         $dados .= "<div class='col-md-12'>
-                   <button name='bt' type='submit' class='btn btn-success' value='nbo'><i class='glyphicon glyphicon-asterisk'></i> Novo </button>
-                   <button name='bt' type='submit' class='btn btn-success' value='cbo'><i class='glyphicon glyphicon-asterisk'></i> Cadastrar </button>
-                   <button name='bt' type='submit' class='btn btn-success' value='ebo'><i class='glyphicon glyphicon-asterisk'></i> Excluir </button>
-                   <button name='bt' type='submit' class='btn btn-success' value='grm'><i class='glyphicon glyphicon-asterisk'></i> Gerar Remessa(s) </button>
-                   <button name='bt' type='submit' class='btn btn-info' value='ibo'><i class='glyphicon glyphicon-ok'></i> Imprimir Boleto</button>
+                   <button name='bt' type='submit' class='btn btn-info' value='nbo'><i class='glyphicon glyphicon-asterisk'></i> Novo</button>
+                   <button name='bt' type='submit' class='btn btn-success' value='cbo'><i class='glyphicon glyphicon-asterisk'></i> Cadastrar</button>
+                   <button name='bt' type='submit' class='btn btn-danger' value='ebo'><i class='glyphicon glyphicon-asterisk'></i> Excluir</button>
+                   <button name='bt' type='submit' class='btn btn-warning' value='grm'><i class='glyphicon glyphicon-asterisk'></i> Gerar Remessas</button>
+                   <button name='bt' type='submit' class='btn btn-default' value='ibo'><i class='glyphicon glyphicon-ok'></i> Imprimir Boleto</button>
                   </div></form>";
 
         $this->setDados($dados);

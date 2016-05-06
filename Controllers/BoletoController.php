@@ -240,7 +240,7 @@ class BoletoController {
         $BoletoHsbc = new BoletoHsbc();
 
         $this->BoletoModel = $this->BoletoView->getDadosEntrada();
-        $produtoId = $this->BoletoModel->getBoletoProdutoId();
+        $produtoId = $this->BoletoModel->getBoletoId();
 
         $BoletoHsbc->geraBoleto($produtoId);
     }
