@@ -9,7 +9,6 @@ require_once '../PDF/RelatorioProdutos.php';
 require_once '../Ados/BoletoAdo.php';
 require_once '../Boleto/BoletoHsbc.php';
 
-
 class ProdutoController {
 
     private $ProdutoView = null;

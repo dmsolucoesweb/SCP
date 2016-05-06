@@ -99,9 +99,7 @@ class RemessaController {
                 $boletoDataEmissao = $DatasEHoras->getDataInvertidaComTracos($BoletoModel['6']);
                 $dataemissao = date("dmy", strtotime($boletoDataVencimento));
                 $datavenc = date("dmy", strtotime($boletoDataVencimento));
-                //$boletoNumeroParcela = $BoletoModel['7'];
                 $boletoValor = number_format($BoletoModel['8'], 2, "", "");
-
 
                 $ncpf = $CPF::retiraMascaraCPF($clienteCPF);
                 if (is_null($ncpf)) {
@@ -132,7 +130,7 @@ class RemessaController {
                         . str_pad("", 11, " ", STR_PAD_RIGHT)                       //
                         . "1"                                                       // POSIÇÃO 108 DE 108 - TIPO CARTEIRA 1 - C0BRANÇA SIMPLES
                         . "01"                                                      // POSIÇÃO 109 DE 110 OCORRÊNCIA - REMESSA 01 
-                        . str_pad($boletoNumeroDocumento, 10, " ",  STR_PAD_RIGHT)  //
+                        . str_pad($boletoNumeroDocumento, 10, " ", STR_PAD_RIGHT)  //
                         . $datavenc
                         . str_pad($boletoValor, 13, "0", STR_PAD_LEFT)
                         . "399"
@@ -142,11 +140,11 @@ class RemessaController {
                         . $dataemissao
                         . "15"                                                                                  // POSICAO 157 A 158 * INSTRUCAO 01
                         . "00"
-                        . str_pad("", 8, " ", STR_PAD_LEFT)."T"."0003" //POSIÇÃO 161 A 173 JUROS DE MORA
+                        . str_pad("", 8, " ", STR_PAD_LEFT) . "T" . "0003" //POSIÇÃO 161 A 173 JUROS DE MORA
                         . "000000"                                     //POSIÇÃO 174 A 179 DATA DESCONTO
                         . str_pad("", 13, "0", STR_PAD_LEFT)           //POSIÇÃO 180 A 192 VALOR DO DESCONTO
                         . str_pad("", 13, "0", STR_PAD_LEFT)           //POSIÇÃO 193 A 205 VALOR DO IOF
-                        . $datavenc."1000".str_pad("", 3, " ", STR_PAD_LEFT)           //POSIÇÃO 206 A 218 VALOR DA MULTA
+                        . $datavenc . "1000" . str_pad("", 3, " ", STR_PAD_LEFT)           //POSIÇÃO 206 A 218 VALOR DA MULTA
                         . $cod
                         . str_pad($ncpf, 14, "0", STR_PAD_LEFT)
                         . strtoupper(str_pad($CPF->retiraAcentos($clienteNome), 40, " ", STR_PAD_RIGHT))
@@ -321,6 +319,33 @@ class RemessaController {
     }
     
      function incluiBoleto() {
+        $this->RemessaModel = $this->RemessaView->getDadosEntrada();
+
+        $boletoId = $this->RemessaModel->getboletoId();
+        $boletoNumeroDocumento = $this->RemessaModel->getboletoNumeroDocumento();
+        $boletoNossoNumero = $this->RemessaModel->getboletoNossoNumero();
+        $boletoRemetido = $this->RemessaModel->getboletoRemetido();
+        $boletoSacado = $this->RemessaModel->getboletoSacado();
+        $boletoDataVencimento = $this->RemessaModel->getboletoDataVencimento();
+        $boletoDataEmissao = $this->RemessaModel->getboletoDataEmissao();
+        $boletoValor = $this->RemessaModel->getboletoValor();
+        $boletoProdutoId = $this->RemessaModel->getboletoProdutoId();
+
+        if ($this->RemessaModel->checaAtributos()) {
+            if ($this->RemessaAdo->insereObjeto($this->RemessaModel)) {
+                $this->RemessaView->adicionaMensagemSucesso("Venda do apartamento " . $this->RemessaModel->getboletoNumeroDocumento() . " realizada com sucesso! ");
+
+                $this->RemessaModel = new RemessaModel();
+            } else {
+                $this->RemessaView->adicionaMensagemErro("Erro ao realizar a venda do apartamento " . $this->RemessaModel->getboletoNumeroDocumento() . "!");
+                $this->RemessaView->adicionaMensagemErro($this->RemessaAdo->getMensagem());
+            }
+        } else {
+            $this->ProdutoView->adicionaMensagemAlerta($this->RemessaModel->getMensagem(), "Erro");
+        }
+    }
+
+    function incluiBoleto() {
         $this->RemessaModel = $this->RemessaView->getDadosEntrada();
 
         $boletoId = $this->RemessaModel->getboletoId();
