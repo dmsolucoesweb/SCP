@@ -102,8 +102,8 @@ class BoletoHsbc {
                 $dadosboleto['cedente'] = "DM SOLUÇÕES WEB";
 
                 // INSTRUÇÕES IGUAIS PARA TODOS OS CLIENTES
-                $dadosboleto['instrucoes1'] = "- Sr. Caixa, cobrar multa de 10% após o vencimento";
-                $dadosboleto['instrucoes2'] = "- Juros de Mora de 0,03% por dia de atraso";
+                $dadosboleto['instrucoes1'] = "- Sr. Caixa, cobrar multa de 10% após o vencimento;";
+                $dadosboleto['instrucoes2'] = "- Juros de Mora de 1% ao mês;";
                 $dadosboleto['instrucoes3'] = "Em caso de dúvidas entre em contato em nosso escritório.";
                 $dadosboleto['instrucoes4'] = "";
 
