@@ -5,5 +5,5 @@ ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 if (!defined('URL_SITE')) {
-    define('URL_SITE', '/dmsolucoes3/SCP/');
+    define('URL_SITE', '/dmsolucoes/SCP/');
 }

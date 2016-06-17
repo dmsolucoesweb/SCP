@@ -121,7 +121,7 @@ class BoletoAdo extends ADO {
 
         return $BoletosModel;
     }
-    
+
     public function consultaArrayDeBoletos($produtoId) {
         $BoletoModel = null;
         $query = "select * from Boletos where boletoId = '{$produtoId}' ";
@@ -139,7 +139,7 @@ class BoletoAdo extends ADO {
         while ($boleto = parent::leTabelaBD()) {
             $boletoDataVencimento = $DatasEHoras->getDataEHorasDesinvertidaComBarras($boleto['boletoDataVencimento']);
             $boletoDataEmissao = $DatasEHoras->getDataEHorasDesinvertidaComBarras($boleto['boletoDataEmissao']);
-            $BoletoModel = array($boleto['boletoId'], $boleto['boletoNumeroDocumento'], $boleto['boletoNossoNumero'], $boleto['boletoSacado'], $boleto['boletoRemetido'], $boletoDataVencimento, $boletoDataEmissao, $boleto['boletoNumeroParcela'], $boleto['boletoValor'], $boleto['boletoProdutoId']);
+            $BoletoModel = new BoletoModel($boleto['boletoId'], $boleto['boletoNumeroDocumento'], $boleto['boletoNossoNumero'], $boleto['boletoSacado'], $boleto['boletoRemetido'], $boletoDataVencimento, $boletoDataEmissao, $boleto['boletoValor'], $boleto['boletoProdutoId']);
             $BoletosModel[] = $BoletoModel;
         }
 
