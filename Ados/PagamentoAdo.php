@@ -221,6 +221,9 @@ class PagamentoAdo extends ADO {
                 $pagamentoValorParcelaUnitario = $CPF->retiraMascaraRenda($pagValorUnitario);
 
                 if ($ValorParcelas == 0) {
+                    $ParcelasAnt .= $arrayParcelas[$i] . ";";
+                    $ValorParcelasAnt .= $arrayValorParcelas[$i] . ";";
+                    $ValorParcelasUnitarioAnt .= $arrayValorParcelasUnitario[$i] . ";";
                     $i++;
                 } else {
                     $ValorParcelasTotal = $pagamentoValorParcela - $pagamentoValor;
@@ -250,11 +253,20 @@ class PagamentoAdo extends ADO {
                         }
                     }
 
+
+                    $ParcelaFn = $ParcelasAnt . $Parcela;
+                    $ValorTotalFn = $ValorParcelasAnt . $ValorTotal;
+                    $ValorParcelasUnitarioFn = $ValorParcelasUnitarioAnt . $ValorUnitario;
+
+                    var_dump($ParcelaFn);
+                    var_dump($ValorTotalFn);
+                    var_dump($ValorParcelasUnitarioFn);
+
                     $query = "update Pagamentos set clienteId = '{$clienteId}',"
                             . " produtoId = '{$produtoId}',"
-                            . " pagamentoParcela = '{$Parcela}',"
-                            . " pagamentoValorParcela = '{$ValorTotal}',"
-                            . " pagamentoValorParcelaUnitario = '{$ValorUnitario}',"
+                            . " pagamentoParcela = '{$ParcelaFn}',"
+                            . " pagamentoValorParcela = '{$ValorTotalFn}',"
+                            . " pagamentoValorParcelaUnitario = '{$ValorParcelasUnitarioFn}',"
                             . " pagamentoValor = null"
                             . " where pagamentoId = '{$pagamentoId}'";
 

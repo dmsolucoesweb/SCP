@@ -164,7 +164,7 @@ class ProdutoView extends HtmlGeral {
     public function montaDados($ProdutoModel) {
         $dados = null;
         $montahtml = new MontaHTML();
-        
+
         $produtoId = $ProdutoModel->getProdutoId();
         $produtoApartamento = $ProdutoModel->getProdutoApartamento();
         $produtoBox = $ProdutoModel->getProdutoBox();
@@ -392,7 +392,7 @@ class ProdutoView extends HtmlGeral {
             }
         }
 
-        if ($produtoId != '-1' && $produtoId != NULL and $vendedorId != 1) {
+        if ($produtoId != '-1' && $produtoId != NULL && $vendedorId != 1) {
             $dados .= "<div class='dados_int row'><h4>Informações sobre o vendedor</h4>"
                     . $fieldsetDataVenc
                     . $fieldsetValorComissao
@@ -400,10 +400,12 @@ class ProdutoView extends HtmlGeral {
                     . $fieldsetObservacao
                     . "</div>";
         }
+
         $desativa = "disabled = 'true'";
         if ($produtoId != '-1' && $produtoId != NULL) {
             $desativa = "";
         }
+
         $dados .= "<div class='row'>
                 <button name='bt' type='submit' class='btn btn-info' value='nov'><i class='glyphicon glyphicon-asterisk'></i> Novo</button>
                 <button name='bt' id='inc' type='submit' class='btn btn-success' disabled='true' value='inc' ><i class='glyphicon glyphicon-ok'></i> Incluir</button>
